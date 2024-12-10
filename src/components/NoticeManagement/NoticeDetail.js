@@ -26,7 +26,7 @@ const NoticeDetail = () => {
                     }
         
                     const response = await axios.get(
-                        `http://192.168.25.24:8864/api/users/noticeList/find-user/${id}`,
+                        `http://192.168.25.31:8863/api/users/noticeList/find-user/${id}`,
                         {
                             headers: {
                                 Authorization: `Bearer ${token}`,
@@ -78,7 +78,7 @@ const handleDelete = async () => {
         }
 
         const response = await axios.delete(
-            `http://192.168.25.24:8864/api/users/noticeList/delete/${id}`,
+            `http://192.168.25.31:8863/api/users/noticeList/delete/${id}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -118,7 +118,7 @@ const handleDelete = async () => {
             }
 
             const response = await axios.put(
-                `http://192.168.25.24:8864/api/users/noticeList/update/${id}`,
+                `http://192.168.25.31:8863/api/users/noticeList/update/${id}`,
                 updatedNotice,
                 {
                     headers: {

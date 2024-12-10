@@ -20,7 +20,7 @@ const Users = () => {
                     return;
                 }
 
-                const response = await axios.get('http://192.168.25.24:8864/api/users/userinfo', {
+                const response = await axios.get('http://192.168.25.31:8863/api/users/userinfo', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -89,7 +89,7 @@ const Users = () => {
             }
     
             const response = await axios.put(
-                `http://192.168.25.24:8864/api/users/userinfo/${id}`,
+                `http://192.168.25.31:8863/api/users/userinfo/${id}`,
                 { is_active: true },
                 {
                     headers: {
@@ -127,7 +127,7 @@ const Users = () => {
             }
     
             const response = await axios.put(
-                `http://192.168.25.24:8864/api/users/userinfo/${id}`,
+                `http://192.168.25.31:8863/api/users/userinfo/${id}`,
                 { is_active: false },
                 {
                     headers: {
@@ -166,7 +166,7 @@ const Users = () => {
             }
     
             const response = await axios.delete(
-                `http://192.168.25.24:8864/api/users/userinfo/${id}`,  // URL에 ID 포함
+                `http://192.168.25.31:8863/api/users/userinfo/${id}`,  // URL에 ID 포함
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

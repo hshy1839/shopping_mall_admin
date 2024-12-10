@@ -26,7 +26,7 @@ const Notice = () => {
                     return;
                 }
 
-                const response = await axios.get('http://192.168.25.24:8864/api/users/noticeList/find', {
+                const response = await axios.get('http://192.168.25.31:8863/api/users/noticeList/find', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -108,7 +108,7 @@ const Notice = () => {
             <Header />
             <div className="notice-management-container-container">
                 <div className="notice-top-container-container">
-                    <h1>공지 관리</h1>
+                    <h1>공지사항</h1>
 
                     {/* 검색 박스 */}
                     <div className="notice-search-box">
