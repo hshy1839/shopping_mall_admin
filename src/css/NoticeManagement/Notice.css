@@ -1,0 +1,144 @@
+/* notice.css */
+
+.notice-management-container {
+  display: flex;
+  overflow-x: hidden;
+  width: 80%;
+  margin-left: 20%;
+  height: 120vh;
+  overflow-y: hidden;
+  justify-content: center;
+}
+.notice-management-container-container {
+  justify-items: center;
+  max-width: 100%;
+  padding-left: 5%;
+  padding-right: 5%;
+  background-color: white;
+  border: 1px solid rgb(219, 221, 226);
+}  
+.notice-container {
+  width: 95%;
+  height: 100%;
+}
+h1 {
+  font-size: 40px;
+  color: #333;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+/* 검색 박스 스타일 */
+.notice-search-box {
+  margin-top: 10%;
+  text-align: left;
+  display: flex;
+}
+
+.notice-search-box input {
+  width: 30%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.notice-search-box input:focus {
+  border-color: #007bff;
+}
+.search-category {
+  width: 10%;
+  padding: 10px;
+  font-size: 15px;
+  margin-right: 2%;
+}
+.search-button {
+  width: 10%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-left: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.5s ease background-color;
+}
+.search-button:hover {
+  background-color: rgb(191, 189, 189);
+}
+
+/* 테이블 스타일 */
+.notice-table {
+  width: 1000px;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.notice-table td {
+  background-color: #fff;
+  text-align: center; /* 가로 정렬 */
+  vertical-align: middle; /* 세로 정렬 */
+  word-wrap: break-word; /* 텍스트가 너무 길면 줄바꿈 */
+}
+.notice-table th,
+.notice-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  text-align: center;
+}
+
+.notice-table th {
+  background-color: #6B4EFF;
+  font-weight: bold;
+  font-size: 1rem;
+  color: white;
+  width: 10%;
+}
+
+.notice-table td {
+  background-color: #fff;
+  font-size: 1rem;
+}
+/* 버튼 스타일 */
+.actions-btns {
+  display: flex;
+  gap: 10px;
+  width: 60px;
+  height: 30%;
+}
+
+.approve-btn, .reject-btn, .delete-btn {  
+  font-size: 20px;  
+  cursor: pointer;
+  padding: 0px;
+}
+.approve-btn {
+  color: green;
+}
+.reject-btn {
+  color: orange;
+}
+.delete-btn {
+  color: red;
+}
+
+.pagination-container {
+  margin-top: 5%;
+  justify-self: center;
+  display: flex;
+  cursor: pointer;
+}
+.pagination span {
+}
+
+.notice-title {
+  color: blue;
+  cursor: pointer;
+
+}
+.notice-title:hover {
+  color: orange;
+  
+}
