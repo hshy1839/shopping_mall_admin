@@ -41,30 +41,53 @@ const Product = () => {
         fetchProducts();
     }, []);
 
-    const handleSearch = () => {
+    const handleSearch = async () => {
         if (searchTerm === '') {
-            fetchProducts();
+            fetchProducts();  // 검색어가 없으면 전체 제품을 다시 불러옵니다.
         } else {
-            const filteredProducts = products.filter((product) => {
-                if (searchCategory === 'all') {
-                    return (
-                        product.name.includes(searchTerm) ||
-                        (product.category.main.includes(searchTerm) || product.category.sub.includes(searchTerm))
-                    );
-                } else if (searchCategory === 'name') {
-                    return product.name.includes(searchTerm);
-                } else if (searchCategory === 'category') {
-                    return (
-                        product.category.main.includes(searchTerm) || product.category.sub.includes(searchTerm)
-                    );
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    console.log('로그인 정보가 없습니다.');
+                    return;
                 }
-                return true;
-            });
-
-            setProducts(filteredProducts);
-            setCurrentPage(1);
+    
+                const response = await axios.get('http://127.0.0.1:8863/api/products/allProduct', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+    
+                if (response.data.success && Array.isArray(response.data.products)) {
+                    let filteredProducts = response.data.products;
+    
+                    // 검색 조건에 맞게 필터링
+                    filteredProducts = filteredProducts.filter((product) => {
+                        if (searchCategory === 'all') {
+                            return (
+                                product.name.includes(searchTerm) ||
+                                (product.category.main.includes(searchTerm) || product.category.sub.includes(searchTerm))
+                            );
+                        } else if (searchCategory === 'name') {
+                            return product.name.includes(searchTerm);
+                        } else if (searchCategory === 'category') {
+                            return (
+                                product.category.main.includes(searchTerm) || product.category.sub.includes(searchTerm)
+                            );
+                        }
+                        return true;
+                    });
+    
+                    setProducts(filteredProducts); // 필터된 제품을 상태에 반영
+                } else {
+                    console.error('올바르지 않은 데이터 형식:', response.data);
+                }
+            } catch (error) {
+                console.error('상품 정보를 가져오는데 실패했습니다.', error);
+            }
         }
     };
+    
 
     const getCategoryDisplay = (category) => {
         if (!category) return 'Unknown Category';
