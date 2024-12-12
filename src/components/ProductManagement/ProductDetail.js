@@ -89,7 +89,10 @@ const ProductDetail = () => {
             <div className="product-detail-content">
                 <div className="product-info">
                     <h1 className="product-name">{product.name}</h1>
-                    <p className="product-category"><strong>카테고리:</strong> {product.category}</p>
+                    {/* 카테고리 상위 및 하위 표시 */}
+                    <p className="product-category">
+                        <strong>카테고리:</strong> {product.category.main} &gt; {product.category.sub}
+                    </p>
                     <p className="product-price"><strong>가격:</strong> {product.price.toLocaleString()} 원</p>
 
                     {/* 사이즈별 재고를 재고 줄에 추가 */}

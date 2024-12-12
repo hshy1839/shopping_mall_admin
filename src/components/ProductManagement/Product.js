@@ -13,7 +13,6 @@ const Product = () => {
 
     const navigate = useNavigate();
 
-    // 상품 데이터를 가져오는 함수
     const fetchProducts = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -38,41 +37,44 @@ const Product = () => {
         }
     };
 
-    // useEffect로 처음 페이지 로드 시 상품 불러오기
     useEffect(() => {
         fetchProducts();
     }, []);
 
-    // 검색 처리 함수
     const handleSearch = () => {
         if (searchTerm === '') {
-            fetchProducts(); // 검색어가 비어 있으면 전체 상품 목록을 다시 불러옵니다.
+            fetchProducts();
         } else {
             const filteredProducts = products.filter((product) => {
                 if (searchCategory === 'all') {
                     return (
                         product.name.includes(searchTerm) ||
-                        product.category.includes(searchTerm)
+                        (product.category.main.includes(searchTerm) || product.category.sub.includes(searchTerm))
                     );
                 } else if (searchCategory === 'name') {
                     return product.name.includes(searchTerm);
                 } else if (searchCategory === 'category') {
-                    return product.category.includes(searchTerm);
+                    return (
+                        product.category.main.includes(searchTerm) || product.category.sub.includes(searchTerm)
+                    );
                 }
                 return true;
             });
 
             setProducts(filteredProducts);
-            setCurrentPage(1); // 검색 후 페이지를 첫 번째 페이지로 리셋
+            setCurrentPage(1);
         }
     };
 
-    // 상품 클릭 시 상세 페이지로 이동
+    const getCategoryDisplay = (category) => {
+        if (!category) return 'Unknown Category';
+        return `${category.main} > ${category.sub}`;
+    };
+
     const handleProductClick = (id) => {
         navigate(`/products/productDetail/${id}`);
     };
 
-    // 페이지네이션 계산
     const indexOfLastProduct = currentPage * itemsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
     const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
@@ -90,12 +92,11 @@ const Product = () => {
         setCurrentPage(pageNumber);
     };
 
-    // 총 재고 계산 함수 (0인 사이즈 제외)
     const calculateTotalStock = (product) => {
         let totalStock = 0;
         if (product.sizeStock) {
             Object.values(product.sizeStock).forEach(stock => {
-                if (stock > 0) {  // 0보다 큰 값만 합산
+                if (stock > 0) {
                     totalStock += stock;
                 }
             });
@@ -103,7 +104,6 @@ const Product = () => {
         return totalStock;
     };
 
-    // 상품 작성 페이지로 이동
     const handleWriteClick = () => {
         navigate('/products/productCreate');
     };
@@ -141,7 +141,6 @@ const Product = () => {
                                 <th>번호</th>
                                 <th>상품 이름</th>
                                 <th>카테고리</th>
-                                <th>성별</th>
                                 <th>사이즈</th>
                                 <th>총 재고</th>
                                 <th>가격</th>
@@ -153,13 +152,13 @@ const Product = () => {
                                     <tr key={product._id}>
                                         <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
                                         <td
-                                            onClick={() => handleProductClick(product._id)} // 상품 이름 클릭 시 이동
-                                            style={{ cursor: 'pointer', color: 'blue' }} // 스타일을 추가하여 클릭 가능하게 보이도록 설정
+                                            onClick={() => handleProductClick(product._id)}
+                                            style={{ cursor: 'pointer', color: 'blue' }}
                                         >
                                             {product.name || 'Unknown Product'}
                                         </td>
-                                        <td>{product.category || 'Unknown Category'}</td>
-                                        <td>{product.gender || 'Unknown Gender'}</td>
+                                        <td>{getCategoryDisplay(product.category)}</td>
+                                        
                                         <td>
                                             {product.sizeStock ? (
                                                 <div className="size-stock">

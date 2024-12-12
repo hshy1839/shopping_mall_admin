@@ -2,19 +2,27 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../Header';
-import '../../css/ProductManagement/ProductUpdate.css'; // 스타일 시트 경로 수정
+import '../../css/ProductManagement/ProductUpdate.css';
 
 const ProductUpdate = () => {
-    const [product, setProduct] = useState(null); // 상품 상세 정보 상태
+    const [product, setProduct] = useState(null);
     const [updatedProduct, setUpdatedProduct] = useState({
         name: '',
-        category: '',
+        category: {
+            main: '', // 상위 카테고리
+            sub: ''   // 하위 카테고리
+        },
         price: 0,
         description: '',
         sizeStock: {} // 사이즈별 재고를 위한 객체
-    }); // 수정된 상품 데이터
-    const { id } = useParams(); // URL에서 상품 ID를 가져옴
-    const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 훅
+    });
+    const { id } = useParams();
+    const navigate = useNavigate();
+
+    const categories = {
+        "일반의류": ["남성의류", "여성의류", "지갑", "가방", "신발", "기타"],
+        "골프의류": ["남성골프", "여성골프", "골프가방", "골프신발", "골프기타"]
+    };
 
     useEffect(() => {
         const fetchProductDetail = async () => {
@@ -36,12 +44,13 @@ const ProductUpdate = () => {
 
                 if (response.data && response.data.success) {
                     setProduct(response.data.product);
+                    const { main, sub } = response.data.product.category;
                     setUpdatedProduct({
                         name: response.data.product.name,
-                        category: response.data.product.category,
+                        category: { main, sub }, // 분리된 카테고리 설정
                         price: response.data.product.price,
                         description: response.data.product.description,
-                        sizeStock: response.data.product.sizeStock || {}, // 기존 사이즈별 재고가 있으면 불러옴
+                        sizeStock: response.data.product.sizeStock || {},
                     });
                 } else {
                     console.log('상품 상세 데이터 로드 실패');
@@ -54,11 +63,31 @@ const ProductUpdate = () => {
         fetchProductDetail();
     }, [id]);
 
-    // 수정 내용 변경 핸들러
+    const handleCategoryChange = (e) => {
+        const { name, value } = e.target;
+        if (name === 'category-main') {
+            setUpdatedProduct(prev => ({
+                ...prev,
+                category: {
+                    main: value,
+                    sub: '' // 상위 카테고리가 변경되면 하위 카테고리 초기화
+                }
+            }));
+        } else {
+            setUpdatedProduct(prev => ({
+                ...prev,
+                category: {
+                    ...prev.category,
+                    sub: value
+                }
+            }));
+        }
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name.includes('size')) {
-            const size = name.split('_')[1]; // 'size_S', 'size_M' 형식으로 이름을 분리
+            const size = name.split('_')[1];
             setUpdatedProduct(prev => ({
                 ...prev,
                 sizeStock: {
@@ -71,7 +100,6 @@ const ProductUpdate = () => {
         }
     };
 
-    // 수정 완료 버튼 클릭 핸들러
     const handleSave = async (e) => {
         e.preventDefault();
         const confirmation = window.confirm('수정사항을 저장하시겠습니까?');
@@ -86,6 +114,7 @@ const ProductUpdate = () => {
                 return;
             }
 
+
             const response = await axios.put(
                 `http://127.0.0.1:8863/api/products/update/${id}`,
                 updatedProduct,
@@ -98,7 +127,7 @@ const ProductUpdate = () => {
 
             if (response.data && response.data.success) {
                 alert('상품이 수정되었습니다.');
-                navigate(`/products`); // 수정 후 상품 목록 페이지로 리디렉션
+                navigate(`/products`);
             } else {
                 alert('상품 수정에 실패했습니다.');
             }
@@ -133,31 +162,43 @@ const ProductUpdate = () => {
 
                 {/* Category */}
                 <div className="product-update-field">
-                    <label className="product-update-label" htmlFor="category">카테고리</label>
+                    <label className="product-update-label" htmlFor="category">상위 카테고리</label>
                     <select
                         className="product-update-input"
-                        id="category"
-                        name="category"
-                        value={updatedProduct.category}
-                        onChange={handleChange}
+                        id="category-main"
+                        name="category-main"
+                        value={updatedProduct.category.main}
+                        onChange={handleCategoryChange}
                         required
                     >
-                        <option value="">카테고리를 선택하세요</option>
-                        <optgroup label="일반의류">
-                            <option value="일반의류 > 남성의류">남성의류</option>
-                            <option value="일반의류 > 여성의류">여성의류</option>
-                            <option value="일반의류 > 지갑">지갑</option>
-                            <option value="일반의류 > 가방">가방</option>
-                            <option value="일반의류 > 신발">신발</option>
-                            <option value="일반의류 > 기타">기타</option>
-                        </optgroup>
-                        <optgroup label="골프의류">
-                            <option value="골프의류 > 남성골프">남성골프</option>
-                            <option value="골프의류 > 여성골프">여성골프</option>
-                            <option value="골프의류 > 골프가방">골프가방</option>
-                            <option value="골프의류 > 골프신발">골프신발</option>
-                            <option value="골프의류 > 골프기타">골프기타</option>
-                        </optgroup>
+                        <option value="">상위 카테고리를 선택하세요</option>
+                        {Object.keys(categories).map(category => (
+                            <option key={category} value={category}>
+                                {category}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                {/* Subcategory */}
+                <div className="product-update-field">
+                    <label className="product-update-label" htmlFor="subCategory">하위 카테고리</label>
+                    <select
+                        className="product-update-input"
+                        id="category-sub"
+                        name="category-sub"
+                        value={updatedProduct.category.sub}
+                        onChange={handleCategoryChange}
+                        required
+                        disabled={!updatedProduct.category.main}
+                    >
+                        <option value="">하위 카테고리를 선택하세요</option>
+                        {updatedProduct.category.main &&
+                            categories[updatedProduct.category.main].map(subCategory => (
+                                <option key={subCategory} value={subCategory}>
+                                    {subCategory}
+                                </option>
+                            ))}
                     </select>
                 </div>
 
@@ -176,7 +217,7 @@ const ProductUpdate = () => {
                     />
                 </div>
 
-                {/* Size Stock - 사이즈별 재고 */}
+                {/* Size Stock */}
                 <div className="product-update-field">
                     <label className="product-update-label">사이즈별 재고</label>
                     <div>
@@ -210,7 +251,7 @@ const ProductUpdate = () => {
                     />
                 </div>
 
-                <button type="submit" className="product-update-button">수정 완료</button>
+                <button type="submit" className="product-update-button">수정 저장</button>
             </form>
         </div>
     );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ReactQuill from 'react-quill';
@@ -7,15 +7,21 @@ import '../../css/ProductManagement/ProductCreate.css';
 
 const ProductCreate = () => {
   const [name, setName] = useState('');
-  const [category, setCategory] = useState('');
+  const [categoryMain, setCategoryMain] = useState('');  // 상위 카테고리 상태
+  const [categorySub, setCategorySub] = useState('');    // 하위 카테고리 상태
   const [image, setImage] = useState(null);  // 대표 이미지 상태
   const [size, setSize] = useState([]);  // 사이즈 배열
   const [sizeStock, setSizeStock] = useState({});  // 사이즈별 재고 상태
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
   const [images, setImages] = useState([]);
-  const [gender, setGender] = useState('공용');
   const navigate = useNavigate();
+
+  // 상위 카테고리 선택 시 하위 카테고리 업데이트
+  const handleCategoryMainChange = (e) => {
+    setCategoryMain(e.target.value);
+    setCategorySub(''); // 상위 카테고리 선택 시 하위 카테고리 초기화
+  };
 
   // 사이즈 변경 처리 함수
   const handleSizeChange = (e) => {
@@ -43,7 +49,6 @@ const ProductCreate = () => {
       [size]: numericStock,  // 숫자 형식으로 저장
     });
   };
-  
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -51,7 +56,8 @@ const ProductCreate = () => {
   };
 
   const handleDescriptionChange = (value) => {
-    setDescription(value);
+    const plainText = value.replace(/<\/?p>/g, ''); // <p> 태그 제거
+    setDescription(plainText);
   };
 
   const handleFileUpload = (e) => {
@@ -64,44 +70,40 @@ const ProductCreate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // 선택된 사이즈와 그에 해당하는 재고만 포함하는 sizeStock 객체 만들기
+
     const filteredSizeStock = {};
     size.forEach((s) => {
       filteredSizeStock[s] = sizeStock[s] || 0;  // 사이즈별 재고 수량 (기본값은 0)
     });
-  
+
     const productData = {
       name,
-      category,
+      categoryMain,  // 상위 카테고리
+      categorySub,   // 하위 카테고리
       price,
       description,
-      gender,
       sizeStock: filteredSizeStock,  // 사이즈별 재고 데이터
       images,  // 추가 이미지
       main_image: image,  // 대표 이미지
     };
-  
+
     const token = localStorage.getItem('token');  // localStorage에서 토큰 가져오기
-    
+
     try {
-      // axios POST 요청
       const response = await axios.post('http://127.0.0.1:8863/api/products/productCreate', 
         productData,
         {
           headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`,
           },
         }
       );
-    
-      const data = await response.data;  // 응답 데이터 받기
-    
+
       if (response.status === 200) {
         alert('상품이 성공적으로 등록되었습니다.');
         navigate('/products');  // 상품 등록 후 상품 목록 페이지로 이동
       } else {
-        alert('상품 등록 실패: ' + data.message);
+        alert('상품 등록 실패: ' + response.data.message);
       }
     } catch (error) {
       console.error('상품 등록 실패:', error);
@@ -129,30 +131,52 @@ const ProductCreate = () => {
 
         {/* Category */}
         <div className="product-create-field">
-          <label className="product-create-label" htmlFor="category">카테고리</label>
+          <label className="product-create-label" htmlFor="categoryMain">상위 카테고리</label>
           <select
             className="product-create-input"
-            id="category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            id="categoryMain"
+            value={categoryMain}
+            onChange={handleCategoryMainChange}
             required
           >
-            <option value="">카테고리를 선택하세요</option>
+            <option value="">상위 카테고리를 선택하세요</option>
             <optgroup label="일반의류">
-              <option value="일반의류 > 남성의류">남성의류</option>
-              <option value="일반의류 > 여성의류">여성의류</option>
-              <option value="일반의류 > 지갑">지갑</option>
-              <option value="일반의류 > 가방">가방</option>
-              <option value="일반의류 > 신발">신발</option>
-              <option value="일반의류 > 기타">기타</option>
+              <option value="일반의류">일반의류</option>
+              <option value="골프의류">골프의류</option>
             </optgroup>
-            <optgroup label="골프의류">
-              <option value="골프의류 > 남성골프">남성골프</option>
-              <option value="골프의류 > 여성골프">여성골프</option>
-              <option value="골프의류 > 골프가방">골프가방</option>
-              <option value="골프의류 > 골프신발">골프신발</option>
-              <option value="골프의류 > 골프기타">골프기타</option>
-            </optgroup>
+          </select>
+        </div>
+
+        <div className="product-create-field">
+          <label className="product-create-label" htmlFor="categorySub">하위 카테고리</label>
+          <select
+            className="product-create-input"
+            id="categorySub"
+            value={categorySub}
+            onChange={(e) => setCategorySub(e.target.value)}
+            required
+            disabled={!categoryMain}
+          >
+            <option value="">하위 카테고리를 선택하세요</option>
+            {categoryMain === '일반의류' && (
+              <>
+                <option value="남성의류">남성의류</option>
+                <option value="여성의류">여성의류</option>
+                <option value="지갑">지갑</option>
+                <option value="가방">가방</option>
+                <option value="신발">신발</option>
+                <option value="기타">기타</option>
+              </>
+            )}
+            {categoryMain === '골프의류' && (
+              <>
+                <option value="남성골프">남성골프</option>
+                <option value="여성골프">여성골프</option>
+                <option value="골프가방">골프가방</option>
+                <option value="골프신발">골프신발</option>
+                <option value="골프기타">골프기타</option>
+              </>
+            )}
           </select>
         </div>
 
@@ -210,24 +234,6 @@ const ProductCreate = () => {
           />
         </div>
 
-        {/* Gender */}
-        <div className="product-create-field">
-          <label className="product-create-label">성별</label>
-          <div className="product-create-gender">
-            {['남성', '여성'].map((option) => (
-              <label key={option}>
-                <input
-                  type="radio"
-                  value={option}
-                  checked={gender === option}
-                  onChange={(e) => setGender(e.target.value)}
-                />
-                {option}
-              </label>
-            ))}
-          </div>
-        </div>
-
         {/* Product Description */}
         <div className="product-create-field">
           <label className="product-create-label">상품 설명</label>
@@ -237,11 +243,12 @@ const ProductCreate = () => {
             placeholder="상품 설명을 입력하세요"
             modules={{
               toolbar: [
-                [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
                 ['bold', 'italic', 'underline'],
                 ['link', 'image'],
               ],
+              clipboard: {
+                matchVisual: false, // 기본 시각적 매칭 비활성화
+              },
             }}
             formats={['header', 'font', 'list', 'bold', 'italic', 'underline', 'link', 'image']}
           />
