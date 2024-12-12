@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // react-quill 기본 스타일
 import '../../css/ProductManagement/ProductCreate.css';
@@ -42,25 +43,53 @@ const ProductCreate = () => {
     setImages(newImages);
   };
 
-  const handleImageUpload = (file) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      // 이미지를 업로드하고 이미지 URL을 Quill 에디터에 삽입
-      const range = quillRef.current.getEditor().getSelection();
-      const url = reader.result;
-      quillRef.current.getEditor().insertEmbed(range.index, 'image', url);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // 유저가 입력한 데이터
+    const productData = {
+      name,
+      category,
+      price,
+      description,
+      stock,
+      gender,
+      size,
     };
-    if (file) {
-      reader.readAsDataURL(file);
+    
+    const token = localStorage.getItem('token');  // localStorage에서 토큰 가져오기
+    
+    try {
+      // axios POST 요청
+      const response = await axios.post('http://127.0.0.1:8863/api/products/productCreate', 
+        productData,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+        }
+      );
+    
+      const data = await response.data;  // 응답 데이터 받기
+    
+      if (response.status === 200) {
+        alert('상품이 성공적으로 등록되었습니다.');
+        navigate('/products');  // 상품 등록 후 상품 목록 페이지로 이동
+      } else {
+        alert('상품 등록 실패: ' + data.message);
+      }
+    } catch (error) {
+      console.error('상품 등록 실패:', error);
+      alert('상품 등록 중 오류가 발생했습니다.');
     }
   };
-
-  const quillRef = React.useRef(null); // Quill Editor reference
+  
 
   return (
     <div className="product-create-container">
       <h2 className="product-create-title">상품 등록</h2>
-      <form className="product-create-form">
+      <form className="product-create-form" onSubmit={handleSubmit}>
+        {/* Product Name */}
         <div className="product-create-field">
           <label className="product-create-label" htmlFor="name">상품 이름</label>
           <input
@@ -74,6 +103,7 @@ const ProductCreate = () => {
           />
         </div>
 
+        {/* Category */}
         <div className="product-create-field">
           <label className="product-create-label" htmlFor="category">카테고리</label>
           <select
@@ -83,6 +113,7 @@ const ProductCreate = () => {
             onChange={(e) => setCategory(e.target.value)}
             required
           >
+            <option value="">카테고리를 선택하세요</option>
             <optgroup label="일반의류">
               <option value="일반의류 > 남성의류">남성의류</option>
               <option value="일반의류 > 여성의류">여성의류</option>
@@ -101,20 +132,20 @@ const ProductCreate = () => {
           </select>
         </div>
 
+        {/* Main Image */}
         <div className="product-create-field">
           <label className="product-create-label" htmlFor="image">대표 이미지</label>
           <input
             className="product-create-input"
             type="file"
             id="image"
-            onChange={handleImageChange}  // 파일 선택 시 상태 업데이트
+            onChange={handleImageChange}
             accept="image/*"
-            required
           />
-          {/* 선택된 대표 이미지 미리보기 */}
           {image && <img src={image} alt="대표 이미지 미리보기" className="image-preview" />}
         </div>
 
+        {/* Size Selection */}
         <div className="product-create-field">
           <label className="product-create-label">사이즈</label>
           <div className="product-create-sizes">
@@ -132,6 +163,7 @@ const ProductCreate = () => {
           </div>
         </div>
 
+        {/* Price */}
         <div className="product-create-field">
           <label className="product-create-label" htmlFor="price">가격</label>
           <input
@@ -145,6 +177,7 @@ const ProductCreate = () => {
           />
         </div>
 
+        {/* Gender */}
         <div className="product-create-field">
           <label className="product-create-label">성별</label>
           <div className="product-create-gender">
@@ -162,6 +195,7 @@ const ProductCreate = () => {
           </div>
         </div>
 
+        {/* Product Description */}
         <div className="product-create-field">
           <label className="product-create-label">상품 설명</label>
           <ReactQuill
@@ -173,19 +207,21 @@ const ProductCreate = () => {
                 [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
                 [{ 'list': 'ordered'}, { 'list': 'bullet' }],
                 ['bold', 'italic', 'underline'],
-                ['link', 'image'], // 이미지 삽입 툴 활성화
+                ['link', 'image'],
               ],
             }}
             formats={['header', 'font', 'list', 'bold', 'italic', 'underline', 'link', 'image']}
           />
         </div>
 
+        {/* Additional Images */}
         <div className="product-create-preview-images">
           {images.map((imageUrl, index) => (
             <img key={index} src={imageUrl} alt={`설명 이미지 ${index + 1}`} className="description-image-preview" />
           ))}
         </div>
 
+        {/* Stock */}
         <div className="product-create-field">
           <label className="product-create-label" htmlFor="stock">재고</label>
           <input
