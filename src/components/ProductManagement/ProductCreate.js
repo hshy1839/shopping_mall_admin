@@ -9,22 +9,41 @@ const ProductCreate = () => {
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [image, setImage] = useState(null);  // 대표 이미지 상태
-  const [size, setSize] = useState([]);
+  const [size, setSize] = useState([]);  // 사이즈 배열
+  const [sizeStock, setSizeStock] = useState({});  // 사이즈별 재고 상태
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
   const [images, setImages] = useState([]);
-  const [stock, setStock] = useState('');
   const [gender, setGender] = useState('공용');
   const navigate = useNavigate();
 
+  // 사이즈 변경 처리 함수
   const handleSizeChange = (e) => {
     const { value, checked } = e.target;
     if (checked) {
       setSize([...size, value]);
+      setSizeStock({
+        ...sizeStock,
+        [value]: 0,  // 새 사이즈 선택 시, 재고는 0으로 초기화
+      });
     } else {
       setSize(size.filter((s) => s !== value));
+      const updatedStock = { ...sizeStock };
+      delete updatedStock[value];  // 사이즈 제외 시, 해당 사이즈의 재고 삭제
+      setSizeStock(updatedStock);
     }
   };
+
+  // 사이즈별 재고 수량 변경 처리
+  const handleStockChange = (e, size) => {
+    const { value } = e.target;
+    const numericStock = Number(value);  // 숫자로 변환
+    setSizeStock({
+      ...sizeStock,
+      [size]: numericStock,  // 숫자 형식으로 저장
+    });
+  };
+  
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -46,17 +65,23 @@ const ProductCreate = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // 유저가 입력한 데이터
+    // 선택된 사이즈와 그에 해당하는 재고만 포함하는 sizeStock 객체 만들기
+    const filteredSizeStock = {};
+    size.forEach((s) => {
+      filteredSizeStock[s] = sizeStock[s] || 0;  // 사이즈별 재고 수량 (기본값은 0)
+    });
+  
     const productData = {
       name,
       category,
       price,
       description,
-      stock,
       gender,
-      size,
+      sizeStock: filteredSizeStock,  // 사이즈별 재고 데이터
+      images,  // 추가 이미지
+      main_image: image,  // 대표 이미지
     };
-    
+  
     const token = localStorage.getItem('token');  // localStorage에서 토큰 가져오기
     
     try {
@@ -83,7 +108,6 @@ const ProductCreate = () => {
       alert('상품 등록 중 오류가 발생했습니다.');
     }
   };
-  
 
   return (
     <div className="product-create-container">
@@ -158,6 +182,15 @@ const ProductCreate = () => {
                   onChange={handleSizeChange}
                 />
                 {sizeOption}
+                {size.includes(sizeOption) && (
+                  <input
+                    type="number"
+                    value={sizeStock[sizeOption] || 0}
+                    onChange={(e) => handleStockChange(e, sizeOption)}
+                    placeholder="재고 수량"
+                    min="0"
+                  />
+                )}
               </label>
             ))}
           </div>
@@ -219,19 +252,6 @@ const ProductCreate = () => {
           {images.map((imageUrl, index) => (
             <img key={index} src={imageUrl} alt={`설명 이미지 ${index + 1}`} className="description-image-preview" />
           ))}
-        </div>
-
-        {/* Stock */}
-        <div className="product-create-field">
-          <label className="product-create-label" htmlFor="stock">재고</label>
-          <input
-            className="product-create-input"
-            type="number"
-            id="stock"
-            value={stock}
-            onChange={(e) => setStock(e.target.value)}
-            placeholder="재고 수량을 입력하세요"
-          />
         </div>
 
         <button type="submit" className="product-create-button">등록</button>
