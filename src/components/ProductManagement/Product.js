@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import '../css/NoticeManagement/Notice.css';
-import Header from './Header.js';
+import '../../css/NoticeManagement/Notice.css';
+
+import Header from '../Header.js';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const StatusDetail = () => {
+const Product = () => {
     const [attendanceList, setAttendanceList] = useState([]);
     const [userNames, setUserNames] = useState({});
     const [searchTerm, setSearchTerm] = useState('');
@@ -17,13 +18,13 @@ const StatusDetail = () => {
     useEffect(() => {
         const fetchAttendance = async () => {
             try {
-                const token = localStåçrage.getItem('token');
+                const token = localStorage.getItem('token');
                 if (!token) {
                     console.log('로그인 정보가 없습니다.');
                     return;
                 }
 
-                const response = await axios.get('http://127.0.0.1:8863/api/users/allAttendanceInfo', {
+                const response = await axios.get('http://127.0.0.1:8863/api/product/allProduct', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -36,7 +37,7 @@ const StatusDetail = () => {
                     const newUserNames = {};
                     for (const record of response.data) {
                         if (record.userId && !newUserNames[record.userId]) {
-                            const userResponse = await axios.get(`http://127.0.0.1:8863/api/users/userinfo/${record.userId}`, {
+                            const userResponse = await axios.get(`http://127.0.0.1:8863/api/product/Product/${record.userId}`, {
                                 headers: {
                                     Authorization: `Bearer ${token}`,
                                 },
@@ -82,8 +83,9 @@ const StatusDetail = () => {
     };
 
     const handleWriteClick = () => {
-        navigate('/noticeCreate');
+        navigate('/products/productCreate');
     };
+
 
     const indexOfLastRecord = currentPage * itemsPerPage;
     const indexOfFirstRecord = indexOfLastRecord - itemsPerPage;
@@ -107,7 +109,7 @@ const StatusDetail = () => {
             <Header />
             <div className="notice-management-container-container">
                 <div className="notice-top-container-container">
-                    <h1>출퇴근 세부 기록</h1>
+                    <h1>상품 관리</h1>
                     <div className="notice-search-box">
                         <select
                             className="search-category"
@@ -188,4 +190,4 @@ const StatusDetail = () => {
     );
 };
 
-export default StatusDetail;
+export default Product;

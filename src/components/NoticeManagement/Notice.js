@@ -26,7 +26,7 @@ const Notice = () => {
                     return;
                 }
 
-                const response = await axios.get('http://192.168.25.31:8863/api/users/noticeList/find', {
+                const response = await axios.get('http://127.0.0.1:8863/api/users/noticeList/find', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -78,11 +78,11 @@ const Notice = () => {
    
 
     const handleWriteClick = () => {
-        navigate('/noticeCreate');
+        navigate('/notice/noticeCreate');
     };
 
     const handleNoticeClick = (id) => {
-        navigate(`/noticeDetail/${id}`);
+        navigate(`/notice/noticeDetail/${id}`);
     };
 
     // 페이지네이션 관련 변수

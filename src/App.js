@@ -10,8 +10,9 @@ import Notice from './components/NoticeManagement/Notice';
 import Login from './components/Login';
 import NoticeCreate from './components/NoticeManagement/NoticeCreate';
 import NoticeDetail from './components/NoticeManagement/NoticeDetail';
-import StatusDetail from './components/StatusDetail';
+import Product from './components/ProductManagement/Product';
 import { jwtDecode } from 'jwt-decode';
+import ProductCreate from './components/ProductManagement/ProductCreate';
 
 function App() {
   const [loading, setLoading] = useState(true); // 초기 로딩 상태를 true로 설정
@@ -47,10 +48,11 @@ function App() {
           <Route path="/employeeManagement/salary" element={<><Header /><Salary /></>} />
           <Route path="/employeeManagement/users" element={<><Users /></>} />
           <Route path="/notice" element={<><Header /><Notice /></>} />
-          <Route path="/noticeCreate" element={<><Header /><NoticeCreate /></>} />
-          <Route path="/noticeDetail/:id" element={<NoticeDetail />} />
+          <Route path="/notice/noticeCreate" element={<><Header /><NoticeCreate /></>} />
+          <Route path="/notice/noticeDetail/:id" element={<NoticeDetail />} />
           <Route path="/login" element={<><Login /></>} />
-          <Route path="/statusDetail" element={<><Header /><StatusDetail /></>} />
+          <Route path="/products" element={<><Header /><Product/></>} />
+          <Route path="/products/productCreate" element={<><Header /><ProductCreate/></>} />
         </Routes>
       )}
     </div>

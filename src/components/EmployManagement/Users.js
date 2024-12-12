@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import '../../css/Users.css';
 import Header from '../Header.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
-import { faCheck,faTrash, faBan } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faTrash, faBan } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
 const Users = () => {
-    const [employees, setEmployees] = useState([]);  // 검색 후 표시할 직원 리스트
-    const [allEmployees, setAllEmployees] = useState([]);  // 전체 직원 데이터 (원본 데이터)
+    const [users, setUsers] = useState([]);  // 검색 후 표시할 사용자 리스트
+    const [allUsers, setAllUsers] = useState([]);  // 전체 사용자 데이터 (원본 데이터)
     const [searchTerm, setSearchTerm] = useState('');  // 검색어 상태
     const [searchCategory, setSearchCategory] = useState('all');  // 검색 기준 상태
 
@@ -20,7 +20,7 @@ const Users = () => {
                     return;
                 }
 
-                const response = await axios.get('http://192.168.25.31:8863/api/users/userinfo', {
+                const response = await axios.get('http://127.0.0.1:8863/api/users/userinfo', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -31,16 +31,16 @@ const Users = () => {
                     if (users && users.length > 0) {
                         // created_at 기준 내림차순 정렬
                         users.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-                        setEmployees(users);  // 현재 표시할 직원 리스트
-                        setAllEmployees(users);  // 원본 데이터 저장
+                        setUsers(users);  // 현재 표시할 사용자 리스트
+                        setAllUsers(users);  // 원본 데이터 저장
                     } else {
-                        console.error('유저 데이터가 없습니다.');
+                        console.error('사용자 데이터가 없습니다.');
                     }
                 } else {
-                    console.log('유저 정보 로드 실패');
+                    console.log('사용자 정보 로드 실패');
                 }
             } catch (error) {
-                console.error('유저 데이터를 가져오는데 실패했습니다.', error);
+                console.error('사용자 데이터를 가져오는데 실패했습니다.', error);
             }
         };
 
@@ -53,28 +53,27 @@ const Users = () => {
 
     const handleSearch = () => {
         // 검색 결과 필터링
-        const filteredEmployees = allEmployees.filter((employee) => {
+        const filteredUsers = allUsers.filter((user) => {
             if (searchCategory === 'all') {
                 return (
-                    employee.username.includes(searchTerm) ||
-                    employee.name.includes(searchTerm) ||
-                    employee.company.includes(searchTerm)
+                    user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    user.name.toLowerCase().includes(searchTerm.toLowerCase())
                 );
             } else if (searchCategory === 'user') {
-                return employee.username.includes(searchTerm);
+                return user.username.toLowerCase().includes(searchTerm.toLowerCase());
             } else if (searchCategory === 'name') {
-                return employee.name.includes(searchTerm);
-            } else if (searchCategory === 'company') {
-                return employee.company.includes(searchTerm);
+                return user.name.toLowerCase().includes(searchTerm.toLowerCase());
             }
             return true;
         });
-
-        setEmployees(filteredEmployees);  // 필터된 결과로 상태 업데이트
+    
+        setUsers(filteredUsers);  // 필터된 결과로 상태 업데이트
     };
-
+    
+    
     // 각 기능 핸들러
-    const handleApprove = async (id) => {const isConfirmed = window.confirm("해당 사용자계정을 승인하시겠습니까?");
+    const handleApprove = async (id) => {
+        const isConfirmed = window.confirm("해당 사용자계정을 승인하시겠습니까?");
 
         if (!isConfirmed) {
             console.log("승인이 취소되었습니다.");
@@ -89,7 +88,7 @@ const Users = () => {
             }
     
             const response = await axios.put(
-                `http://192.168.25.31:8863/api/users/userinfo/${id}`,
+                `http://127.0.0.1:8863/api/users/userinfo/${id}`,
                 { is_active: true },
                 {
                     headers: {
@@ -99,10 +98,10 @@ const Users = () => {
             );
     
             if (response.data.success) {
-                const updatedEmployees = employees.map((employee) =>
-                    employee._id === id ? { ...employee, is_active: true } : employee
+                const updatedUsers = users.map((user) =>
+                    user._id === id ? { ...user, is_active: true } : user
                 );
-                setEmployees(updatedEmployees);
+                setUsers(updatedUsers);
             } else {
                 console.log('승인 실패');
             }
@@ -114,10 +113,10 @@ const Users = () => {
     const handleReject = async (id) => {
         const isConfirmed = window.confirm("해당 사용자 계정을 사용중지 하시겠습니까?");
 
-    if (!isConfirmed) {
-        console.log("사용중지가 취소되었습니다.");
-        return;  // "아니오"를 선택하면 삭제 취소
-    }
+        if (!isConfirmed) {
+            console.log("사용중지가 취소되었습니다.");
+            return;  // "아니오"를 선택하면 삭제 취소
+        }
 
         try {
             const token = localStorage.getItem('token');
@@ -127,7 +126,7 @@ const Users = () => {
             }
     
             const response = await axios.put(
-                `http://192.168.25.31:8863/api/users/userinfo/${id}`,
+                `http://127.0.0.1:8863/api/users/userinfo/${id}`,
                 { is_active: false },
                 {
                     headers: {
@@ -137,10 +136,10 @@ const Users = () => {
             );
     
             if (response.data.success) {
-                const updatedEmployees = employees.map((employee) =>
-                    employee._id === id ? { ...employee, is_active: false } : employee
+                const updatedUsers = users.map((user) =>
+                    user._id === id ? { ...user, is_active: false } : user
                 );
-                setEmployees(updatedEmployees);
+                setUsers(updatedUsers);
             } else {
                 console.log('거부 실패');
             }
@@ -153,10 +152,10 @@ const Users = () => {
     const handleDelete = async (id) => {
         const isConfirmed = window.confirm("해당 사용자를 삭제하시겠습니까?");
 
-    if (!isConfirmed) {
-        console.log("삭제가 취소되었습니다.");
-        return;  // "아니오"를 선택하면 삭제 취소
-    }
+        if (!isConfirmed) {
+            console.log("삭제가 취소되었습니다.");
+            return;  // "아니오"를 선택하면 삭제 취소
+        }
 
         try {
             const token = localStorage.getItem('token');
@@ -166,7 +165,7 @@ const Users = () => {
             }
     
             const response = await axios.delete(
-                `http://192.168.25.31:8863/api/users/userinfo/${id}`,  // URL에 ID 포함
+                `http://127.0.0.1:8863/api/users/userinfo/${id}`,  // URL에 ID 포함
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -175,8 +174,8 @@ const Users = () => {
             );
     
             if (response.data.success) {
-                const updatedEmployees = employees.filter((employee) => employee._id !== id);
-                setEmployees(updatedEmployees);
+                const updatedUsers = users.filter((user) => user._id !== id);
+                setUsers(updatedUsers);
             } else {
                 console.log('삭제 실패');
             }
@@ -185,9 +184,6 @@ const Users = () => {
         }
     };
     
-    
-    
-
     return (
         <div className="users-management-container">
             <Header />
@@ -204,8 +200,7 @@ const Users = () => {
                         >
                             <option value="all">전체</option>
                             <option value="user">아이디</option>
-                            <option value="post">이름</option>
-                            <option value="company">회사</option>
+                            <option value="name">이름</option>
                         </select>
                         <input
                             type="text"
@@ -218,7 +213,7 @@ const Users = () => {
                         </button>
                     </div>
 
-                    {/* 직원 정보 테이블 */}
+                    {/* 사용자 정보 테이블 */}
                     <table className="users-table">
                         <thead>
                             <tr>
@@ -226,48 +221,49 @@ const Users = () => {
                                 <th>아이디</th>
                                 <th>이름</th>
                                 <th>연락처</th>
-                                <th>회사</th>
-                                <th>소속</th>
-                                <th>직책</th>
+                                <th>타입</th>
                                 <th>가입일</th>
                                 <th>상태</th>
                                 <th>액션</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {employees.length === 0 ? (
+                            {users.length === 0 ? (
                                 <tr>
                                     <td colSpan="10" className="no-results">
                                         존재하지 않습니다.
                                     </td>
                                 </tr>
                             ) : (
-                                employees.map((employee, index) => (
-                                    <tr key={employee._id}>
-                                        <td>{employees.length > 0 ? employees.length - index : 0}</td>
-                                        <td>{employee.username}</td>
-                                        <td>{employee.name}</td>
-                                        <td>{employee.phoneNumber}</td>
-                                        <td>{employee.company}</td>
-                                        <td>{employee.team}</td>
-                                        <td>{employee.position}</td>
-                                        <td>{new Date(employee.created_at).toLocaleDateString()}</td>
-                                        <td>{employee.is_active ? '가입 승인' : '대기'}</td>
+                                users.map((user, index) => (
+                                    <tr key={user._id}>
+                                        <td>{users.length > 0 ? users.length - index : 0}</td>
+                                        <td>{user.username}</td>
+                                        <td>{user.name}</td>
+                                        <td>{user.phoneNumber}</td>
+                                        <td>
+                                            {user.user_type ==3 ? '일반 유저' :
+                                             user.user_type == 2 ? '부관리자' : 
+                                             user.user_type ==1 ? '관리자' : 
+                                             '알 수 없음'}
+                                        </td>
+                                        <td>{new Date(user.created_at).toLocaleDateString()}</td>
+                                        <td>{user.is_active ? '가입 승인' : '대기'}</td>
                                         <td>
                                             <div className="actions-btns">
                                                 <FontAwesomeIcon 
                                                     icon={faCheck} 
-                                                    onClick={() => handleApprove(employee._id)} 
+                                                    onClick={() => handleApprove(user._id)} 
                                                     className="approve-btn"
                                                 />
                                                 <FontAwesomeIcon 
                                                     icon={faBan} 
-                                                    onClick={() => handleReject(employee._id)} 
+                                                    onClick={() => handleReject(user._id)} 
                                                     className="reject-btn"
                                                 />
                                                 <FontAwesomeIcon 
                                                     icon={faTrash} 
-                                                    onClick={() => handleDelete(employee._id)} 
+                                                    onClick={() => handleDelete(user._id)} 
                                                     className="delete-btn"
                                                 />
                                             </div>

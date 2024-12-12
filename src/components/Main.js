@@ -16,7 +16,7 @@ const Main = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const totalUsersResponse = await fetch('http://192.168.25.31:8863/api/users/userinfo', {
+        const totalUsersResponse = await fetch('http://127.0.0.1:8863/api/users/userinfo', {
           headers: { Authorization: `Bearer ${token}` },
         });
         const totalUsersData = await totalUsersResponse.json();
@@ -27,7 +27,7 @@ const Main = () => {
           setTotalUsers(totalUsersData.users ? totalUsersData.users.length : 0);
         }
 
-        const attendanceResponse = await fetch('http://192.168.25.31:8863/api/users/allAttendanceInfo', {
+        const attendanceResponse = await fetch('http://127.0.0.1:8863/api/users/allAttendanceInfo', {
           headers: { Authorization: `Bearer ${token}` },
         });
         const attendanceData = await attendanceResponse.json();

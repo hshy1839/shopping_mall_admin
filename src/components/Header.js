@@ -34,21 +34,21 @@ const Header = () => {
         <div className='header-section2-item-employee-container'>
       <Link to="#" onClick={toggleMenu}>
         <div className='header-section2-item-employee'>
-          <FontAwesomeIcon icon={faUsers} className='header-section2-item-employee-icon' />
-          <div className='header-section2-item-text'>고객 관리</div>
+          <FontAwesomeIcon icon={ faCalendarAlt} className='header-section2-item-employee-icon' />
+          <div className='header-section2-item-text'>상품 관리</div>
         </div>
       </Link>
       {/* 슬라이드 다운 메뉴 */}
       <div className={`submenu-employee ${isOpen ? 'open' : ''}`}>
-        <Link to="/employeeManagement/vacation" className='submenu-item-employee'>휴가 관리</Link>
-        <Link to="/employeeManagement/salary" className='submenu-item-employee'>급여 관리</Link>
-        <Link to="/employeeManagement/users" className='submenu-item-employee'>사용자 관리</Link>
+        <Link to="/products" className='submenu-item-employee'>상품 목록</Link>
+        <Link to="/employeeManagement/salary" className='submenu-item-employee'>주문 목록</Link>
+        <Link to="/employeeManagement/users" className='submenu-item-employee'>이건 후에 추가</Link>
       </div>
     </div>
-        <Link to="/statusDetail" onClick={handleLinkClick}>
+        <Link to="/employeeManagement/users" onClick={handleLinkClick}>
           <div className='header-section2-item'>
-            <FontAwesomeIcon icon={faCalendarAlt } className='header-section2-item-icon'  />
-            <div className='header-section2-item-text'>판매 물품 관리</div>
+            <FontAwesomeIcon icon={faUsers } className='header-section2-item-icon'  />
+            <div className='header-section2-item-text'>고객 관리</div>
           </div>
         </Link>
         <Link to="/notice" onClick={handleLinkClick}>
