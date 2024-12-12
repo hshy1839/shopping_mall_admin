@@ -13,6 +13,7 @@ import NoticeDetail from './components/NoticeManagement/NoticeDetail';
 import Product from './components/ProductManagement/Product';
 import { jwtDecode } from 'jwt-decode';
 import ProductCreate from './components/ProductManagement/ProductCreate';
+import ProductDetail from './components/ProductManagement/ProductDetail';
 
 function App() {
   const [loading, setLoading] = useState(true); // 초기 로딩 상태를 true로 설정
@@ -53,6 +54,7 @@ function App() {
           <Route path="/login" element={<><Login /></>} />
           <Route path="/products" element={<><Header /><Product/></>} />
           <Route path="/products/productCreate" element={<><Header /><ProductCreate/></>} />
+          <Route path="/products/productDetail/:id" element={<><Header /><ProductDetail/></>} />
         </Routes>
       )}
     </div>

@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import '../../css/NoticeManagement/Notice.css';
-
 import Header from '../Header.js';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Product = () => {
-    const [attendanceList, setAttendanceList] = useState([]);
-    const [userNames, setUserNames] = useState({});
+    const [products, setProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [searchCategory, setSearchCategory] = useState('all');
     const [currentPage, setCurrentPage] = useState(1);
@@ -16,69 +14,49 @@ const Product = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchAttendance = async () => {
+        const fetchProducts = async () => {
             try {
                 const token = localStorage.getItem('token');
                 if (!token) {
                     console.log('로그인 정보가 없습니다.');
                     return;
                 }
-
-                const response = await axios.get('http://127.0.0.1:8863/api/product/allProduct', {
+    
+                const response = await axios.get('http://127.0.0.1:8863/api/products/allProduct', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-
-                if (Array.isArray(response.data)) {
-                    setAttendanceList(response.data);
-
-                    // 출석 기록에 있는 각 userId에 대해 이름을 비동기적으로 가져오기
-                    const newUserNames = {};
-                    for (const record of response.data) {
-                        if (record.userId && !newUserNames[record.userId]) {
-                            const userResponse = await axios.get(`http://127.0.0.1:8863/api/product/Product/${record.userId}`, {
-                                headers: {
-                                    Authorization: `Bearer ${token}`,
-                                },
-                            });
-
-                            if (userResponse.data && userResponse.data.success) {
-                                newUserNames[record.userId] = userResponse.data.name; 
-                            } else {
-                                newUserNames[record.userId] = 'Unknown User';
-                            }
-                        }
-                    }
-
-                    setUserNames(newUserNames); // 유저 이름 상태 업데이트
+    
+                if (response.data.success && Array.isArray(response.data.products)) {
+                    setProducts(response.data.products);
                 } else {
                     console.error('올바르지 않은 데이터 형식:', response.data);
                 }
             } catch (error) {
-                console.error('출퇴근 데이터를 가져오는데 실패했습니다.', error);
+                console.error('상품 정보를 가져오는데 실패했습니다.', error);
             }
         };
-
-        fetchAttendance();
+    
+        fetchProducts();
     }, []);
 
     const handleSearch = () => {
-        const filteredAttendance = attendanceList.filter((record) => {
+        const filteredProducts = products.filter((product) => {
             if (searchCategory === 'all') {
                 return (
-                    record.date.includes(searchTerm) ||
-                    record.attendanceStatus.includes(searchTerm)
+                    product.name.includes(searchTerm) ||
+                    product.category.includes(searchTerm)
                 );
-            } else if (searchCategory === 'date') {
-                return record.date.includes(searchTerm);
-            } else if (searchCategory === 'status') {
-                return record.attendanceStatus.includes(searchTerm);
+            } else if (searchCategory === 'name') {
+                return product.name.includes(searchTerm);
+            } else if (searchCategory === 'category') {
+                return product.category.includes(searchTerm);
             }
             return true;
         });
 
-        setAttendanceList(filteredAttendance);
+        setProducts(filteredProducts);
         setCurrentPage(1);
     };
 
@@ -86,11 +64,14 @@ const Product = () => {
         navigate('/products/productCreate');
     };
 
+    const handleProductClick = (id) => {
+        navigate(`/products/productDetail/${id}`); // 해당 상품의 상세 페이지로 이동
+    };
 
-    const indexOfLastRecord = currentPage * itemsPerPage;
-    const indexOfFirstRecord = indexOfLastRecord - itemsPerPage;
-    const currentRecords = attendanceList.slice(indexOfFirstRecord, indexOfLastRecord);
-    const totalPages = Math.ceil(attendanceList.length / itemsPerPage);
+    const indexOfLastProduct = currentPage * itemsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
+    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+    const totalPages = Math.ceil(products.length / itemsPerPage);
 
     const handlePreviousPage = () => {
         if (currentPage > 1) setCurrentPage(currentPage - 1);
@@ -117,8 +98,8 @@ const Product = () => {
                             onChange={(e) => setSearchCategory(e.target.value)}
                         >
                             <option value="all">전체</option>
-                            <option value="date">출근 날짜</option>
-                            <option value="status">상태</option>
+                            <option value="name">상품 이름</option>
+                            <option value="category">카테고리</option>
                         </select>
                         <input
                             type="text"
@@ -135,21 +116,21 @@ const Product = () => {
                         <thead>
                             <tr>
                                 <th>번호</th>
-                                <th>출근 시간</th>
-                                <th>퇴근 시간</th>
-                                <th>사용자 이름</th>
-                                <th>출근 날짜</th>
+                                <th>상품 이름</th>
+                                <th>카테고리</th>
+                                <th>재고</th>
+                                <th>가격</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {currentRecords.length > 0 ? (
-                                currentRecords.map((record, index) => (
-                                    <tr key={index}>
+                            {currentProducts.length > 0 ? (
+                                currentProducts.map((product, index) => (
+                                    <tr key={product.id} onClick={() => handleProductClick(product._id)}>
                                         <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
-                                        <td>{record.checkInTime || '-'}</td>
-                                        <td>{record.checkOutTime || '-'}</td>
-                                        <td>{userNames[record.userId] || 'Unknown User'}</td>
-                                        <td>{new Date(record.date).toLocaleDateString()}</td>
+                                        <td>{product.name || 'Unknown Product'}</td>
+                                        <td>{product.category || 'Unknown Category'}</td>
+                                        <td>{product.stock || 0}</td>
+                                        <td>{product.price || 0}</td>
                                     </tr>
                                 ))
                             ) : (
