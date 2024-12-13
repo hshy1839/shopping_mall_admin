@@ -20,15 +20,21 @@ const Product = () => {
                 console.log('로그인 정보가 없습니다.');
                 return;
             }
-
+    
             const response = await axios.get('http://127.0.0.1:8863/api/products/allProduct', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
-
+    
             if (response.data.success && Array.isArray(response.data.products)) {
-                setProducts(response.data.products);
+                // 최근에 만든 상품이 맨 위에 오도록 날짜순으로 정렬
+                const sortedProducts = response.data.products.sort((a, b) => {
+                    // createdAt 필드가 있다고 가정하고, 최신 상품이 먼저 오도록 정렬
+                    return new Date(b.createdAt) - new Date(a.createdAt);
+                });
+    
+                setProducts(sortedProducts);
             } else {
                 console.error('올바르지 않은 데이터 형식:', response.data);
             }
@@ -36,6 +42,7 @@ const Product = () => {
             console.error('상품 정보를 가져오는데 실패했습니다.', error);
         }
     };
+    
 
     useEffect(() => {
         fetchProducts();
@@ -176,7 +183,7 @@ const Product = () => {
                                         <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
                                         <td
                                             onClick={() => handleProductClick(product._id)}
-                                            style={{ cursor: 'pointer', color: 'blue' }}
+                                            className='product-title'
                                         >
                                             {product.name || 'Unknown Product'}
                                         </td>
@@ -212,26 +219,27 @@ const Product = () => {
                     </table>
 
                     <div className="pagination">
-                        <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+                        <button className='prev-page-btn' onClick={handlePreviousPage} disabled={currentPage === 1}>
                             이전 페이지
                         </button>
                         {[...Array(totalPages)].map((_, i) => (
-                            <button
+                            <button 
                                 key={i}
                                 onClick={() => handlePageChange(i + 1)}
                                 className={currentPage === i + 1 ? 'active' : ''}
+                                id='page-number-btn'
                             >
                                 {i + 1}
                             </button>
                         ))}
-                        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+                        <button className="next-page-btn" onClick={handleNextPage} disabled={currentPage === totalPages}>
                             다음 페이지
                         </button>
                     </div>
                 </div>
                 <div className="write-btn-container">
                     <button className="write-btn" onClick={handleWriteClick}>
-                        글쓰기
+                        상품등록
                     </button>
                 </div>
             </div>

@@ -72,7 +72,17 @@ h1 {
   border-collapse: collapse;
   margin-top: 20px;
 }
-
+.notice-table th:nth-child(1),
+.notice-table td:nth-child(1) {
+    width: 5% ; /* 번호 칸의 너비를 줄이기 */
+}
+.notice-table th:nth-child(3),
+.notice-table td:nth-child(3) {
+    width: 5% ; /* 번호 칸의 너비를 줄이기 */
+}.notice-table th:nth-child(4),
+.notice-table td:nth-child(4) {
+    width: 5% ; /* 번호 칸의 너비를 줄이기 */
+}
 .notice-table td {
   background-color: #fff;
   text-align: center; /* 가로 정렬 */

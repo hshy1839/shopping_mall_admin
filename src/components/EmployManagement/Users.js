@@ -276,9 +276,9 @@ const Users = () => {
 
                     {/* 페이지 네비게이션 */}
                     <div className="pagination-container">
-                        <button className='pagination-prev-btn'>이전</button>
-                        <span className='pagination-number'>1</span>
-                        <button className='pagination-next-btn'>다음</button>
+                        <button className='prev-page-btn'>이전 페이지</button>
+                        <span className='pagination-number' id='page-number-btn'>1</span>
+                        <button className='next-page-btn'>다음 페이지</button>
                     </div>
                 </div>
             </div>

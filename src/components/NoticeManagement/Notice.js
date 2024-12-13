@@ -171,7 +171,7 @@ const Notice = () => {
 
                     {/* 페이지네이션 */}
                     <div className="pagination">
-                        <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+                        <button className="prev-page-btn" onClick={handlePreviousPage} disabled={currentPage === 1}>
                             이전 페이지
                         </button>
                         {[...Array(totalPages)].map((_, i) => (
@@ -179,11 +179,12 @@ const Notice = () => {
                                 key={i}
                                 onClick={() => handlePageChange(i + 1)}
                                 className={currentPage === i + 1 ? 'active' : ''}
+                                id='page-number-btn'
                             >
                                 {i + 1}
                             </button>
                         ))}
-                        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+                        <button className='next-page-btn' onClick={handleNextPage} disabled={currentPage === totalPages}>
                             다음 페이지
                         </button>
                     </div>

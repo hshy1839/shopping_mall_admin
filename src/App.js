@@ -24,20 +24,19 @@ function App() {
     const handleLoad = () => {
       setLoading(false); // 로딩 완료
     };
-  
+
     setLoading(true); // 로딩 시작
-  
+
     if (document.readyState === 'complete') {
       handleLoad(); // 이미 로드된 경우 바로 종료
     } else {
       window.addEventListener('load', handleLoad);
     }
-  
+
     return () => {
       window.removeEventListener('load', handleLoad);
     };
   }, [location]);
-  
 
   return (
     <div className="App">
@@ -46,17 +45,17 @@ function App() {
       ) : (
         <Routes>
           <Route path="/" element={<PrivateRoute><Header /><Main /></PrivateRoute>} />
-          <Route path="/employeeManagement/vacation" element={<><Header /><Vacation /></>} />
-          <Route path="/employeeManagement/salary" element={<><Header /><Salary /></>} />
-          <Route path="/employeeManagement/users" element={<><Users /></>} />
-          <Route path="/notice" element={<><Header /><Notice /></>} />
-          <Route path="/notice/noticeCreate" element={<><Header /><NoticeCreate /></>} />
-          <Route path="/notice/noticeDetail/:id" element={<NoticeDetail />} />
-          <Route path="/login" element={<><Login /></>} />
-          <Route path="/products" element={<><Header /><Product/></>} />
-          <Route path="/products/productCreate" element={<><Header /><ProductCreate/></>} />
-          <Route path="/products/productDetail/:id" element={<><Header /><ProductDetail/></>} />
-          <Route path="/products/productDetail/:id/update" element={<><Header /><ProductUpdate/></>} />
+          <Route path="/employeeManagement/vacation" element={<PrivateRoute><Header /><Vacation /></PrivateRoute>} />
+          <Route path="/employeeManagement/salary" element={<PrivateRoute><Header /><Salary /></PrivateRoute>} />
+          <Route path="/employeeManagement/users" element={<PrivateRoute><Users /></PrivateRoute>} />
+          <Route path="/notice" element={<PrivateRoute><Header /><Notice /></PrivateRoute>} />
+          <Route path="/notice/noticeCreate" element={<PrivateRoute><Header /><NoticeCreate /></PrivateRoute>} />
+          <Route path="/notice/noticeDetail/:id" element={<PrivateRoute><NoticeDetail /></PrivateRoute>} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/products" element={<PrivateRoute><Header /><Product /></PrivateRoute>} />
+          <Route path="/products/productCreate" element={<PrivateRoute><Header /><ProductCreate /></PrivateRoute>} />
+          <Route path="/products/productDetail/:id" element={<PrivateRoute><Header /><ProductDetail /></PrivateRoute>} />
+          <Route path="/products/productDetail/:id/update" element={<PrivateRoute><Header /><ProductUpdate /></PrivateRoute>} />
         </Routes>
       )}
     </div>
@@ -71,6 +70,7 @@ function AppWrapper() {
   );
 }
 
+// PrivateRoute: 로그인 여부와 토큰 유효성 체크
 const PrivateRoute = ({ children }) => {
   const navigate = useNavigate();
   const token = localStorage.getItem('token'); // 로컬스토리지에서 토큰 가져오기
@@ -99,6 +99,5 @@ const PrivateRoute = ({ children }) => {
 
   return children;
 };
-
 
 export default AppWrapper;
