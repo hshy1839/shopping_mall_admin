@@ -1,63 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // react-quill 기본 스타일
 import '../../css/ProductManagement/ProductCreate.css';
 
 const ProductCreate = () => {
   const [name, setName] = useState('');
-  const [categoryMain, setCategoryMain] = useState('');  // 상위 카테고리 상태
-  const [categorySub, setCategorySub] = useState('');    // 하위 카테고리 상태
-  const [image, setImage] = useState(null);  // 대표 이미지 상태
-  const [size, setSize] = useState([]);  // 사이즈 배열
-  const [sizeStock, setSizeStock] = useState({});  // 사이즈별 재고 상태
+  const [categoryMain, setCategoryMain] = useState('');
+  const [categorySub, setCategorySub] = useState('');
+  const [image, setImage] = useState(null);
+  const [size, setSize] = useState([]);
+  const [sizeStock, setSizeStock] = useState({});
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState([]);  // 추가 이미지 배열
   const navigate = useNavigate();
 
-  // 상위 카테고리 선택 시 하위 카테고리 업데이트
   const handleCategoryMainChange = (e) => {
     setCategoryMain(e.target.value);
-    setCategorySub(''); // 상위 카테고리 선택 시 하위 카테고리 초기화
+    setCategorySub('');
   };
 
-  // 사이즈 변경 처리 함수
   const handleSizeChange = (e) => {
     const { value, checked } = e.target;
     if (checked) {
       setSize([...size, value]);
       setSizeStock({
         ...sizeStock,
-        [value]: 0,  // 새 사이즈 선택 시, 재고는 0으로 초기화
+        [value]: 0,
       });
     } else {
       setSize(size.filter((s) => s !== value));
       const updatedStock = { ...sizeStock };
-      delete updatedStock[value];  // 사이즈 제외 시, 해당 사이즈의 재고 삭제
+      delete updatedStock[value];
       setSizeStock(updatedStock);
     }
   };
 
-  // 사이즈별 재고 수량 변경 처리
   const handleStockChange = (e, size) => {
     const { value } = e.target;
-    const numericStock = Number(value);  // 숫자로 변환
+    const numericStock = Number(value);
     setSizeStock({
       ...sizeStock,
-      [size]: numericStock,  // 숫자 형식으로 저장
+      [size]: numericStock,
     });
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setImage(URL.createObjectURL(file));  // 선택된 이미지 URL을 상태에 저장
+    setImage(URL.createObjectURL(file));
   };
 
-  const handleDescriptionChange = (value) => {
-    const plainText = value.replace(/<\/?p>/g, ''); // <p> 태그 제거
-    setDescription(plainText);
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
   };
 
   const handleFileUpload = (e) => {
@@ -68,26 +62,32 @@ const ProductCreate = () => {
     setImages(newImages);
   };
 
+  // 이미지 삭제 함수
+  const handleImageDelete = (index) => {
+    const newImages = images.filter((_, idx) => idx !== index);
+    setImages(newImages);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const filteredSizeStock = {};
     size.forEach((s) => {
-      filteredSizeStock[s] = sizeStock[s] || 0;  // 사이즈별 재고 수량 (기본값은 0)
+      filteredSizeStock[s] = sizeStock[s] || 0;
     });
 
     const productData = {
       name,
-      categoryMain,  // 상위 카테고리
-      categorySub,   // 하위 카테고리
+      categoryMain,
+      categorySub,
       price,
       description,
-      sizeStock: filteredSizeStock,  // 사이즈별 재고 데이터
-      images,  // 추가 이미지
-      main_image: image,  // 대표 이미지
+      sizeStock: filteredSizeStock,
+      images,
+      main_image: image,
     };
 
-    const token = localStorage.getItem('token');  // localStorage에서 토큰 가져오기
+    const token = localStorage.getItem('token');
 
     try {
       const response = await axios.post('http://127.0.0.1:8863/api/products/productCreate', 
@@ -101,7 +101,7 @@ const ProductCreate = () => {
 
       if (response.status === 200) {
         alert('상품이 성공적으로 등록되었습니다.');
-        navigate('/products');  // 상품 등록 후 상품 목록 페이지로 이동
+        navigate('/products');
       } else {
         alert('상품 등록 실패: ' + response.data.message);
       }
@@ -193,6 +193,42 @@ const ProductCreate = () => {
           {image && <img src={image} alt="대표 이미지 미리보기" className="image-preview" />}
         </div>
 
+        {/* Additional Images */}
+        <div className="product-create-field">
+  <label className="product-create-label" htmlFor="images">상세 이미지</label>
+  <input
+    className="product-create-input"
+    type="file"
+    id="images"
+    onChange={handleFileUpload}
+    accept="image/*"
+    multiple
+  />
+  
+  {/* 이미지 목록 및 삭제 버튼 */}
+  {images.length > 0 && (
+  <div className="product-create-preview-images">
+    {images.map((imageUrl, index) => (
+      <div key={index} className="product-create-image-item">
+        <img 
+          src={imageUrl} 
+          alt={`설명 이미지 ${index + 1}`} 
+          className="description-image-preview" 
+        />
+        <button 
+          className="delete-image-button"
+          onClick={() => handleImageDelete(index)}
+        >
+          x
+        </button>
+      </div>
+    ))}
+  </div>
+)}
+
+</div>
+
+
         {/* Size Selection */}
         <div className="product-create-field">
           <label className="product-create-label">사이즈</label>
@@ -236,29 +272,15 @@ const ProductCreate = () => {
 
         {/* Product Description */}
         <div className="product-create-field">
-          <label className="product-create-label">상품 설명</label>
-          <ReactQuill
+          <label className="product-create-label" htmlFor="description">상품 설명</label>
+          <textarea
+            className="product-create-input"
+            id="description"
             value={description}
             onChange={handleDescriptionChange}
             placeholder="상품 설명을 입력하세요"
-            modules={{
-              toolbar: [
-                ['bold', 'italic', 'underline'],
-                ['link', 'image'],
-              ],
-              clipboard: {
-                matchVisual: false, // 기본 시각적 매칭 비활성화
-              },
-            }}
-            formats={['header', 'font', 'list', 'bold', 'italic', 'underline', 'link', 'image']}
+            required
           />
-        </div>
-
-        {/* Additional Images */}
-        <div className="product-create-preview-images">
-          {images.map((imageUrl, index) => (
-            <img key={index} src={imageUrl} alt={`설명 이미지 ${index + 1}`} className="description-image-preview" />
-          ))}
         </div>
 
         <button type="submit" className="product-create-button">등록</button>
