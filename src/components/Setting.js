@@ -28,18 +28,34 @@ const Setting = () => {
         });
     };
 
-    const handleBankAccountRegister = () => {
-        // 계좌 등록 로직
-        axios.post('/api/register-bank-account', {
-            bankName,
-            bankAccount,
-            accountHolder
-        }).then(response => {
-            alert('계좌 정보가 성공적으로 등록되었습니다.');
-        }).catch(error => {
-            alert('계좌 등록 중 오류가 발생했습니다.');
-        });
-    };
+    const handleBankAccountRegister = async () => {
+        if (!bankName || !bankAccount || !accountHolder) {
+          alert('모든 필드를 입력해주세요.');
+          return;
+        }
+      
+        try {
+          const accounts = [
+            {
+              accountName: accountHolder,
+              accountNumber: bankAccount,
+              bankName,
+            },
+          ];
+      
+          const response = await axios.post('http://127.0.0.1:8863/api/account', { accounts });
+      
+          if (response.data.success) {
+            alert('계좌 정보가 성공적으로 저장되었습니다.');
+          } else {
+            alert('계좌 저장에 실패했습니다.');
+          }
+        } catch (error) {
+          console.error('계좌 등록 중 오류:', error);
+          alert('계좌 등록 중 오류가 발생했습니다.');
+        }
+      };
+      
 
     return (
         <div className="setting-container">
