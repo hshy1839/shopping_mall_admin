@@ -1,0 +1,110 @@
+import React, { useState } from 'react';
+import '../css/Setting.css';
+import Header from '../components/Header.js';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+const Setting = () => {
+    const [currentPassword, setCurrentPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [bankName, setBankName] = useState('');
+    const [bankAccount, setBankAccount] = useState('');
+    const [accountHolder, setAccountHolder] = useState('');
+
+    const handlePasswordChange = () => {
+        if (newPassword !== confirmPassword) {
+            alert('새 비밀번호가 일치하지 않습니다.');
+            return;
+        }
+        // 비밀번호 변경 로직
+        axios.post('/api/change-password', {
+            currentPassword,
+            newPassword
+        }).then(response => {
+            alert('비밀번호가 성공적으로 변경되었습니다.');
+        }).catch(error => {
+            alert('비밀번호 변경 중 오류가 발생했습니다.');
+        });
+    };
+
+    const handleBankAccountRegister = () => {
+        // 계좌 등록 로직
+        axios.post('/api/register-bank-account', {
+            bankName,
+            bankAccount,
+            accountHolder
+        }).then(response => {
+            alert('계좌 정보가 성공적으로 등록되었습니다.');
+        }).catch(error => {
+            alert('계좌 등록 중 오류가 발생했습니다.');
+        });
+    };
+
+    return (
+        <div className="setting-container">
+            <Header />
+            <div className="setting-container-container">
+                <div className="setting-top-container-container">
+                    <h1>설정</h1>
+                </div>
+
+                <div className="setting-section">
+                    <h2>계좌 정보 등록</h2>
+                    <div className="setting-account-container">
+                        <input
+                            type="text"
+                            placeholder="은행명을 입력하세요"
+                            value={bankName}
+                            onChange={(e) => setBankName(e.target.value)}
+                            className="account-input-field"
+                        />
+                        <input
+                            type="text"
+                            placeholder="예금주를 입력하세요"
+                            value={accountHolder}
+                            onChange={(e) => setAccountHolder(e.target.value)}
+                            className="account-input-field"
+                        />
+                        <input
+                            type="text"
+                            placeholder="계좌번호를 입력하세요"
+                            value={bankAccount}
+                            onChange={(e) => setBankAccount(e.target.value)}
+                            className="account-input-field"
+                        />
+                        <button onClick={handleBankAccountRegister} className="submit-account-button">등록</button>
+                    </div>
+                </div>
+
+                <div className="setting-section">
+                    <h2>비밀번호 변경</h2>
+                    <input
+                        type="password"
+                        placeholder="현재 비밀번호"
+                        value={currentPassword}
+                        onChange={(e) => setCurrentPassword(e.target.value)}
+                        className="password-input-field"
+                    />
+                    <input
+                        type="password"
+                        placeholder="새 비밀번호"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        className="password-input-field"
+                    />
+                    <input
+                        type="password"
+                        placeholder="새 비밀번호 확인"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        className="password-input-field"
+                    />
+                    <button onClick={handlePasswordChange} className="submit-password-button">변경</button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Setting;

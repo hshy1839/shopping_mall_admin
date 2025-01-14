@@ -51,23 +51,23 @@ const ProductDetail = () => {
         if (!confirmation) {
             return;
         }
-
+    
         try {
             const token = localStorage.getItem('token');
             if (!token) {
                 console.log('로그인 정보가 없습니다.');
                 return;
             }
-
+    
             const response = await axios.delete(
-                `http://127.0.0.1:8863/api/products/delete/${id}`,
+                `http://127.0.0.1:8863/api/products/delete/${id}`, // URL 수정
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 }
             );
-
+    
             if (response.data && response.data.success) {
                 alert('상품이 삭제되었습니다.');
                 navigate('/products'); // 상품 목록 페이지로 리디렉션
@@ -78,6 +78,7 @@ const ProductDetail = () => {
             console.error('상품 삭제 중 오류가 발생했습니다.', error);
         }
     };
+    
 
     if (!product) {
         return <div>로딩 중...</div>;

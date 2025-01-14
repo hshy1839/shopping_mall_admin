@@ -10,7 +10,7 @@ a {
   display: flex;
   flex-direction: column;
   width: 20%;
-  height: 150%;
+  height: 200%;
   overflow-y: hidden;
   z-index: 100;
   color: black;

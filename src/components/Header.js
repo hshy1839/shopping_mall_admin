@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
 import { faGauge, faUsers, faCalendarAlt, faBullhorn, faCog, faSignOutAlt, faBars } from '@fortawesome/free-solid-svg-icons';
 import '../css/Header.css';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -13,6 +14,14 @@ const Header = () => {
 
   const handleLinkClick = () => {
     setIsOpen(false);
+  };
+
+  const handleLogout = () => {
+    // 스토리지에서 토큰 및 로그인 상태 제거
+    localStorage.removeItem('token'); // 토큰 삭제
+    localStorage.setItem('isLoggedIn', 'false'); // 로그인 상태를 false로 설정
+    // 로그인 페이지로 리다이렉트
+    navigate('/login');
   };
 
   return (
@@ -45,7 +54,7 @@ const Header = () => {
             </Link>
             <div className={`submenu-employee ${isOpen ? 'open' : ''}`}>
               <Link to="/products" className='submenu-item-employee'>상품 목록</Link>
-              <Link to="/employeeManagement/salary" className='submenu-item-employee'>주문 목록</Link>
+              <Link to="/order" className='submenu-item-employee'>주문 목록</Link>
               <Link to="/employeeManagement/users" className='submenu-item-employee'>이건 후에 추가</Link>
             </div>
           </div>
@@ -66,18 +75,16 @@ const Header = () => {
 
         {/* 설정 및 로그아웃 */}
         <div className='header-section3'>
-          <Link to="/" onClick={handleLinkClick}>
+          <Link to="/setting" onClick={handleLinkClick}>
             <div className='header-section3-item'>
               <FontAwesomeIcon icon={faCog} className='header-section2-item-icon' />
               <div className='header-section2-item-text'>설정</div>
             </div>
           </Link>
-          <Link to="/" >
-            <div className='header-section3-item'>
-              <FontAwesomeIcon icon={faSignOutAlt} className='header-section2-item-icon' />
-              <div className='header-section2-item-text'>로그아웃</div>
-            </div>
-          </Link>
+          <div className='header-section3-item' onClick={handleLogout}>
+            <FontAwesomeIcon icon={faSignOutAlt} className='header-section2-item-icon' />
+            <div className='header-section2-item-text'>로그아웃</div>
+          </div>
         </div>
       </div>
 

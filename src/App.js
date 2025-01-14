@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes, useLocation, useNavigate } from 'react-ro
 import Header from './components/Header';
 import Main from './components/Main';
 import Loading from './components/Loading';
+import Order from './components/Order';
 import Vacation from './components/EmployManagement/Vacation';
 import Salary from './components/EmployManagement/Salary';
 import Users from './components/EmployManagement/Users';
@@ -24,19 +25,20 @@ function App() {
     const handleLoad = () => {
       setLoading(false); // 로딩 완료
     };
-
+  
     setLoading(true); // 로딩 시작
-
+  
     if (document.readyState === 'complete') {
       handleLoad(); // 이미 로드된 경우 바로 종료
     } else {
       window.addEventListener('load', handleLoad);
     }
-
+  
     return () => {
       window.removeEventListener('load', handleLoad);
     };
   }, [location]);
+  
 
   return (
     <div className="App">
@@ -56,6 +58,7 @@ function App() {
           <Route path="/products/productCreate" element={<PrivateRoute><Header /><ProductCreate /></PrivateRoute>} />
           <Route path="/products/productDetail/:id" element={<PrivateRoute><Header /><ProductDetail /></PrivateRoute>} />
           <Route path="/products/productDetail/:id/update" element={<PrivateRoute><Header /><ProductUpdate /></PrivateRoute>} />
+          <Route path="/order" element={<PrivateRoute><Header /><Order /></PrivateRoute>} />
         </Routes>
       )}
     </div>

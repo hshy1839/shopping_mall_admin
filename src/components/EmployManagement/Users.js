@@ -242,7 +242,7 @@ const Users = () => {
                                         <td>{user.name}</td>
                                         <td>{user.phoneNumber}</td>
                                         <td>
-                                            {user.user_type ==3 ? '일반 유저' :
+                                            {user.user_type ==3 ? '일반유저' :
                                              user.user_type == 2 ? '부관리자' : 
                                              user.user_type ==1 ? '관리자' : 
                                              '알 수 없음'}

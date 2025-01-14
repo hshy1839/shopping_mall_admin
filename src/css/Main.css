@@ -148,3 +148,85 @@ html, body {
     font-size: 1.5rem;
     font-weight: bold;
   }
+
+
+@media screen and (max-width: 1440px) {
+
+
+
+.main-section1 {
+  width: 100%;
+  height: 50vh;
+}
+
+.main-section1-item {
+  height: 50%;
+  border-radius: 15px;
+  width: 30%;
+  padding: 20px;
+}
+
+.main-section1-item-text {
+  font-size: 1.4rem;
+  font-weight: bold;
+  text-align: left;
+}
+
+.main-section1-item-percent {
+  display: flex;
+  margin-top: 15%;
+  align-items: center;
+  width: 100%;
+}
+
+.main-section1-item-circle1,
+.main-section1-item-circle2,
+.main-section1-item-circle3 {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+
+.main-section2 {
+  width: 100%;
+  height: 90vh;
+  justify-items: center;
+  align-content: center;
+}
+.main-section2-container {
+  width: 95%;
+} 
+.main-section2-graph {
+  margin-top: 1%;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  border-radius: 15px;
+  padding: 20px;
+}
+.main-section2-graph-container {
+  margin-top: 3%;
+  width: 105%;
+  height: 50%;
+  justify-items: center
+}
+
+.main-section2-graph-top-container {
+  display: flex;
+}
+.main-section2-graph-select-container {
+  margin-left: auto;
+  display: flex;
+}
+.main-section2-graph-select {
+  margin-right: 5%;
+}
+.main-section2-graph-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+
+
+}

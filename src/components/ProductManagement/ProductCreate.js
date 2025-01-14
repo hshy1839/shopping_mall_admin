@@ -8,6 +8,8 @@ const ProductCreate = () => {
   const [categoryMain, setCategoryMain] = useState('');
   const [categorySub, setCategorySub] = useState('');
   const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null); // 대표 이미지 미리보기
+const [imagePreviews, setImagePreviews] = useState([]); // 추가 이미지 미리보기
   const [size, setSize] = useState([]);
   const [sizeStock, setSizeStock] = useState({});
   const [price, setPrice] = useState('');
@@ -47,70 +49,106 @@ const ProductCreate = () => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setImage(URL.createObjectURL(file));
-  };
+    if (file) {
+        setImage(file); // 파일 객체로 설정
+        const previewUrl = URL.createObjectURL(file); // 미리보기 URL 생성
+        setImagePreview(previewUrl); // 미리보기 URL 상태에 저장
+    }
+};
+
 
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
   };
 
   const handleFileUpload = (e) => {
-    const newImages = [...images];
+    const newImages = [];
+    const newPreviews = [];
+
     for (let i = 0; i < e.target.files.length; i++) {
-      newImages.push(URL.createObjectURL(e.target.files[i]));
+        const file = e.target.files[i];
+        newImages.push(file); // 파일 객체 저장
+        const previewUrl = URL.createObjectURL(file); // 미리보기 URL 생성
+        newPreviews.push(previewUrl);
     }
-    setImages(newImages);
-  };
+
+    setImages([...images, ...newImages]);
+    setImagePreviews([...imagePreviews, ...newPreviews]);
+};
 
   // 이미지 삭제 함수
   const handleImageDelete = (index) => {
-    const newImages = images.filter((_, idx) => idx !== index);
-    setImages(newImages);
-  };
+    const updatedImages = images.filter((_, idx) => idx !== index);
+    const updatedPreviews = imagePreviews.filter((_, idx) => idx !== index);
+    setImages(updatedImages);
+    setImagePreviews(updatedPreviews);
+};
 
+  
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // 필수 필드 확인
+    if (!name || !categoryMain || !categorySub || !price) {
+        alert('모든 필드를 입력해주세요.');
+        return;
+    }
+
     const filteredSizeStock = {};
     size.forEach((s) => {
-      filteredSizeStock[s] = sizeStock[s] || 0;
+        filteredSizeStock[s] = sizeStock[s] || 0;
     });
 
-    const productData = {
-      name,
-      categoryMain,
-      categorySub,
-      price,
-      description,
-      sizeStock: filteredSizeStock,
-      images,
-      main_image: image,
-    };
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('categoryMain', categoryMain);
+    formData.append('categorySub', categorySub);
+    formData.append('price', price);
+    formData.append('description', description);
+    formData.append('sizeStock', JSON.stringify(filteredSizeStock));
+
+    if (image) {
+        formData.append('mainImage', image); // mainImage에 파일 객체
+    }
+
+    images.forEach((img) => {
+        formData.append('additionalImages', img); // 추가 이미지도 파일 객체
+    });
+
+    console.log([...formData]); // FormData의 내용을 콘솔에 출력하여 확인
 
     const token = localStorage.getItem('token');
 
     try {
-      const response = await axios.post('http://127.0.0.1:8863/api/products/productCreate', 
-        productData,
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
+        const response = await axios.post(
+            'http://127.0.0.1:8863/api/products/productCreate',
+            formData,
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    // 'Content-Type': 'multipart/form-data'는 생략
+                },
+            }
+        );
+
+        if (response.status === 200) {
+            alert('상품이 성공적으로 등록되었습니다.');
+            navigate('/products');
+        } else {
+            alert('상품 등록 실패: ' + response.data.message);
         }
-      );
-
-      if (response.status === 200) {
-        alert('상품이 성공적으로 등록되었습니다.');
-        navigate('/products');
-      } else {
-        alert('상품 등록 실패: ' + response.data.message);
-      }
     } catch (error) {
-      console.error('상품 등록 실패:', error);
-      alert('상품 등록 중 오류가 발생했습니다.');
+        console.error('상품 등록 실패:', error.message);
+        alert('상품 등록 중 오류가 발생했습니다.');
     }
-  };
+};
 
+
+
+
+  
+  
   return (
     <div className="product-create-container">
       <h2 className="product-create-title">상품 등록</h2>
@@ -190,42 +228,37 @@ const ProductCreate = () => {
             onChange={handleImageChange}
             accept="image/*"
           />
-          {image && <img src={image} alt="대표 이미지 미리보기" className="image-preview" />}
+          {image && <img src={imagePreview} alt="대표 이미지 미리보기" className="image-preview" />}
         </div>
 
         {/* Additional Images */}
-        <div className="product-create-field">
-  <label className="product-create-label" htmlFor="images">상세 이미지</label>
-  <input
-    className="product-create-input"
-    type="file"
-    id="images"
-    onChange={handleFileUpload}
-    accept="image/*"
-    multiple
-  />
-  
-  {/* 이미지 목록 및 삭제 버튼 */}
-  {images.length > 0 && (
-  <div className="product-create-preview-images">
-    {images.map((imageUrl, index) => (
-      <div key={index} className="product-create-image-item">
-        <img 
-          src={imageUrl} 
-          alt={`설명 이미지 ${index + 1}`} 
-          className="description-image-preview" 
-        />
-        <button 
-          className="delete-image-button"
-          onClick={() => handleImageDelete(index)}
-        >
-          x
-        </button>
-      </div>
-    ))}
-  </div>
-)}
-
+    <div className="product-create-field">
+    <label className="product-create-label" htmlFor="images">상세 이미지</label>
+    <input
+        className="product-create-input"
+        type="file"
+        id="images"
+        onChange={handleFileUpload}
+        accept="image/*"
+        multiple
+    />
+    <div className="product-create-preview-images">
+        {imagePreviews.map((previewUrl, index) => (
+            <div key={index} className="product-create-image-item">
+                <img 
+                    src={previewUrl} 
+                    alt={`상세 이미지 ${index + 1}`} 
+                    className="description-image-preview" 
+                />
+                <button 
+                    className="delete-image-button"
+                    onClick={() => handleImageDelete(index)}
+                >
+                    x
+                </button>
+            </div>
+        ))}
+    </div>
 </div>
 
 
