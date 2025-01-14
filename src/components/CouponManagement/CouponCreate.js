@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../../css/ProductManagement/ProductCreate.css';
+import '../../css/CouponManagement/CouponCreate.css';
 
 const CouponCreate = () => {
   const [name, setName] = useState('');
@@ -64,14 +64,14 @@ const CouponCreate = () => {
   };
 
   return (
-    <div className="product-create-container">
-      <h2 className="product-create-title">쿠폰 등록</h2>
-      <form className="product-create-form" onSubmit={handleSubmit}>
+    <div className="coupon-create-container">
+      <h2 className="coupon-create-title">쿠폰 등록</h2>
+      <form className="coupon-create-form" onSubmit={handleSubmit}>
         {/* Coupon Name */}
-        <div className="product-create-field">
-          <label className="product-create-label" htmlFor="name">쿠폰 이름</label>
+        <div className="coupon-create-field">
+          <label className="coupon-create-label" htmlFor="name">쿠폰 이름</label>
           <input
-            className="product-create-input"
+            className="coupon-create-input"
             type="text"
             id="name"
             value={name}
@@ -82,10 +82,10 @@ const CouponCreate = () => {
         </div>
 
         {/* Coupon Code */}
-        <div className="product-create-field">
-          <label className="product-create-label" htmlFor="code">쿠폰 코드</label>
+        <div className="coupon-create-field">
+          <label className="coupon-create-label" htmlFor="code">쿠폰 코드</label>
           <input
-            className="product-create-input"
+            className="coupon-create-input"
             type="text"
             id="code"
             value={code}
@@ -96,10 +96,10 @@ const CouponCreate = () => {
         </div>
 
         {/* Discount Type */}
-        <div className="product-create-field">
-          <label className="product-create-label" htmlFor="discountType">할인 유형</label>
+        <div className="coupon-create-field">
+          <label className="coupon-create-label" htmlFor="discountType">할인 유형</label>
           <select
-            className="product-create-input"
+            className="coupon-create-input"
             id="discountType"
             value={discountType}
             onChange={(e) => setDiscountType(e.target.value)}
@@ -111,10 +111,10 @@ const CouponCreate = () => {
         </div>
 
         {/* Discount Value */}
-        <div className="product-create-field">
-          <label className="product-create-label" htmlFor="discountValue">할인 값</label>
+        <div className="coupon-create-field">
+          <label className="coupon-create-label" htmlFor="discountValue">할인 값</label>
           <input
-            className="product-create-input"
+            className="coupon-create-input"
             type="number"
             id="discountValue"
             value={discountValue}
@@ -127,10 +127,10 @@ const CouponCreate = () => {
     
 
         {/* Valid From */}
-        <div className="product-create-field">
-          <label className="product-create-label" htmlFor="validFrom">시작 날짜</label>
+        <div className="coupon-create-field">
+          <label className="coupon-create-label" htmlFor="validFrom">시작 날짜</label>
           <input
-            className="product-create-input"
+            className="coupon-create-input"
             type="date"
             id="validFrom"
             value={validFrom}
@@ -140,10 +140,10 @@ const CouponCreate = () => {
         </div>
 
         {/* Valid Until */}
-        <div className="product-create-field">
-          <label className="product-create-label" htmlFor="validUntil">만료 날짜</label>
+        <div className="coupon-create-field">
+          <label className="coupon-create-label" htmlFor="validUntil">만료 날짜</label>
           <input
-            className="product-create-input"
+            className="coupon-create-input"
             type="date"
             id="validUntil"
             value={validUntil}
@@ -153,9 +153,9 @@ const CouponCreate = () => {
         </div>
 
         {/* Applicable Categories */}
-        <div className="product-create-field">
-          <label className="product-create-label">적용 카테고리</label>
-          <div className="product-create-sizes">
+        <div className="coupon-create-field">
+          <label className="coupon-create-label">적용 카테고리</label>
+          <div className="coupon-create-sizes">
             {['골프의류', '일반의류', '남성의류', '여성의류', '지갑', '신발', '가방', '기타'].map((category) => (
               <label key={category}>
                 <input
@@ -170,7 +170,7 @@ const CouponCreate = () => {
           </div>
         </div>
 
-        <button type="submit" className="product-create-button">등록</button>
+        <button type="submit" className="coupon-create-button">등록</button>
       </form>
     </div>
   );

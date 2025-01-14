@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Header from '../Header';
+import '../../css/CouponManagement/Coupon.css';
 
 const Coupon = () => {
     const [coupons, setCoupons] = useState([]);
@@ -105,12 +106,12 @@ const Coupon = () => {
     };
 
     return (
-        <div className="product-management-container">
+        <div className="coupon-management-container">
             <Header />
-            <div className="product-management-container-container">
-                <div className="product-top-container-container">
+            <div className="coupon-management-container-container">
+                <div className="coupon-top-container-container">
                     <h1>쿠폰 관리</h1>
-                    <div className="product-search-box">
+                    <div className="coupon-search-box">
                         <input
                             type="text"
                             placeholder="검색..."
@@ -122,7 +123,7 @@ const Coupon = () => {
                         </button>
                     </div>
 
-                    <table className="product-table">
+                    <table className="coupon-table">
                         <thead>
                             <tr>
                                 <th>번호</th>
@@ -139,10 +140,7 @@ const Coupon = () => {
         currentCoupons.map((coupon, index) => (
             <tr key={coupon._id}>
                 <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
-                <td
-                    onClick={() => handleCouponClick(coupon._id)}
-                    className="product-title"
-                >
+                <td className="coupon-title" style={{ color: 'black' }}>
                     {coupon.name || 'Unknown Coupon'}
                 </td>
                 <td>{coupon.code || 'Unknown Code'}</td>
@@ -174,6 +172,7 @@ const Coupon = () => {
         </tr>
     )}
 </tbody>
+
 
                     </table>
 
