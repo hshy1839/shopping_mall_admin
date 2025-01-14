@@ -55,7 +55,7 @@ const Header = () => {
             <div className={`submenu-employee ${isOpen ? 'open' : ''}`}>
               <Link to="/products" className='submenu-item-employee'>상품 목록</Link>
               <Link to="/order" className='submenu-item-employee'>주문 목록</Link>
-              <Link to="/employeeManagement/users" className='submenu-item-employee'>이건 후에 추가</Link>
+              <Link to="/QnA/qna" className='submenu-item-employee'>1:1 문의</Link>
             </div>
           </div>
 

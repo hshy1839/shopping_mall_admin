@@ -108,8 +108,6 @@ const ProductDetail = () => {
                             : `${product.stock} 개`}
                     </p>
 
-                    <p className="product-gender"><strong>성별:</strong> {product.gender}</p>
-                    <p className="product-size"><strong>사이즈:</strong> {product.size}</p>
                     <p className="product-description"><strong>상세 설명:</strong> {product.description}</p>
 
                     <div className="button-container">

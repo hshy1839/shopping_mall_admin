@@ -16,6 +16,8 @@ import { jwtDecode } from 'jwt-decode';
 import ProductCreate from './components/ProductManagement/ProductCreate';
 import ProductDetail from './components/ProductManagement/ProductDetail';
 import ProductUpdate from './components/ProductManagement/ProductUpdate';
+import Qna from './components/QnA/Qna';
+import QnaDetail from './components/QnA/QnaDetail';
 
 function App() {
   const [loading, setLoading] = useState(true); // 초기 로딩 상태를 true로 설정
@@ -59,6 +61,8 @@ function App() {
           <Route path="/products/productDetail/:id" element={<PrivateRoute><Header /><ProductDetail /></PrivateRoute>} />
           <Route path="/products/productDetail/:id/update" element={<PrivateRoute><Header /><ProductUpdate /></PrivateRoute>} />
           <Route path="/order" element={<PrivateRoute><Header /><Order /></PrivateRoute>} />
+          <Route path="/QnA/qna" element={<PrivateRoute><Header /><Qna /></PrivateRoute>} />
+          <Route path="/QnA/qna/qnaDetail/:id" element={<PrivateRoute><Header /><QnaDetail/></PrivateRoute>} />
         </Routes>
       )}
     </div>
