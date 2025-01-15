@@ -1,5 +1,5 @@
 /* 기본 스타일 */
-.coupon-management-container {
+.promotion-management-container {
     display: flex;
     overflow-x: hidden;
     width: 80%;
@@ -9,7 +9,7 @@
     justify-content: center;
   }
   
-  .coupon-management-container-container {
+  .promotion-management-container-container {
     justify-items: center;
     max-width: 100%;
     padding-left: 5%;
@@ -18,7 +18,7 @@
     border: 1px solid rgb(219, 221, 226);
   }
   
-  .coupon-container {
+  .promotion-container {
     width: 95%;
     height: 100%;
   }
@@ -31,13 +31,13 @@
   }
   
   /* 검색 박스 스타일 */
-  .coupon-search-box {
+  .promotion-search-box {
     margin-top: 10%;
     text-align: left;
     display: flex;
   }
   
-  .coupon-search-box input {
+  .promotion-search-box input {
     width: 30%;
     padding: 10px;
     font-size: 16px;
@@ -45,7 +45,7 @@
     border-radius: 4px;
   }
   
-  .coupon-search-box input:focus {
+  .promotion-search-box input:focus {
     border-color: #007bff;
   }
   
@@ -70,43 +70,43 @@
   }
   
   /* 테이블 스타일 */
-  .coupon-table {
+  .promotion-table {
     width: 1000px;
     border-collapse: collapse;
     margin-top: 20px;
   }
   
-  .coupon-table th:nth-child(1),
-  .coupon-table td:nth-child(1) {
+  .promotion-table th:nth-child(1),
+  .promotion-table td:nth-child(1) {
     width: 5%;
   }
-  .coupon-table th:nth-child(4),
-  .coupon-table td:nth-child(4) {
+  .promotion-table th:nth-child(4),
+  .promotion-table td:nth-child(4) {
     width: 5%;
   }
-  .coupon-table th:nth-child(5),
-  .coupon-table td:nth-child(5) {
+  .promotion-table th:nth-child(5),
+  .promotion-table td:nth-child(5) {
     width: 7%;
   }
   
-  .coupon-table th:nth-child(6),
-  .coupon-table td:nth-child(6) {
+  .promotion-table th:nth-child(6),
+  .promotion-table td:nth-child(6) {
     width: 5%;
   }
-  .coupon-table th:nth-child(7),
-  .coupon-table td:nth-child(7) {
+  .promotion-table th:nth-child(7),
+  .promotion-table td:nth-child(7) {
     width: 5%;
   }
   
-  .coupon-table td {
+  .promotion-table td {
     background-color: #fff;
     text-align: center;
     vertical-align: middle;
     word-wrap: break-word;
   }
   
-  .coupon-table th,
-  .coupon-table td {
+  .promotion-table th,
+  .promotion-table td {
     padding: 10px;
     border: 1px solid #ddd;
     border-top: none;
@@ -115,7 +115,7 @@
     text-align: center;
   }
   
-  .coupon-table th {
+  .promotion-table th {
     background-color: #6B4EFF;
     font-weight: bold;
     font-size: 1rem;
@@ -123,7 +123,7 @@
     width: 10%;
   }
   
-  .coupon-table td {
+  .promotion-table td {
     background-color: #fff;
     font-size: 1rem;
   }
@@ -182,7 +182,7 @@
   }
   
   
-  .coupon-title:hover {
+  .promotion-title:hover {
     color: orange;
   }
   
@@ -206,19 +206,19 @@
   /* 768px 이하 화면 (태블릿 이하) */
   @media (max-width: 768px) {
   
-    .coupon-management-container {
+    .promotion-management-container {
         width: 100%;
         margin-left: 0;
         flex-direction: column;
     }
   
-    .coupon-search-box {
+    .promotion-search-box {
         margin-top: 5%;
         flex-direction: column;
         align-items: flex-start;
     }
   
-    .coupon-search-box input {
+    .promotion-search-box input {
         width: 100%;
         margin-bottom: 10px;
     }
@@ -229,14 +229,14 @@
         margin-bottom: 10px;
     }
   
-    .coupon-table {
+    .promotion-table {
         width: 100%;
         font-size: 0.8rem;
         overflow-x: auto;
     }
   
-    .coupon-table th,
-    .coupon-table td {
+    .promotion-table th,
+    .promotion-table td {
         padding: 8px;
     }
   
@@ -263,7 +263,7 @@
   /* 480px 이하 화면 (모바일) */
   @media (max-width: 480px) {
   
-    .coupon-management-container {
+    .promotion-management-container {
         margin-left: 0;
         width:100%;
         height: auto;
@@ -271,7 +271,7 @@
         overflow-x: hidden;
         padding: 5%;
     }
-    .coupon-management-container-container {
+    .promotion-management-container-container {
       width: 100%;
       height: auto;
     }
@@ -279,30 +279,30 @@
         font-size: 28px;
     }
   
-    .coupon-search-box {
+    .promotion-search-box {
         margin-top: 5%;
         flex-direction: column;
         width: 100%;
     }
   
-    .coupon-search-box input {
+    .promotion-search-box input {
         width: 90%;
         margin-bottom: 10px;
     }
   
-    .coupon-search-box .search-category {
+    .promotion-search-box .search-category {
         width: 60%;
         margin-bottom: 10px;
     }
   
-    .coupon-table {
+    .promotion-table {
         width: 100%;
         font-size: 0.8rem;
         overflow-x: hidden;
     }
   
-    .coupon-table th,
-    .coupon-table td {
+    .promotion-table th,
+    .promotion-table td {
         padding: 5px;
         font-size: 12px;
     }
@@ -329,7 +329,7 @@
         height: 60px;
     }
   
-    .coupon-title {
+    .promotion-title {
         font-size: 12px;
     }
   

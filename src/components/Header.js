@@ -57,6 +57,7 @@ const Header = () => {
               <Link to="/order" className='submenu-item-employee'>주문 목록</Link>
               <Link to="/QnA/qna" className='submenu-item-employee'>1:1 문의</Link>
               <Link to="/coupon" className='submenu-item-employee'>쿠폰 관리</Link>
+              <Link to="/promotion" className='submenu-item-employee'>광고 설정</Link>
             </div>
           </div>
 
@@ -72,6 +73,7 @@ const Header = () => {
               <div className='header-section2-item-text'>공지사항</div>
             </div>
           </Link>
+          
         </div>
 
         {/* 설정 및 로그아웃 */}

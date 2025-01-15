@@ -21,6 +21,8 @@ import QnaDetail from './components/QnA/QnaDetail';
 import Setting from './components/Setting';
 import Coupon from './components/CouponManagement/Coupon';
 import CouponCreate from './components/CouponManagement/CouponCreate';
+import Promotion from './components/PromotionManagement/Promotion';
+import PromotionCreate from './components/PromotionManagement/PromotionCreate';
 
 function App() {
   const [loading, setLoading] = useState(true); // 초기 로딩 상태를 true로 설정
@@ -69,6 +71,9 @@ function App() {
           <Route path="/QnA/qna/qnaDetail/:id" element={<PrivateRoute><Header /><QnaDetail/></PrivateRoute>} />
           <Route path="/coupon" element={<PrivateRoute><Header /><Coupon/></PrivateRoute>} />
           <Route path="/coupon/create" element={<PrivateRoute><Header /><CouponCreate/></PrivateRoute>} />
+          <Route path="/promotion" element={<PrivateRoute><Header /><Promotion/></PrivateRoute>} />
+          <Route path="/promotion/create" element={<PrivateRoute><Header /><PromotionCreate/></PrivateRoute>} />
+          
         </Routes>
       )}
     </div>

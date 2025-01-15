@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Header from '../Header';
 import '../../css/CouponManagement/Coupon.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faBan, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const Coupon = () => {
     const [coupons, setCoupons] = useState([]);
@@ -12,7 +14,6 @@ const Coupon = () => {
 
     const navigate = useNavigate();
 
-    // 쿠폰 데이터 가져오기
     const fetchCoupons = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -28,7 +29,6 @@ const Coupon = () => {
             });
 
             if (response.data.success && Array.isArray(response.data.coupons)) {
-                // 최신 쿠폰이 먼저 오도록 정렬
                 const sortedCoupons = response.data.coupons.sort((a, b) => {
                     return new Date(b.createdAt) - new Date(a.createdAt);
                 });
@@ -46,64 +46,73 @@ const Coupon = () => {
         fetchCoupons();
     }, []);
 
-    // 쿠폰 검색
-    const handleSearch = async () => {
-        if (searchTerm === '') {
-            fetchCoupons(); // 검색어가 없으면 전체 쿠폰을 다시 불러옵니다.
-        } else {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    console.log('로그인 정보가 없습니다.');
-                    return;
-                }
 
-                const response = await axios.get('http://127.0.0.1:8863/api/coupons', {
+
+ const handleCreateCouponClick = () => {
+    navigate('/coupon/create');
+};
+    const handleToggleActive = async (id, isActive) => {
+        const confirmMessage = isActive
+            ? '쿠폰을 활성화하시겠습니까?'
+            : '쿠폰을 비활성화하시겠습니까?';
+
+        if (!window.confirm(confirmMessage)) return;
+
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.log('로그인 정보가 없습니다.');
+                return;
+            }
+
+            const response = await axios.put(
+                `http://127.0.0.1:8863/api/coupon/${id}`,
+                { isActive },
+                {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
-                });
-
-                if (response.data.success && Array.isArray(response.data.coupons)) {
-                    const filteredCoupons = response.data.coupons.filter((coupon) => {
-                        return coupon.name.includes(searchTerm) || coupon.code.includes(searchTerm);
-                    });
-
-                    setCoupons(filteredCoupons);
-                } else {
-                    console.error('올바르지 않은 데이터 형식:', response.data);
                 }
-            } catch (error) {
-                console.error('쿠폰 정보를 가져오는데 실패했습니다.', error);
+            );
+
+            if (response.data.success) {
+                alert(`쿠폰이 ${isActive ? '활성화' : '비활성화'}되었습니다.`);
+                fetchCoupons();
             }
+        } catch (error) {
+            console.error(`쿠폰 ${isActive ? '활성화' : '비활성화'} 실패:`, error);
         }
     };
 
-    // 특정 쿠폰 클릭 처리
-    const handleCouponClick = (id) => {
-        navigate(`/coupons/detail/${id}`);
+    const handleDelete = async (id) => {
+        if (!window.confirm('쿠폰을 삭제하시겠습니까?')) return;
+
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.log('로그인 정보가 없습니다.');
+                return;
+            }
+
+            const response = await axios.delete(`http://127.0.0.1:8863/api/coupon/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.data.success) {
+                alert('쿠폰이 삭제되었습니다.');
+                fetchCoupons();
+            }
+        } catch (error) {
+            console.error('쿠폰 삭제 실패:', error);
+        }
     };
 
     const indexOfLastCoupon = currentPage * itemsPerPage;
     const indexOfFirstCoupon = indexOfLastCoupon - itemsPerPage;
     const currentCoupons = coupons.slice(indexOfFirstCoupon, indexOfLastCoupon);
     const totalPages = Math.ceil(coupons.length / itemsPerPage);
-
-    const handlePreviousPage = () => {
-        if (currentPage > 1) setCurrentPage(currentPage - 1);
-    };
-
-    const handleNextPage = () => {
-        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-    };
-
-    const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
-    };
-
-    const handleCreateCouponClick = () => {
-        navigate('/coupon/create');
-    };
 
     return (
         <div className="coupon-management-container">
@@ -118,9 +127,7 @@ const Coupon = () => {
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
-                        <button className="search-button" onClick={handleSearch}>
-                            검색
-                        </button>
+                        <button className="search-button">검색</button>
                     </div>
 
                     <table className="coupon-table">
@@ -131,83 +138,66 @@ const Coupon = () => {
                                 <th>코드</th>
                                 <th>할인율</th>
                                 <th>유효 기간</th>
-                                <th>활성 상태</th>
                                 <th>활성 카테고리</th>
+                                <th>상태</th>
+                                <th>액션</th>
                             </tr>
                         </thead>
                         <tbody>
-    {currentCoupons.length > 0 ? (
-        currentCoupons.map((coupon, index) => (
-            <tr key={coupon._id}>
-                <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
-                <td className="coupon-title" style={{ color: 'black' }}>
-                    {coupon.name || 'Unknown Coupon'}
-                </td>
-                <td>{coupon.code || 'Unknown Code'}</td>
-                <td>
-                    {coupon.discountType === 'percentage'
-                        ? `${coupon.discountValue}%`
-                        : `${coupon.discountValue.toLocaleString()}원`}
-                </td>
-                <td>
-                    {coupon.validUntil
-                        ? new Date(coupon.validUntil).toLocaleDateString()
-                        : '무제한'}
-                </td>
-                <td>
-                    {coupon.isActive ? '활성화' : '비활성화'}
-                </td>
-                <td>
-                    {coupon.applicableCategories && coupon.applicableCategories.length > 0
-                        ? coupon.applicableCategories.join(', ')
-                        : '모든 카테고리'}
-                </td>
-            </tr>
-        ))
-    ) : (
-        <tr>
-            <td colSpan="7" className="no-results">
-                데이터가 없습니다.
-            </td>
-        </tr>
-    )}
-</tbody>
-
-
+                            {currentCoupons.map((coupon, index) => (
+                                <tr key={coupon._id}>
+                                    <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
+                                    <td>{coupon.name || 'Unknown Coupon'}</td>
+                                    <td>{coupon.code || 'Unknown Code'}</td>
+                                    <td>
+                                        {coupon.discountType === 'percentage'
+                                            ? `${coupon.discountValue}%`
+                                            : `${coupon.discountValue.toLocaleString()}원`}
+                                    </td>
+                                    <td>
+                                        {coupon.validUntil
+                                            ? new Date(coupon.validUntil).toLocaleDateString()
+                                            : '무제한'}
+                                    </td>
+                                    <td>
+                                        {coupon.applicableCategories && coupon.applicableCategories.length > 0
+                                            ? coupon.applicableCategories.join(', ')
+                                            : '모든 카테고리'}
+                                    </td>
+                                    <td>{coupon.isActive ? '활성화' : '비활성화'}</td>
+                                    <td>
+                                        <div className="action-buttons">
+                                            <FontAwesomeIcon
+                                                icon={faCheck}
+                                                onClick={() => handleToggleActive(coupon._id, true)}
+                                                className="approve-btn"
+                                                title="활성화"
+                                            />
+                                            <FontAwesomeIcon
+                                                icon={faBan}
+                                                onClick={() => handleToggleActive(coupon._id, false)}
+                                                className="reject-btn"
+                                                title="비활성화"
+                                            />
+                                            <FontAwesomeIcon
+                                                icon={faTrash}
+                                                onClick={() => handleDelete(coupon._id)}
+                                                className="delete-btn"
+                                                title="삭제"
+                                            />
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
                     </table>
-
-                    <div className="pagination">
-                        <button
-                            className="prev-page-btn"
-                            onClick={handlePreviousPage}
-                            disabled={currentPage === 1}
-                        >
-                            이전 페이지
-                        </button>
-                        {[...Array(totalPages)].map((_, i) => (
-                            <button
-                                key={i}
-                                onClick={() => handlePageChange(i + 1)}
-                                className={currentPage === i + 1 ? 'active' : ''}
-                                id="page-number-btn"
-                            >
-                                {i + 1}
-                            </button>
-                        ))}
-                        <button
-                            className="next-page-btn"
-                            onClick={handleNextPage}
-                            disabled={currentPage === totalPages}
-                        >
-                            다음 페이지
-                        </button>
-                    </div>
                 </div>
                 <div className="write-btn-container">
                     <button className="write-btn" onClick={handleCreateCouponClick}>
                         쿠폰 등록
                     </button>
                 </div>
+
             </div>
         </div>
     );
