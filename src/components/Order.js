@@ -19,7 +19,7 @@ const Order = () => {
                 return;
             }
 
-            const response = await axios.get('http://127.0.0.1:8863/api/orderAll', {
+            const response = await axios.get('http://127.0.0.1:8865/api/orderAll', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -42,7 +42,7 @@ const Order = () => {
     const fetchUserName = async (userId) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get(`http://127.0.0.1:8863/api/users/userinfo/${userId}`, {
+            const response = await axios.get(`http://127.0.0.1:8865/api/users/userinfo/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -63,7 +63,7 @@ const Order = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.put(
-                `http://127.0.0.1:8863/api/orderEdit/${orderId}`, // 주문 ID를 URL에 포함
+                `http://127.0.0.1:8865/api/editPayment/${orderId}`, // 주문 ID를 URL에 포함
                 { paymentStatus: newStatus }, // 요청 본문에 paymentStatus만 전달
                 {
                     headers: {
@@ -85,6 +85,33 @@ const Order = () => {
         }
     };
     
+    const updateOrderStatus = async (orderId, newStatus) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.put(
+                `http://127.0.0.1:8865/api/editOrder/${orderId}`, // 주문 ID를 URL에 포함
+                { orderStatus: newStatus }, // 요청 본문에 orderStatus만 전달
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+    
+            if (response.status === 200) {
+                alert('주문 상태가 변경되었습니다.'); // 성공 알림 추가
+                fetchOrders(); // 업데이트 후 주문 목록 다시 가져오기
+            } else {
+                console.error('주문 상태 업데이트 실패:', response.data);
+                alert('주문 상태 업데이트에 실패했습니다.');
+            }
+        } catch (error) {
+            console.error('주문 상태 업데이트 중 오류 발생:', error);
+            alert('주문 상태 업데이트 중 오류가 발생했습니다.');
+        }
+    };
+    
+
     const handleStatusChange = (orderId, newStatus, type) => {
         const message =
             type === 'orderStatus'
@@ -94,9 +121,12 @@ const Order = () => {
         if (window.confirm(message)) {
             if (type === 'paymentStatus') {
                 updatePaymentStatus(orderId, newStatus); // 결제 상태 업데이트
+            } else if (type === 'orderStatus') {
+                updateOrderStatus(orderId, newStatus); // 주문 상태 업데이트
             }
         }
     };
+    
     
 
     useEffect(() => {
@@ -173,19 +203,50 @@ const Order = () => {
                                                 </div>
                                             ))}
                                         </td>
-                                        <td>{order.orderStatus}</td>
                                         <td>
-                                            <select
-                                                value={order.paymentStatus || 'Unknown'}
-                                                onChange={(e) =>
-                                                    handleStatusChange(order._id, e.target.value, 'paymentStatus')
-                                                }
-                                            >
-                                                <option value="결제 대기">결제 대기</option>
-                                                <option value="결제 완료">결제 완료</option>
-                                                <option value="결제 실패">결제 실패</option>
-                                            </select>
-                                        </td>
+    <select
+        value={order.orderStatus || '배송 전'}
+        onChange={(e) =>
+            handleStatusChange(order._id, e.target.value, 'orderStatus')
+        }
+        style={{
+            color:
+                order.orderStatus === '배송 전'
+                    ? 'blue'
+                    : order.orderStatus === '배송 중'
+                    ? 'orange'
+                    : order.orderStatus === '배송 완료'
+                    ? 'green'
+                    : 'black', // 기본 색상
+        }}
+    >
+        <option value="배송 전">배송 전</option>
+        <option value="배송 중">배송 중</option>
+        <option value="배송 완료">배송 완료</option>
+    </select>
+</td>
+                                        <td>
+    <select
+        value={order.paymentStatus || 'Unknown'}
+        onChange={(e) =>
+            handleStatusChange(order._id, e.target.value, 'paymentStatus')
+        }
+        style={{
+            color:
+                order.paymentStatus === '결제 대기'
+                    ? 'orange'
+                    : order.paymentStatus === '결제 완료'
+                    ? 'green'
+                    : order.paymentStatus === '결제 실패'
+                    ? 'red'
+                    : 'black', // 기본 색상
+        }}
+    >
+        <option value="결제 대기">결제 대기</option>
+        <option value="결제 완료">결제 완료</option>
+        <option value="결제 실패">결제 실패</option>
+    </select>
+</td>
                                         <td>{order.totalAmount || 0} 원</td>
                                         <td>{new Date(order.createdAt).toLocaleString()}</td>
                                     </tr>

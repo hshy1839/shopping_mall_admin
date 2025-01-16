@@ -34,7 +34,7 @@ const ProductUpdate = () => {
                 }
 
                 const response = await axios.get(
-                    `http://127.0.0.1:8863/api/products/Product/${id}`,
+                    `http://127.0.0.1:8865/api/products/Product/${id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -116,7 +116,7 @@ const ProductUpdate = () => {
 
 
             const response = await axios.put(
-                `http://127.0.0.1:8863/api/products/update/${id}`,
+                `http://127.0.0.1:8865/api/products/update/${id}`,
                 updatedProduct,
                 {
                     headers: {

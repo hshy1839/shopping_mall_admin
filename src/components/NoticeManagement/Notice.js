@@ -26,7 +26,7 @@ const Notice = () => {
                     return;
                 }
 
-                const response = await axios.get('http://127.0.0.1:8863/api/users/noticeList/find', {
+                const response = await axios.get('http://127.0.0.1:8865/api/users/noticeList/find', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

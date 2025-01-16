@@ -10,17 +10,7 @@ const CouponCreate = () => {
   const [discountValue, setDiscountValue] = useState('');
   const [validFrom, setValidFrom] = useState('');
   const [validUntil, setValidUntil] = useState('');
-  const [applicableCategories, setApplicableCategories] = useState([]);
   const navigate = useNavigate();
-
-  const handleCategoryChange = (e) => {
-    const { value, checked } = e.target;
-    if (checked) {
-      setApplicableCategories([...applicableCategories, value]);
-    } else {
-      setApplicableCategories(applicableCategories.filter((cat) => cat !== value));
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,7 +24,7 @@ const CouponCreate = () => {
 
     try {
       const response = await axios.post(
-        'http://127.0.0.1:8863/api/coupon',
+        'http://127.0.0.1:8865/api/coupon',
         {
           name,
           code,
@@ -42,7 +32,6 @@ const CouponCreate = () => {
           discountValue: Number(discountValue),
           validFrom,
           validUntil,
-          applicableCategories,
         },
         {
           headers: {
@@ -124,8 +113,6 @@ const CouponCreate = () => {
           />
         </div>
 
-    
-
         {/* Valid From */}
         <div className="coupon-create-field">
           <label className="coupon-create-label" htmlFor="validFrom">시작 날짜</label>
@@ -150,24 +137,6 @@ const CouponCreate = () => {
             onChange={(e) => setValidUntil(e.target.value)}
             required
           />
-        </div>
-
-        {/* Applicable Categories */}
-        <div className="coupon-create-field">
-          <label className="coupon-create-label">적용 카테고리</label>
-          <div className="coupon-create-sizes">
-            {['골프의류', '일반의류', '남성의류', '여성의류', '지갑', '신발', '가방', '기타'].map((category) => (
-              <label key={category}>
-                <input
-                  type="checkbox"
-                  value={category}
-                  checked={applicableCategories.includes(category)}
-                  onChange={handleCategoryChange}
-                />
-                {category}
-              </label>
-            ))}
-          </div>
         </div>
 
         <button type="submit" className="coupon-create-button">등록</button>

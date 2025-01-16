@@ -122,7 +122,7 @@ const [imagePreviews, setImagePreviews] = useState([]); // 추가 이미지 미�
 
     try {
         const response = await axios.post(
-            'http://127.0.0.1:8863/api/products/productCreate',
+            'http://127.0.0.1:8865/api/products/productCreate',
             formData,
             {
                 headers: {

@@ -21,7 +21,7 @@ const Product = () => {
                 return;
             }
     
-            const response = await axios.get('http://127.0.0.1:8863/api/products/allProduct', {
+            const response = await axios.get('http://127.0.0.1:8865/api/products/allProduct', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -59,7 +59,7 @@ const Product = () => {
                     return;
                 }
     
-                const response = await axios.get('http://127.0.0.1:8863/api/products/allProduct', {
+                const response = await axios.get('http://127.0.0.1:8865/api/products/allProduct', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
