@@ -266,7 +266,7 @@ const [imagePreviews, setImagePreviews] = useState([]); // 추가 이미지 미�
         <div className="product-create-field">
           <label className="product-create-label">사이즈</label>
           <div className="product-create-sizes">
-            {['S', 'M', 'L', 'XL'].map((sizeOption) => (
+            {['S', 'M', 'L', 'XL', 'free'].map((sizeOption) => (
               <label key={sizeOption}>
                 <input
                   type="checkbox"

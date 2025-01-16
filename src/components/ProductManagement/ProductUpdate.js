@@ -221,7 +221,7 @@ const ProductUpdate = () => {
                 <div className="product-update-field">
                     <label className="product-update-label">사이즈별 재고</label>
                     <div>
-                        {['S', 'M', 'L', 'XL'].map(size => (
+                        {['S', 'M', 'L', 'XL', 'free'].map(size => (
                             <div key={size} className="product-update-size-field">
                                 <label className="product-update-size-label">{size} 사이즈</label>
                                 <input
