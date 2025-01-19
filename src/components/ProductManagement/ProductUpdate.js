@@ -47,7 +47,7 @@ const ProductUpdate = () => {
                     const { main, sub } = response.data.product.category;
                     setUpdatedProduct({
                         name: response.data.product.name,
-                        category: { main, sub }, // 분리된 카테고리 설정
+                        category: { main, sub },
                         price: response.data.product.price,
                         description: response.data.product.description,
                         sizeStock: response.data.product.sizeStock || {},
@@ -113,7 +113,6 @@ const ProductUpdate = () => {
                 alert('로그인 정보가 없습니다.');
                 return;
             }
-
 
             const response = await axios.put(
                 `http://127.0.0.1:8865/api/products/update/${id}`,
@@ -202,26 +201,28 @@ const ProductUpdate = () => {
                     </select>
                 </div>
 
-                {/* Price */}
-                <div className="product-update-field">
-                    <label className="product-update-label" htmlFor="price">가격</label>
-                    <input
-                        className="product-update-input"
-                        type="number"
-                        id="price"
-                        name="price"
-                        value={updatedProduct.price}
-                        onChange={handleChange}
-                        placeholder="가격을 입력하세요"
-                        required
-                    />
-                </div>
-
                 {/* Size Stock */}
                 <div className="product-update-field">
                     <label className="product-update-label">사이즈별 재고</label>
-                    <div>
-                        {['S', 'M', 'L', 'XL', 'free'].map(size => (
+                    {updatedProduct.category.sub === "신발" ? (
+                        <div className="product-update-size-range">
+                            {Array.from({ length: 21 }, (_, i) => 200 + i * 5).map(size => (
+                                <div key={size} className="product-update-size-field">
+                                    <label className="product-update-size-label">{size} mm</label>
+                                    <input
+                                        className="product-update-input"
+                                        type="number"
+                                        name={`size_${size}`}
+                                        value={updatedProduct.sizeStock[size] || ''}
+                                        onChange={handleChange}
+                                        placeholder={`${size}mm 재고`}
+                                        min="0"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        ['S', 'M', 'L', 'XL', 'free'].map(size => (
                             <div key={size} className="product-update-size-field">
                                 <label className="product-update-size-label">{size} 사이즈</label>
                                 <input
@@ -233,8 +234,8 @@ const ProductUpdate = () => {
                                     placeholder={`${size} 사이즈의 재고 수량`}
                                 />
                             </div>
-                        ))}
-                    </div>
+                        ))
+                    )}
                 </div>
 
                 {/* Description */}

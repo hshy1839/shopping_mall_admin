@@ -51,14 +51,14 @@ const ProductDetail = () => {
         if (!confirmation) {
             return;
         }
-    
+
         try {
             const token = localStorage.getItem('token');
             if (!token) {
                 console.log('로그인 정보가 없습니다.');
                 return;
             }
-    
+
             const response = await axios.delete(
                 `http://127.0.0.1:8865/api/products/delete/${id}`, // URL 수정
                 {
@@ -67,7 +67,7 @@ const ProductDetail = () => {
                     },
                 }
             );
-    
+
             if (response.data && response.data.success) {
                 alert('상품이 삭제되었습니다.');
                 navigate('/products'); // 상품 목록 페이지로 리디렉션
@@ -78,7 +78,6 @@ const ProductDetail = () => {
             console.error('상품 삭제 중 오류가 발생했습니다.', error);
         }
     };
-    
 
     if (!product) {
         return <div>로딩 중...</div>;
@@ -90,25 +89,36 @@ const ProductDetail = () => {
             <div className="product-detail-content">
                 <div className="product-info">
                     <h1 className="product-name">{product.name}</h1>
+
                     {/* 카테고리 상위 및 하위 표시 */}
                     <p className="product-category">
                         <strong>카테고리:</strong> {product.category.main} &gt; {product.category.sub}
                     </p>
-                    <p className="product-price"><strong>가격:</strong> {product.price.toLocaleString()} 원</p>
 
-                    {/* 사이즈별 재고를 재고 줄에 추가 */}
-                    <p className="product-stock">
-                        <strong>재고:</strong> 
-                        {product.sizeStock
-                            ? Object.entries(product.sizeStock).map(([size, stock]) => (
-                                <span key={size}>
-                                    {size}: {stock}개{" "}
-                                </span>
-                            ))
-                            : `${product.stock} 개`}
+                    <p className="product-price">
+                        <strong>가격:</strong> {product.price.toLocaleString()} 원
                     </p>
 
-                    <p className="product-description"><strong>상세 설명:</strong> {product.description}</p>
+                    {/* 사이즈별 재고 */}
+                    <div className="product-stock">
+                        <strong>사이즈별 재고</strong>
+                        <ul>
+                            {product.sizeStock
+                                ? Object.entries(product.sizeStock)
+                                      .filter(([_, stock]) => stock > 0) // 재고가 0보다 큰 항목만 표시
+                                      .map(([size, stock]) => (
+                                          <li key={size} className="stock-item">
+                                              <span className="stock-size">{size}</span>:{" "}
+                                              <span className="stock-quantity">{stock}개</span>
+                                          </li>
+                                      ))
+                                : <span>재고 정보 없음</span>}
+                        </ul>
+                    </div>
+
+                    <p className="product-description">
+                        <strong>상세 설명:</strong> {product.description}
+                    </p>
 
                     <div className="button-container">
                         <button className="edit-button" onClick={handleEdit}>수정</button>

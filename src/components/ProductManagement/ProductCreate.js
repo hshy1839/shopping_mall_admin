@@ -38,6 +38,56 @@ const [imagePreviews, setImagePreviews] = useState([]); // 추가 이미지 미�
     }
   };
 
+
+const renderSizeOptions = () => {
+  if (categorySub === "신발") {
+    // 신발 카테고리일 경우 200~300, 5단위 생성
+    const shoeSizes = Array.from({ length: 21 }, (_, i) => 200 + i * 5);
+    return shoeSizes.map((sizeOption) => (
+      <label key={sizeOption}>
+        <input
+          type="checkbox"
+          value={sizeOption}
+          checked={size.includes(sizeOption.toString())}
+          onChange={handleSizeChange}
+        />
+        {sizeOption}
+        {size.includes(sizeOption.toString()) && (
+          <input
+            type="number"
+            value={sizeStock[sizeOption] || 0}
+            onChange={(e) => handleStockChange(e, sizeOption)}
+            placeholder="재고 수량"
+            min="0"
+          />
+        )}
+      </label>
+    ));
+  } else {
+    // 기본 카테고리 옵션
+    return ["S", "M", "L", "XL", "free"].map((sizeOption) => (
+      <label key={sizeOption}>
+        <input
+          type="checkbox"
+          value={sizeOption}
+          checked={size.includes(sizeOption)}
+          onChange={handleSizeChange}
+        />
+        {sizeOption}
+        {size.includes(sizeOption) && (
+          <input
+            type="number"
+            value={sizeStock[sizeOption] || 0}
+            onChange={(e) => handleStockChange(e, sizeOption)}
+            placeholder="재고 수량"
+            min="0"
+          />
+        )}
+      </label>
+    ));
+  }
+};
+
   const handleStockChange = (e, size) => {
     const { value } = e.target;
     const numericStock = Number(value);
@@ -208,11 +258,12 @@ const [imagePreviews, setImagePreviews] = useState([]); // 추가 이미지 미�
             )}
             {categoryMain === '골프의류' && (
               <>
-                <option value="남성골프">남성골프</option>
-                <option value="여성골프">여성골프</option>
-                <option value="골프가방">골프가방</option>
-                <option value="골프신발">골프신발</option>
-                <option value="골프기타">골프기타</option>
+                <option value="남성의류">남성의류</option>
+                <option value="여성의류">여성의류</option>
+                <option value="지갑">지갑</option>
+                <option value="가방">가방</option>
+                <option value="신발">신발</option>
+                <option value="기타">기타</option>
               </>
             )}
           </select>
@@ -264,30 +315,9 @@ const [imagePreviews, setImagePreviews] = useState([]); // 추가 이미지 미�
 
         {/* Size Selection */}
         <div className="product-create-field">
-          <label className="product-create-label">사이즈</label>
-          <div className="product-create-sizes">
-            {['S', 'M', 'L', 'XL', 'free'].map((sizeOption) => (
-              <label key={sizeOption}>
-                <input
-                  type="checkbox"
-                  value={sizeOption}
-                  checked={size.includes(sizeOption)}
-                  onChange={handleSizeChange}
-                />
-                {sizeOption}
-                {size.includes(sizeOption) && (
-                  <input
-                    type="number"
-                    value={sizeStock[sizeOption] || 0}
-                    onChange={(e) => handleStockChange(e, sizeOption)}
-                    placeholder="재고 수량"
-                    min="0"
-                  />
-                )}
-              </label>
-            ))}
-          </div>
-        </div>
+    <label className="product-create-label">사이즈</label>
+    <div className="product-create-sizes">{renderSizeOptions()}</div>
+  </div>
 
         {/* Price */}
         <div className="product-create-field">
