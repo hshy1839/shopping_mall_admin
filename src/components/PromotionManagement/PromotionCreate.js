@@ -37,7 +37,7 @@ const PromotionCreate = () => {
 
     try {
       const response = await axios.post(
-        'http://127.0.0.1:8865/api/promotion/create',
+        'http://3.104.4.81:8865/api/promotion/create',
         formData,
         {
           headers: {

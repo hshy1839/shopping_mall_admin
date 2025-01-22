@@ -20,7 +20,7 @@ const Users = () => {
                     return;
                 }
 
-                const response = await axios.get('http://127.0.0.1:8865/api/users/userinfo', {
+                const response = await axios.get('http://3.104.4.81:8865/api/users/userinfo', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -81,7 +81,7 @@ const Users = () => {
             if (!token) return console.log('로그인 정보가 없습니다.');
     
             const response = await axios.put(
-                `http://127.0.0.1:8865/api/users/userinfo/${id}`,
+                `http://3.104.4.81:8865/api/users/userinfo/${id}`,
                 { is_active: true },
                 {
                     headers: {
@@ -121,7 +121,7 @@ const Users = () => {
             }
     
             const response = await axios.put(
-                `http://127.0.0.1:8865/api/users/userinfo/${id}`,
+                `http://3.104.4.81:8865/api/users/userinfo/${id}`,
                 { is_active: false },
                 {
                     headers: {
@@ -160,7 +160,7 @@ const Users = () => {
             }
     
             const response = await axios.delete(
-                `http://127.0.0.1:8865/api/users/userinfo/${id}`,  // URL에 ID 포함
+                `http://3.104.4.81:8865/api/users/userinfo/${id}`,  // URL에 ID 포함
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
