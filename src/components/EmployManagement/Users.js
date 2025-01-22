@@ -73,19 +73,12 @@ const Users = () => {
     
     // 각 기능 핸들러
     const handleApprove = async (id) => {
-        const isConfirmed = window.confirm("해당 사용자계정을 승인하시겠습니까?");
-
-        if (!isConfirmed) {
-            console.log("승인이 취소되었습니다.");
-            return;  // "아니오"를 선택하면 삭제 취소
-        }
+        const isConfirmed = window.confirm("해당 사용자 계정을 승인하시겠습니까?");
+        if (!isConfirmed) return;
     
         try {
             const token = localStorage.getItem('token');
-            if (!token) {
-                console.log('로그인 정보가 없습니다.');
-                return;
-            }
+            if (!token) return console.log('로그인 정보가 없습니다.');
     
             const response = await axios.put(
                 `http://127.0.0.1:8865/api/users/userinfo/${id}`,
@@ -98,23 +91,25 @@ const Users = () => {
             );
     
             if (response.data.success) {
-                const updatedUsers = users.map((user) =>
-                    user._id === id ? { ...user, is_active: true } : user
+                // 상태 업데이트
+                setUsers((prevUsers) =>
+                    prevUsers.map((user) =>
+                        user._id === id ? { ...user, is_active: true } : user
+                    )
                 );
-                setUsers(updatedUsers);
             } else {
-                console.log('승인 실패');
+                alert('승인 실패');
             }
         } catch (error) {
             console.error('승인 처리 중 오류 발생:', error);
         }
     };
+    
 
     const handleReject = async (id) => {
         const isConfirmed = window.confirm("해당 사용자 계정을 사용중지 하시겠습니까?");
 
         if (!isConfirmed) {
-            console.log("사용중지가 취소되었습니다.");
             return;  // "아니오"를 선택하면 삭제 취소
         }
 

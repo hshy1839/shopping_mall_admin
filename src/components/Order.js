@@ -59,6 +59,50 @@ const Order = () => {
         }
     };
 
+    const fetchShippingInfo = async (userId) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('로그인 정보가 없습니다.');
+                return null;
+            }
+    
+            console.log(userId);
+            console.log('Fetching shipping info for UserId:', userId); // 디버깅 로그 추가
+            if (!userId) {
+                console.error('UserId가 제공되지 않았습니다.');
+                return null;
+            }
+    
+            const response = await axios.get(`http://127.0.0.1:8865/api/shippinginfo/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+    
+            console.log('API Response:', response.data); // 응답 데이터 확인
+    
+            // 응답 데이터 구조에 맞게 shippingDetails 반환
+            if (response.status === 200 && response.data.shippingDetails) {
+                return response.data.shippingDetails; // 문자열 배열 반환
+            } else {
+                console.error('Invalid response format or no data:', response.data);
+                return null;
+            }
+        } catch (error) {
+            console.error('Error fetching shipping info:', error);
+            if (error.response) {
+                console.error('Server Response:', error.response.data);
+            }
+            return null;
+        }
+    };
+    
+    
+    
+
+
+
     const updatePaymentStatus = async (orderId, newStatus) => {
         try {
             const token = localStorage.getItem('token');
@@ -71,7 +115,7 @@ const Order = () => {
                     },
                 }
             );
-    
+
             if (response.status === 200) {
                 alert('결제 상태가 변경되었습니다.'); // 성공 알림 추가
                 fetchOrders(); // 업데이트 후 주문 목록 다시 가져오기
@@ -84,7 +128,7 @@ const Order = () => {
             alert('결제 상태 업데이트 중 오류가 발생했습니다.');
         }
     };
-    
+
     const updateOrderStatus = async (orderId, newStatus) => {
         try {
             const token = localStorage.getItem('token');
@@ -97,7 +141,7 @@ const Order = () => {
                     },
                 }
             );
-    
+
             if (response.status === 200) {
                 alert('주문 상태가 변경되었습니다.'); // 성공 알림 추가
                 fetchOrders(); // 업데이트 후 주문 목록 다시 가져오기
@@ -110,14 +154,14 @@ const Order = () => {
             alert('주문 상태 업데이트 중 오류가 발생했습니다.');
         }
     };
-    
+
 
     const handleStatusChange = (orderId, newStatus, type) => {
         const message =
             type === 'orderStatus'
                 ? `주문 상태를 ${newStatus}로 변경하시겠습니까?`
                 : `결제 상태를 ${newStatus}로 변경하시겠습니까?`;
-    
+
         if (window.confirm(message)) {
             if (type === 'paymentStatus') {
                 updatePaymentStatus(orderId, newStatus); // 결제 상태 업데이트
@@ -126,8 +170,10 @@ const Order = () => {
             }
         }
     };
-    
-    
+
+
+
+
 
     useEffect(() => {
         fetchOrders();
@@ -167,6 +213,7 @@ const Order = () => {
                             <th>결제 상태</th>
                             <th>총 금액</th>
                             <th>주문일시</th>
+                            <th>배송지 정보</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -204,51 +251,89 @@ const Order = () => {
                                             ))}
                                         </td>
                                         <td>
-    <select
-        value={order.orderStatus || '배송 전'}
-        onChange={(e) =>
-            handleStatusChange(order._id, e.target.value, 'orderStatus')
-        }
-        style={{
-            color:
-                order.orderStatus === '배송 전'
-                    ? 'blue'
-                    : order.orderStatus === '배송 중'
-                    ? 'orange'
-                    : order.orderStatus === '배송 완료'
-                    ? 'green'
-                    : 'black', // 기본 색상
-        }}
-    >
-        <option value="배송 전">배송 전</option>
-        <option value="배송 중">배송 중</option>
-        <option value="배송 완료">배송 완료</option>
-    </select>
-</td>
+                                            <select
+                                                value={order.orderStatus || '배송 전'}
+                                                onChange={(e) =>
+                                                    handleStatusChange(order._id, e.target.value, 'orderStatus')
+                                                }
+                                                style={{
+                                                    color:
+                                                        order.orderStatus === '배송 전'
+                                                            ? 'blue'
+                                                            : order.orderStatus === '배송 중'
+                                                                ? 'orange'
+                                                                : order.orderStatus === '배송 완료'
+                                                                    ? 'green'
+                                                                    : 'black', // 기본 색상
+                                                }}
+                                            >
+                                                <option value="배송 전">배송 전</option>
+                                                <option value="배송 중">배송 중</option>
+                                                <option value="배송 완료">배송 완료</option>
+                                            </select>
+                                        </td>
                                         <td>
-    <select
-        value={order.paymentStatus || 'Unknown'}
-        onChange={(e) =>
-            handleStatusChange(order._id, e.target.value, 'paymentStatus')
-        }
-        style={{
-            color:
-                order.paymentStatus === '결제 대기'
-                    ? 'orange'
-                    : order.paymentStatus === '결제 완료'
-                    ? 'green'
-                    : order.paymentStatus === '결제 실패'
-                    ? 'red'
-                    : 'black', // 기본 색상
-        }}
-    >
-        <option value="결제 대기">결제 대기</option>
-        <option value="결제 완료">결제 완료</option>
-        <option value="결제 실패">결제 실패</option>
-    </select>
-</td>
+                                            <select
+                                                value={order.paymentStatus || 'Unknown'}
+                                                onChange={(e) =>
+                                                    handleStatusChange(order._id, e.target.value, 'paymentStatus')
+                                                }
+                                                style={{
+                                                    color:
+                                                        order.paymentStatus === '결제 대기'
+                                                            ? 'orange'
+                                                            : order.paymentStatus === '결제 완료'
+                                                                ? 'green'
+                                                                : order.paymentStatus === '결제 실패'
+                                                                    ? 'red'
+                                                                    : 'black', // 기본 색상
+                                                }}
+                                            >
+                                                <option value="결제 대기">결제 대기</option>
+                                                <option value="결제 완료">결제 완료</option>
+                                                <option value="결제 실패">결제 실패</option>
+                                            </select>
+                                        </td>
                                         <td>{order.totalAmount || 0} 원</td>
                                         <td>{new Date(order.createdAt).toLocaleString()}</td>
+                                        <td>
+    <button
+        onClick={async () => {
+            console.log('UserId 전달:', userId); // 디버깅 로그
+            if (!userId || userId.length !== 24) {
+                alert('유효하지 않은 유저 ID입니다.');
+                return;
+            }
+
+            try {
+                const shippingDetails = await fetchShippingInfo(userId);
+                console.log('Fetched Shipping Info:', shippingDetails); // 반환된 데이터 확인
+
+                if (shippingDetails && shippingDetails.length > 0) {
+                    // 배열의 각 항목을 줄바꿈하여 연결
+                    const formattedDetails = shippingDetails.join('\n');
+                    
+                    // 하나의 alert에 줄바꿈된 내용 출력
+                    alert(formattedDetails);
+                } else if (!shippingDetails) {
+                    alert('배송지 정보가 없습니다.');
+                } else {
+                    alert('배송지 데이터가 올바르지 않습니다.');
+                }
+            } catch (error) {
+                alert('배송지 정보를 가져오는 중 오류가 발생했습니다.');
+                console.error(error);
+            }
+        }}
+        className="delivery-info-btn"
+    >
+        확인하기
+    </button>
+</td>
+
+
+
+
                                     </tr>
                                 );
                             })
@@ -260,6 +345,7 @@ const Order = () => {
                             </tr>
                         )}
                     </tbody>
+
                 </table>
 
                 <div className="pagination">
