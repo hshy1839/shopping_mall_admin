@@ -28,6 +28,7 @@ const Setting = () => {
         });
     };
 
+    
     const handleBankAccountRegister = async () => {
         if (!bankName || !bankAccount || !accountHolder) {
           alert('모든 필드를 입력해주세요.');
@@ -93,31 +94,7 @@ const Setting = () => {
                     </div>
                 </div>
 
-                <div className="setting-section">
-                    <h2>비밀번호 변경</h2>
-                    <input
-                        type="password"
-                        placeholder="현재 비밀번호"
-                        value={currentPassword}
-                        onChange={(e) => setCurrentPassword(e.target.value)}
-                        className="password-input-field"
-                    />
-                    <input
-                        type="password"
-                        placeholder="새 비밀번호"
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                        className="password-input-field"
-                    />
-                    <input
-                        type="password"
-                        placeholder="새 비밀번호 확인"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        className="password-input-field"
-                    />
-                    <button onClick={handlePasswordChange} className="submit-password-button">변경</button>
-                </div>
+                
             </div>
         </div>
     );
