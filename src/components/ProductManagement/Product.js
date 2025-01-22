@@ -36,7 +36,6 @@ const Product = () => {
     
                 setProducts(sortedProducts);
             } else {
-                console.error('올바르지 않은 데이터 형식:', response.data);
             }
         } catch (error) {
             console.error('상품 정보를 가져오는데 실패했습니다.', error);

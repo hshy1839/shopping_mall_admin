@@ -31,7 +31,6 @@ const Order = () => {
 
                 setOrders(sortedOrders);
             } else {
-                console.error('올바르지 않은 데이터 형식:', response.data);
             }
         } catch (error) {
             console.error('주문 정보를 가져오는데 실패했습니다.', error);
@@ -53,7 +52,6 @@ const Order = () => {
                 return '알 수 없음';
             }
         } catch (error) {
-            console.error(`사용자 정보를 가져오는데 실패했습니다. UserId: ${userId}`, error);
             return '알 수 없음';
         }
     };
@@ -82,13 +80,11 @@ const Order = () => {
             if (response.status === 200 && response.data.shippingDetails) {
                 return response.data.shippingDetails; // 문자열 배열 반환
             } else {
-                console.error('Invalid response format or no data:', response.data);
                 return null;
             }
         } catch (error) {
             console.error('Error fetching shipping info:', error);
             if (error.response) {
-                console.error('Server Response:', error.response.data);
             }
             return null;
         }
@@ -116,7 +112,6 @@ const Order = () => {
                 alert('결제 상태가 변경되었습니다.'); // 성공 알림 추가
                 fetchOrders(); // 업데이트 후 주문 목록 다시 가져오기
             } else {
-                console.error('결제 상태 업데이트 실패:', response.data);
                 alert('결제 상태 업데이트에 실패했습니다.');
             }
         } catch (error) {
@@ -142,7 +137,6 @@ const Order = () => {
                 alert('주문 상태가 변경되었습니다.'); // 성공 알림 추가
                 fetchOrders(); // 업데이트 후 주문 목록 다시 가져오기
             } else {
-                console.error('주문 상태 업데이트 실패:', response.data);
                 alert('주문 상태 업데이트에 실패했습니다.');
             }
         } catch (error) {

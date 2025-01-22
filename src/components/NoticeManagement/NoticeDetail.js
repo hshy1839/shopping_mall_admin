@@ -34,7 +34,6 @@ const NoticeDetail = () => {
                         }
                     );
         
-                    console.log('공지 상세 정보:', response.data); // 공지 응답 확인
         
                     if (response.data && response.data.success) {
                         setNotice(response.data.notice);

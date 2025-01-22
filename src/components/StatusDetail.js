@@ -51,7 +51,6 @@ const StatusDetail = () => {
 
                     setUserNames(newUserNames); // 유저 이름 상태 업데이트
                 } else {
-                    console.error('올바르지 않은 데이터 형식:', response.data);
                 }
             } catch (error) {
                 console.error('출퇴근 데이터를 가져오는데 실패했습니다.', error);

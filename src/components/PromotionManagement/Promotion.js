@@ -35,7 +35,6 @@ const Promotion = () => {
 
                 setPromotions(sortedPromotions);
             } else {
-                console.error('올바르지 않은 데이터 형식:', response.data);
             }
         } catch (error) {
             console.error('프로모션 정보를 가져오는데 실패했습니다.', error);
