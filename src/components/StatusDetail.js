@@ -19,7 +19,6 @@ const StatusDetail = () => {
             try {
                 const token = localStåçrage.getItem('token');
                 if (!token) {
-                    console.log('로그인 정보가 없습니다.');
                     return;
                 }
 

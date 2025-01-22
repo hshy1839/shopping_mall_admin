@@ -31,7 +31,6 @@ const PromotionCreate = () => {
     formData.append('name', name);
     formData.append('promotionImage', promotionImage);
 
-    console.log("data :",[...formData]); // FormData의 내용을 콘솔에 출력하여 확인
 
     const token = localStorage.getItem('token');
 

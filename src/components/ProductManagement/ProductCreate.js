@@ -166,7 +166,6 @@ const renderSizeOptions = () => {
         formData.append('additionalImages', img); // 추가 이미지도 파일 객체
     });
 
-    console.log([...formData]); // FormData의 내용을 콘솔에 출력하여 확인
 
     const token = localStorage.getItem('token');
 

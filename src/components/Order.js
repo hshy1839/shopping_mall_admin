@@ -15,7 +15,6 @@ const Order = () => {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
-                console.log('로그인 정보가 없습니다.');
                 return;
             }
 
@@ -67,8 +66,6 @@ const Order = () => {
                 return null;
             }
     
-            console.log(userId);
-            console.log('Fetching shipping info for UserId:', userId); // 디버깅 로그 추가
             if (!userId) {
                 console.error('UserId가 제공되지 않았습니다.');
                 return null;
@@ -80,7 +77,6 @@ const Order = () => {
                 },
             });
     
-            console.log('API Response:', response.data); // 응답 데이터 확인
     
             // 응답 데이터 구조에 맞게 shippingDetails 반환
             if (response.status === 200 && response.data.shippingDetails) {
@@ -299,7 +295,6 @@ const Order = () => {
                                         <td>
     <button
         onClick={async () => {
-            console.log('UserId 전달:', userId); // 디버깅 로그
             if (!userId || userId.length !== 24) {
                 alert('유효하지 않은 유저 ID입니다.');
                 return;
@@ -307,7 +302,6 @@ const Order = () => {
 
             try {
                 const shippingDetails = await fetchShippingInfo(userId);
-                console.log('Fetched Shipping Info:', shippingDetails); // 반환된 데이터 확인
 
                 if (shippingDetails && shippingDetails.length > 0) {
                     // 배열의 각 항목을 줄바꿈하여 연결
