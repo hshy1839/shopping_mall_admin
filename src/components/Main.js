@@ -11,7 +11,7 @@ const Main = () => {
     const fetchInactiveUsersCount = async () => {
       try {
         const token = localStorage.getItem('token'); // 로그인 토큰 가져오기
-        const response = await axios.get('http://3.104.4.81:8865/api/inactiveUsersCount', {
+        const response = await axios.get('http://3.39.192.73:8865/api/inactiveUsersCount', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -29,7 +29,7 @@ const Main = () => {
     const fetchPendingPaymentCount = async () => {
       try {
         const token = localStorage.getItem('token'); // 로그인 토큰 가져오기
-        const response = await axios.get('http://3.104.4.81:8865/api/order/pendingCount', {
+        const response = await axios.get('http://3.39.192.73:8865/api/order/pendingCount', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -48,7 +48,7 @@ const Main = () => {
     const fetchUnansweredCount = async () => {
       try {
         const token = localStorage.getItem('token'); // 로그인 토큰 가져오기
-        const response = await axios.get('http://3.104.4.81:8865/api/qnaQuestion/unansweredCount', {
+        const response = await axios.get('http://3.39.192.73:8865/api/qnaQuestion/unansweredCount', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
