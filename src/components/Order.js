@@ -18,7 +18,7 @@ const Order = () => {
                 return;
             }
 
-            const response = await axios.get('http://localhost:8865/api/orderAll', {
+            const response = await axios.get('http://3.39.192.73:8865/api/orderAll', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -40,7 +40,7 @@ const Order = () => {
     const fetchUserName = async (userId) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get(`http://localhost:8865/api/users/userinfo/${userId}`, {
+            const response = await axios.get(`http://3.39.192.73:8865/api/users/userinfo/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -69,7 +69,7 @@ const Order = () => {
                 return null;
             }
     
-            const response = await axios.get(`http://localhost:8865/api/shippinginfo/${userId}`, {
+            const response = await axios.get(`http://3.39.192.73:8865/api/shippinginfo/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -99,7 +99,7 @@ const Order = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.put(
-                `http://localhost:8865/api/editPayment/${orderId}`, // 주문 ID를 URL에 포함
+                `http://3.39.192.73:8865/api/editPayment/${orderId}`, // 주문 ID를 URL에 포함
                 { paymentStatus: newStatus }, // 요청 본문에 paymentStatus만 전달
                 {
                     headers: {
@@ -124,7 +124,7 @@ const Order = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.put(
-                `http://localhost:8865/api/editOrder/${orderId}`, // 주문 ID를 URL에 포함
+                `http://3.39.192.73:8865/api/editOrder/${orderId}`, // 주문 ID를 URL에 포함
                 { orderStatus: newStatus }, // 요청 본문에 orderStatus만 전달
                 {
                     headers: {

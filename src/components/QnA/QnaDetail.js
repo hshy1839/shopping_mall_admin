@@ -28,7 +28,7 @@ const QnaDetail = () => {
                 }
 
                 const response = await axios.get(
-                    `http://localhost:8865/api/qnaQuestion/getinfoByid/${id}`,
+                    `http://3.39.192.73:8865/api/qnaQuestion/getinfoByid/${id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -56,7 +56,7 @@ const QnaDetail = () => {
                 }
 
                 const response = await axios.get(
-                    `http://localhost:8865/api/qnaQuestion/getAnswers/${id}`,
+                    `http://3.39.192.73:8865/api/qnaQuestion/getAnswers/${id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -92,7 +92,7 @@ const QnaDetail = () => {
             }
 
             const response = await axios.post(
-                `http://localhost:8865/api/qnaQuestion/addAnswer/${id}`,
+                `http://3.39.192.73:8865/api/qnaQuestion/addAnswer/${id}`,
                 { body: newAnswer },
                 {
                     headers: {

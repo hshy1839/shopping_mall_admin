@@ -171,7 +171,7 @@ const renderSizeOptions = () => {
 
     try {
         const response = await axios.post(
-            'http://localhost:8865/api/products/productCreate',
+            'http://3.39.192.73:8865/api/products/productCreate',
             formData,
             {
                 headers: {

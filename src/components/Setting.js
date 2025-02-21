@@ -44,7 +44,7 @@ const Setting = () => {
             },
           ];
       
-          const response = await axios.post('http://localhost:8865/api/account', { accounts });
+          const response = await axios.post('http://3.39.192.73:8865/api/account', { accounts });
       
           if (response.data.success) {
             alert('계좌 정보가 성공적으로 저장되었습니다.');
