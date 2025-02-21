@@ -11,7 +11,7 @@ const Header = () => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-
+  
   const handleLinkClick = () => {
     setIsOpen(false);
   };
@@ -25,7 +25,7 @@ const Header = () => {
   };
 
   return (
-    <header className="header-container">
+    <header className='header-container'>
       <div className='header-container-container'>
         {/* 로고 및 인사 메시지 */}
         <div className='header-section1'>
@@ -92,9 +92,11 @@ const Header = () => {
       </div>
 
       {/* 반응형 버거 메뉴 아이콘 */}
-      <div className="burger-menu" onClick={toggleMenu}>
+      <Link to="/headerphone" onClick={handleLinkClick}>
+      <div className="burger-menu" >
         <FontAwesomeIcon icon={faBars} className="burger-icon" />
       </div>
+      </Link>
     </header>
   );
 };

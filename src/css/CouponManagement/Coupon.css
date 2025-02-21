@@ -208,36 +208,47 @@
   
     .coupon-management-container {
         width: 100%;
-        margin-left: 0;
+        height: 100vh;
+      overflow-x: hidden;
+      margin-left: 0%;
         flex-direction: column;
     }
-  
+    .coupon-management-container-container {
+      max-width: 90%;
+      padding-left: 5%;
+      padding-right: 5%;
+      height: 100%;
+      background-color: white;
+      border: 1px solid rgb(219, 221, 226);
+    }
     .coupon-search-box {
-        margin-top: 5%;
+        margin-top: 1%;
+      
         flex-direction: column;
         align-items: flex-start;
     }
   
     .coupon-search-box input {
-        width: 100%;
+        width: 95%;
         margin-bottom: 10px;
     }
   
-    .search-category, .search-button {
-        width: 100%;
+   .search-button {
+        width: 10%;
         margin-right: 0;
         margin-bottom: 10px;
     }
   
     .coupon-table {
         width: 100%;
-        font-size: 0.8rem;
+        font-size: 0.6rem;
         overflow-x: auto;
     }
   
     .coupon-table th,
     .coupon-table td {
-        padding: 8px;
+        padding: 2.2px;
+        font-size: 0.6rem;
     }
   
     #page-number-btn {
@@ -251,90 +262,23 @@
     }
   
     .write-btn {
-        width: 80%;
+        width: 100%;
         font-size: 14px;
     }
   
     .write-btn-container {
-        height: 60px;
+      margin-top: 20px;
+      height: 60px;
+    }
+    .action-buttons {
+      justify-content: center;
+      display: flex;
+      gap: 2px;
+    }
+    .approve-btn, .reject-btn, .delete-btn {
+      width: 20%;
+      height: 20%;
     }
   }
   
-  /* 480px 이하 화면 (모바일) */
-  @media (max-width: 480px) {
-  
-    .coupon-management-container {
-        margin-left: 0;
-        width:100%;
-        height: auto;
-        justify-self: center;
-        overflow-x: hidden;
-        padding: 5%;
-    }
-    .coupon-management-container-container {
-      width: 100%;
-      height: auto;
-    }
-    h1 {
-        font-size: 28px;
-    }
-  
-    .coupon-search-box {
-        margin-top: 5%;
-        flex-direction: column;
-        width: 100%;
-    }
-  
-    .coupon-search-box input {
-        width: 90%;
-        margin-bottom: 10px;
-    }
-  
-    .coupon-search-box .search-category {
-        width: 60%;
-        margin-bottom: 10px;
-    }
-  
-    .coupon-table {
-        width: 100%;
-        font-size: 0.8rem;
-        overflow-x: hidden;
-    }
-  
-    .coupon-table th,
-    .coupon-table td {
-        padding: 5px;
-        font-size: 12px;
-    }
-  
-    #page-number-btn {
-        font-size: 14px;
-        margin: 5px 2px;
-    }
-  
-    .pagination {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-  
-    .write-btn {
-        width: 70%;
-        height: 60%;
-        margin-left: 15%;
-        margin-top: 5%;
-        font-size: 14px;
-    }
-  
-    .write-btn-container {
-        height: 60px;
-    }
-  
-    .coupon-title {
-        font-size: 12px;
-    }
-  
-    .size-item {
-        font-size: 12px;
-    }
-  }
   

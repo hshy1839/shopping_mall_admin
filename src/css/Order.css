@@ -178,134 +178,77 @@
   @media (max-width: 768px) {
   
     .order-management-container {
-        width: 100%;
-        margin-left: 0;
-        flex-direction: column;
-    }
-  
-    .order-search-box {
-        margin-top: 5%;
-        flex-direction: column;
-        align-items: flex-start;
-    }
-  
-    .order-search-box input {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-  
-    .search-category, .search-button {
-        width: 100%;
-        margin-right: 0;
-        margin-bottom: 10px;
-    }
-  
-    .order-table {
-        width: 100%;
-        font-size: 0.8rem;
-        overflow-x: auto;
-    }
-  
-    .order-table th,
-    .order-table td {
-        padding: 8px;
-    }
-  
-    #page-number-btn {
-        font-size: 14px;
-        margin: 5px 2px;
-    }
-  
-    .pagination {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-  
-    .write-btn {
-        width: 80%;
-        font-size: 14px;
-    }
-  
-    .write-btn-container {
-        height: 60px;
-    }
-  }
-  
-  /* 480px 이하 화면 (모바일) */
-  @media (max-width: 480px) {
-  
-    .order-management-container {
-        margin-left: 0;
-        width:100%;
-        height: auto;
-        justify-self: center;
-        overflow-x: hidden;
-        padding: 5%;
-    }
-    .order-management-container-container {
       width: 100%;
-      height: auto;
-    }
-    h1 {
-        font-size: 28px;
-    }
-  
-    .order-search-box {
-        margin-top: 5%;
-        flex-direction: column;
-        width: 100%;
+      margin-left: 0;
+      height: 100vh; /* 높이 조정 */
+      overflow-y: auto; /* 필요한 경우 스크롤 표시 */
     }
   
-    .order-search-box input {
-        width: 90%;
-        margin-bottom: 10px;
+    .order-management-container-container {
+      max-width: 100%;
+      padding-left: 2%;
+      padding-right: 2%;
     }
-  
-    .order-search-box .search-category {
-        width: 60%;
-        margin-bottom: 10px;
+    
+    .order-container {
+      width: 100%;
+      height: 100%;
     }
-  
+    
+    
+    
+    
     .order-table {
-        width: 100%;
-        font-size: 0.8rem;
-        overflow-x: hidden;
+      width: 100%; /* 테이블 너비를 100%로 설정 */
+      height: 60%;
+      margin-top: 10px;
     }
   
-    .order-table th,
-    .order-table td {
-        padding: 5px;
-        font-size: 12px;
+    .order-table, .order-table th, .order-table td {
+      padding: 8px; /* 패딩 감소 */
+      border: 1px solid #ddd; /* 보더 스타일 조정 */
     }
   
-    #page-number-btn {
-        font-size: 14px;
-        margin: 5px 2px;
+    .order-table th, .order-table td {
+      font-size: 0.5rem; /* 폰트 크기 감소 */
     }
   
-    .pagination {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
+    /* 각 셀의 너비를 %로 조정하여 테이블이 유연하게 조정되도록 함 */
+    .order-table th:nth-child(1), .order-table td:nth-child(1) { width: 10%; }
+    .order-table th:nth-child(2), .order-table td:nth-child(2) { width: 15%; }
+    .order-table th:nth-child(3), .order-table td:nth-child(3) { width: 25%; }
+    .order-table th:nth-child(4), .order-table td:nth-child(4) { width: 10%; }
+    .order-table th:nth-child(5), .order-table td:nth-child(5) { width: 15%; }
+    .order-table th:nth-child(6), .order-table td:nth-child(6) { width: 10%; }
+    .order-table th:nth-child(7), .order-table td:nth-child(7) { width: 15%; }
   
-    .write-btn {
-        width: 70%;
-        height: 60%;
-        margin-left: 15%;
-        margin-top: 5%;
-        font-size: 14px;
+    .delivery-info-btn {
+      font-size: 0.5rem;
+      flex-direction: row;
     }
-  
-    .write-btn-container {
-        height: 60px;
+    .order-select {
+      font-size: 0.5rem;
     }
   
     .order-title {
-        font-size: 12px;
+      color: blue;
+      cursor: pointer;
     }
-  
+    
+    .order-title:hover {
+      color: orange;
+    }
+    
+    .size-stock {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
     .size-item {
-        font-size: 12px;
+      padding: 5px 5px;
     }
   }
+  
   

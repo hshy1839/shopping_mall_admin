@@ -208,10 +208,21 @@
   
     .promotion-management-container {
         width: 100%;
-        margin-left: 0;
+      overflow-x: hidden;
+      margin-left: 0%;
+      height: 100vh;
         flex-direction: column;
     }
   
+    .promotion-management-container-container {
+      justify-items: center;
+      max-width: 90%;
+      overflow-x: hidden;
+      height: 100%;
+      padding-left: 5%;
+      padding-right: 5%;
+    }
+
     .promotion-search-box {
         margin-top: 5%;
         flex-direction: column;
@@ -219,7 +230,7 @@
     }
   
     .promotion-search-box input {
-        width: 100%;
+        width: 90%;
         margin-bottom: 10px;
     }
   
@@ -260,81 +271,6 @@
     }
   }
   
-  /* 480px 이하 화면 (모바일) */
-  @media (max-width: 480px) {
   
-    .promotion-management-container {
-        margin-left: 0;
-        width:100%;
-        height: auto;
-        justify-self: center;
-        overflow-x: hidden;
-        padding: 5%;
-    }
-    .promotion-management-container-container {
-      width: 100%;
-      height: auto;
-    }
-    h1 {
-        font-size: 28px;
-    }
-  
-    .promotion-search-box {
-        margin-top: 5%;
-        flex-direction: column;
-        width: 100%;
-    }
-  
-    .promotion-search-box input {
-        width: 90%;
-        margin-bottom: 10px;
-    }
-  
-    .promotion-search-box .search-category {
-        width: 60%;
-        margin-bottom: 10px;
-    }
-  
-    .promotion-table {
-        width: 100%;
-        font-size: 0.8rem;
-        overflow-x: hidden;
-    }
-  
-    .promotion-table th,
-    .promotion-table td {
-        padding: 5px;
-        font-size: 12px;
-    }
-  
-    #page-number-btn {
-        font-size: 14px;
-        margin: 5px 2px;
-    }
-  
-    .pagination {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-  
-    .write-btn {
-        width: 70%;
-        height: 60%;
-        margin-left: 15%;
-        margin-top: 5%;
-        font-size: 14px;
-    }
-  
-    .write-btn-container {
-        height: 60px;
-    }
-  
-    .promotion-title {
-        font-size: 12px;
-    }
-  
-    .size-item {
-        font-size: 12px;
-    }
-  }
+
   

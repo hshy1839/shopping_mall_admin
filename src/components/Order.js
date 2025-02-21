@@ -18,7 +18,7 @@ const Order = () => {
                 return;
             }
 
-            const response = await axios.get('http://3.39.192.73:8865/api/orderAll', {
+            const response = await axios.get('http://localhost:8865/api/orderAll', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -40,7 +40,7 @@ const Order = () => {
     const fetchUserName = async (userId) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get(`http://3.39.192.73:8865/api/users/userinfo/${userId}`, {
+            const response = await axios.get(`http://localhost:8865/api/users/userinfo/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -69,7 +69,7 @@ const Order = () => {
                 return null;
             }
     
-            const response = await axios.get(`http://3.39.192.73:8865/api/shippinginfo/${userId}`, {
+            const response = await axios.get(`http://localhost:8865/api/shippinginfo/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -99,7 +99,7 @@ const Order = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.put(
-                `http://3.39.192.73:8865/api/editPayment/${orderId}`, // 주문 ID를 URL에 포함
+                `http://localhost:8865/api/editPayment/${orderId}`, // 주문 ID를 URL에 포함
                 { paymentStatus: newStatus }, // 요청 본문에 paymentStatus만 전달
                 {
                     headers: {
@@ -124,7 +124,7 @@ const Order = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.put(
-                `http://3.39.192.73:8865/api/editOrder/${orderId}`, // 주문 ID를 URL에 포함
+                `http://localhost:8865/api/editOrder/${orderId}`, // 주문 ID를 URL에 포함
                 { orderStatus: newStatus }, // 요청 본문에 orderStatus만 전달
                 {
                     headers: {
@@ -246,6 +246,7 @@ const Order = () => {
                                                 onChange={(e) =>
                                                     handleStatusChange(order._id, e.target.value, 'orderStatus')
                                                 }
+                                                className='order-select'
                                                 style={{
                                                     color:
                                                         order.orderStatus === '배송 전'
@@ -264,6 +265,8 @@ const Order = () => {
                                         </td>
                                         <td>
                                             <select
+                                                className='order-select'
+
                                                 value={order.paymentStatus || 'Unknown'}
                                                 onChange={(e) =>
                                                     handleStatusChange(order._id, e.target.value, 'paymentStatus')
@@ -315,7 +318,7 @@ const Order = () => {
         }}
         className="delivery-info-btn"
     >
-        확인하기
+        확인
     </button>
 </td>
 

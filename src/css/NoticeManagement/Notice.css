@@ -152,3 +152,62 @@ h1 {
   color: orange;
   
 }
+@media (max-width: 768px) {
+  .notice-management-container {
+    width: 100%;
+    margin-left: 0;
+    height: 100vh; /* 높이 자동 조정으로 스크롤 가능하게 */
+    overflow-y: auto; /* 필요한 경우 스크롤 표시 */
+  }
+
+  .notice-management-container-container {
+    max-width: 100%;
+    padding-left: 2%;
+    padding-right: 2%;
+  }
+
+  .notice-container {
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 30px; /* 작은 화면에 맞게 폰트 크기 조정 */
+    margin-bottom: 10px; /* 간격 조정 */
+  }
+
+  .notice-search-box {
+    flex-direction: column; /* 검색 요소를 수직으로 정렬 */
+    margin-top: 5%;
+  }
+
+  .notice-search-box input,
+  .search-category,
+  .search-button {
+    width: 95%; /* 전체 너비 사용 */
+    margin-top: 10px; /* 요소 간 간격 추가 */
+  }
+
+  .notice-table {
+    width: 100%; /* 테이블 전체 너비 사용 */
+  }
+
+  .notice-table th, .notice-table td {
+    padding: 8px; /* 패딩 감소 */
+    font-size: 0.8rem; /* 폰트 크기 감소 */
+    text-align: center; /* 가운데 정렬 유지 */
+  }
+
+  .actions-btns {
+    flex-direction: column; /* 액션 버튼을 수직으로 정렬 */
+    gap: 5px; /* 버튼 간 간격 감소 */
+  }
+
+  .approve-btn, .reject-btn, .delete-btn {
+    font-size: 16px; /* 버튼 폰트 크기 감소 */
+  }
+
+  .pagination-container {
+    width: 100%; /* 페이지네이션 컨테이너 전체 너비 사용 */
+    justify-content: space-around; /* 요소 간격을 균등하게 분배 */
+  }
+}

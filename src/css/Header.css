@@ -192,9 +192,6 @@ a {
   z-index: 110; /* 헤더보다 위에 표시되도록 설정 */
 }
 
-.burger-menu.open {
-  display:block; /* 메뉴가 열릴 때만 보이도록 설정 */
-}
 
 
 @media screen and (max-width: 768px) {
@@ -204,7 +201,24 @@ a {
   .header-container-container {
     display: none; /* 작은 화면에서는 헤더 숨김 */
   }
+
   .burger-menu {
-    display: flex;
+    display:flex; /* 기본적으로 숨겨둡니다 */
+    position: fixed;
+    bottom: 5%;
+    left: 1%;
+    background-color: #6B4EFF;
+    font-size: 24px;
+    padding: 20px;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    z-index: 110; /* 헤더보다 위에 표시되도록 설정 */
   }
-}
+
+
+    .header-container-container {
+      display: block; /* 메뉴가 열릴 때 내용을 보여줍니다 */
+    }
+  }
+  

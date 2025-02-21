@@ -23,6 +23,7 @@ import Coupon from './components/CouponManagement/Coupon';
 import CouponCreate from './components/CouponManagement/CouponCreate';
 import Promotion from './components/PromotionManagement/Promotion';
 import PromotionCreate from './components/PromotionManagement/PromotionCreate';
+import HeaderPhone from './components/HeaderPhone';
 
 function App() {
   const [loading, setLoading] = useState(true); // 초기 로딩 상태를 true로 설정
@@ -54,6 +55,7 @@ function App() {
       ) : (
         <Routes>
           <Route path="/" element={<PrivateRoute><Header /><Main /></PrivateRoute>} />
+          <Route path="/headerphone" element={<PrivateRoute><HeaderPhone /></PrivateRoute>} />
           <Route path="/employeeManagement/vacation" element={<PrivateRoute><Header /><Vacation /></PrivateRoute>} />
           <Route path="/employeeManagement/salary" element={<PrivateRoute><Header /><Salary /></PrivateRoute>} />
           <Route path="/employeeManagement/users" element={<PrivateRoute><Users /></PrivateRoute>} />

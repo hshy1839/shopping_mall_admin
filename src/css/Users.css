@@ -135,4 +135,62 @@
   .pagination span {
   }
 
+  @media (max-width: 768px) {
+    .users-management-container {
+      width: 100%;
+      margin-left: 0;
+      height: auto; /* 스크롤을 허용하면서 높이 자동 조정 */
+      overflow-y: auto; /* 필요한 경우 스크롤 표시 */
+    }
+  
+    .users-management-container-container {
+      max-width: 100%;
+      padding-left: 2%;
+      padding-right: 2%;
+    }
+  
+    .users-container {
+      width: 100%;
+    }
+  
+    .users-search-box {
+      flex-direction: column; /* 검색 필드를 수직으로 정렬 */
+      margin-top: 5%;
+    }
+  
+    .users-search-box input {
+      width: 95%; /* 전체 너비 사용 */
+      margin-bottom: 2%; /* 입력 필드 아래 간격 추가 */
+    }
+  
+    .search-category {
+      width: 100%; /* 전체 너비 사용 */
+      margin-right: 0; /* 우측 여백 제거 */
+    }
+  
+    .search-button {
+      width: 100%; /* 전체 너비 사용 */
+    }
+  
+    .users-table {
+      width: 100%; /* 테이블 전체 너비 사용 */
+    }
+  
+    .users-table th {
+      padding: 5px;
+      font-size: 0.6rem;
+    }
+    .users-table td {
+      padding: 5px; /* 패딩 감소 */
+      font-size: 0.6rem; /* 폰트 크기 감소 */
+    }
+  
+    .actions-btns {
+      gap: 0px; /* 버튼 간 간격 감소 */
+    }
+  
+    .approve-btn, .reject-btn, .delete-btn {
+      font-size: 16px; /* 아이콘 크기 감소 */
+    }
+  }
   
