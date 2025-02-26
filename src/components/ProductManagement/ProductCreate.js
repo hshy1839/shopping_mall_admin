@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import heic2any from "heic2any";
 import '../../css/ProductManagement/ProductCreate.css';
 
 const ProductCreate = () => {
@@ -97,34 +98,63 @@ const renderSizeOptions = () => {
     });
   };
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-        setImage(file); // 파일 객체로 설정
-        const previewUrl = URL.createObjectURL(file); // 미리보기 URL 생성
-        setImagePreview(previewUrl); // 미리보기 URL 상태에 저장
+      // HEIC 파일인지 확인
+      if (file.type === "image/heic") {
+        try {
+          const convertedBlob = await heic2any({
+            blob: file,
+            toType: "image/jpeg",
+          });
+          const previewUrl = URL.createObjectURL(convertedBlob);
+          setImagePreview(previewUrl);
+        } catch (error) {
+          console.error("Error converting HEIC to JPEG:", error);
+          alert("HEIC 이미지 변환 실패");
+        }
+      } else {
+        const previewUrl = URL.createObjectURL(file);
+        setImagePreview(previewUrl);
+      }
+      setImage(file);
     }
-};
+  };
 
 
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
   };
 
-  const handleFileUpload = (e) => {
-    const newImages = [];
-    const newPreviews = [];
-
-    for (let i = 0; i < e.target.files.length; i++) {
-        const file = e.target.files[i];
-        newImages.push(file); // 파일 객체 저장
-        const previewUrl = URL.createObjectURL(file); // 미리보기 URL 생성
-        newPreviews.push(previewUrl);
+  const handleFileUpload = async (e) => {
+    const files = e.target.files;
+    const convertedImages = [];
+  
+    for (const file of files) {
+      if (file.type === "image/heic") {
+        // HEIC 파일을 JPEG로 변환
+        try {
+          const convertedBlob = await heic2any({
+            blob: file,
+            toType: "image/jpeg",
+          });
+          convertedImages.push(convertedBlob);
+          const previewUrl = URL.createObjectURL(convertedBlob);
+          setImagePreviews(prev => [...prev, previewUrl]);
+        } catch (error) {
+          console.error("HEIC 파일 변환 에러:", error);
+        }
+      } else {
+        convertedImages.push(file);
+        const previewUrl = URL.createObjectURL(file);
+        setImagePreviews(prev => [...prev, previewUrl]);
+      }
     }
-
-    setImages([...images, ...newImages]);
-    setImagePreviews([...imagePreviews, ...newPreviews]);
-};
+  
+    // 상태에 변환된 이미지들 저장
+    setImages(prev => [...prev, ...convertedImages]);
+  };
 
   // 이미지 삭제 함수
   const handleImageDelete = (index) => {
@@ -192,8 +222,6 @@ const renderSizeOptions = () => {
         alert('상품 등록 중 오류가 발생했습니다.');
     }
 };
-
-
 
 
   
