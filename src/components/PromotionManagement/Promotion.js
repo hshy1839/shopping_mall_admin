@@ -9,6 +9,7 @@ import { faCheck, faBan, faTrash } from '@fortawesome/free-solid-svg-icons';
 const Promotion = () => {
     const [promotions, setPromotions] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [filteredPromotions, setFilteredPromotions] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
 
@@ -22,7 +23,7 @@ const Promotion = () => {
                 return;
             }
 
-            const response = await axios.get('http://localhost:8865/api/promotion/read', {
+            const response = await axios.get('http://3.36.74.8:8865/api/promotion/read', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -34,7 +35,9 @@ const Promotion = () => {
                 });
 
                 setPromotions(sortedPromotions);
+                setFilteredPromotions(sortedPromotions); // 초기 상태에서 모든 프로모션 표시
             } else {
+                console.error('프로모션 데이터를 받아오는 데 실패했습니다.');
             }
         } catch (error) {
             console.error('프로모션 정보를 가져오는데 실패했습니다.', error);
@@ -44,6 +47,13 @@ const Promotion = () => {
     useEffect(() => {
         fetchPromotions();
     }, []);
+
+    useEffect(() => {
+        const results = promotions.filter(promotion =>
+            promotion.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredPromotions(results);
+    }, [searchTerm, promotions]);
 
     const handleCreatePromotionClick = () => {
         navigate('/promotion/create');
@@ -59,7 +69,7 @@ const Promotion = () => {
                 return;
             }
 
-            const response = await axios.delete(`http://localhost:8865/api/promotion/delete/${id}`, {
+            const response = await axios.delete(`http://3.36.74.8:8865/api/promotion/delete/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -76,8 +86,8 @@ const Promotion = () => {
 
     const indexOfLastPromotion = currentPage * itemsPerPage;
     const indexOfFirstPromotion = indexOfLastPromotion - itemsPerPage;
-    const currentPromotions = promotions.slice(indexOfFirstPromotion, indexOfLastPromotion);
-    const totalPages = Math.ceil(promotions.length / itemsPerPage);
+    const currentPromotions = filteredPromotions.slice(indexOfFirstPromotion, indexOfLastPromotion);
+    const totalPages = Math.ceil(filteredPromotions.length / itemsPerPage);
 
     return (
         <div className="promotion-management-container">

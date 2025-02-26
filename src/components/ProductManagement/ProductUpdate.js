@@ -34,7 +34,7 @@ const ProductUpdate = () => {
                 }
 
                 const response = await axios.get(
-                    `http://localhost:8865/api/products/Product/${id}`,
+                    `http://3.36.74.8:8865/api/products/Product/${id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -115,7 +115,7 @@ const ProductUpdate = () => {
             }
 
             const response = await axios.put(
-                `http://localhost:8865/api/products/update/${id}`,
+                `http://3.36.74.8:8865/api/products/update/${id}`,
                 updatedProduct,
                 {
                     headers: {
@@ -202,7 +202,7 @@ const ProductUpdate = () => {
                 </div>
 
                 {/* Size Stock */}
-                <div className="product-update-field">
+                {/* <div className="product-update-field">
                     <label className="product-update-label">사이즈별 재고</label>
                     {updatedProduct.category.sub === "신발" ? (
                         <div className="product-update-size-range">
@@ -236,7 +236,7 @@ const ProductUpdate = () => {
                             </div>
                         ))
                     )}
-                </div>
+                </div> */}
 
                 {/* Description */}
                 <div className="product-update-field">

@@ -19,7 +19,7 @@ const ProductDetail = () => {
                 }
 
                 const response = await axios.get(
-                    `http://localhost:8865/api/products/Product/${id}`,
+                    `http://3.36.74.8:8865/api/products/Product/${id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -60,7 +60,7 @@ const ProductDetail = () => {
             }
 
             const response = await axios.delete(
-                `http://localhost:8865/api/products/delete/${id}`, // URL 수정
+                `http://3.36.74.8:8865/api/products/delete/${id}`, // URL 수정
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

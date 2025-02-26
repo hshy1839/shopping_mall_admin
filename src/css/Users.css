@@ -5,7 +5,7 @@
     overflow-x: hidden;
     width: 80%;
     margin-left: 20%;
-    height: 100%;
+    height: 140vh;
     justify-content: center;
   }
   .users-management-container-container {
@@ -139,14 +139,17 @@
     .users-management-container {
       width: 100%;
       margin-left: 0;
-      height: auto; /* 스크롤을 허용하면서 높이 자동 조정 */
-      overflow-y: auto; /* 필요한 경우 스크롤 표시 */
+      height: 100%;
     }
   
     .users-management-container-container {
       max-width: 100%;
       padding-left: 2%;
       padding-right: 2%;
+      height: 120vh;
+    }
+    .users-top-container-container {
+      width: 100%;
     }
   
     .users-container {

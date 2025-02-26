@@ -11,7 +11,7 @@ const Main = () => {
     const fetchInactiveUsersCount = async () => {
       try {
         const token = localStorage.getItem('token'); // 로그인 토큰 가져오기
-        const response = await axios.get('http://localhost:8865/api/inactiveUsersCount', {
+        const response = await axios.get('http://3.36.74.8:8865/api/inactiveUsersCount', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -29,7 +29,7 @@ const Main = () => {
     const fetchPendingPaymentCount = async () => {
       try {
         const token = localStorage.getItem('token'); // 로그인 토큰 가져오기
-        const response = await axios.get('http://localhost:8865/api/order/pendingCount', {
+        const response = await axios.get('http://3.36.74.8:8865/api/order/pendingCount', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -48,7 +48,7 @@ const Main = () => {
     const fetchUnansweredCount = async () => {
       try {
         const token = localStorage.getItem('token'); // 로그인 토큰 가져오기
-        const response = await axios.get('http://localhost:8865/api/qnaQuestion/unansweredCount', {
+        const response = await axios.get('http://3.36.74.8:8865/api/qnaQuestion/unansweredCount', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -65,21 +65,23 @@ const Main = () => {
 
   return (
     <div className="main-container">
+
+<h1>Alice <br />관리자 페이지</h1>
       <div className="main-container-container">
         <div className="main-section1">
           <div className="main-section1-item-container">
-            <div className="main-section1-item">
+            {/* <div className="main-section1-item">
               <div className="main-section1-item-text">답변 전 문의</div>
               <div className="main-section1-item-percent">
                 <div className="main-section1-item-detail"> {unansweredCount} 개</div>
               </div>
-            </div>
-            <div className="main-section1-item">
+            </div> */}
+            {/* <div className="main-section1-item">
               <div className="main-section1-item-text">주문 완료</div>
               <div className="main-section1-item-percent">
                 <div className="main-section1-item-detail"> {pendingPaymentCount} 개</div>
               </div>
-            </div>
+            </div> */}
             <div className="main-section1-item">
               <div className="main-section1-item-text">가입 승인 대기</div>
               <div className="main-section1-item-percent">

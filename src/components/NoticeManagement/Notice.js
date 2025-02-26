@@ -26,7 +26,7 @@ const Notice = () => {
                     return;
                 }
 
-                const response = await axios.get('http://localhost:8865/api/users/noticeList/find', {
+                const response = await axios.get('http://3.36.74.8:8865/api/users/noticeList/find', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -74,6 +74,7 @@ const Notice = () => {
         setNotices(filteredNotices);
         setCurrentPage(1); // 검색 시 첫 페이지로 이동
     };
+
 
    
 

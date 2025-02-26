@@ -2,16 +2,14 @@
 .product-management-container {
   display: flex;
   overflow-x: hidden;
-  width: 80%;
+  width:80%;
   margin-left: 20%;
-  height: 120vh;
-  overflow-y: hidden;
+  height: 140vh;
   justify-content: center;
 }
 
 .product-management-container-container {
   justify-items: center;
-  max-width: 100%;
   padding-left: 5%;
   padding-right: 5%;
   background-color: white;
@@ -209,7 +207,13 @@ h1 {
   .product-management-container {
       width: 100%;
       margin-left: 0;
+      height: 100%;
       flex-direction: column;
+  }
+  .product-management-container-container {
+    width: 90%;
+    height: 120vh;
+    overflow-y: auto;
   }
 
   .product-search-box {
@@ -219,7 +223,7 @@ h1 {
   }
 
   .product-search-box input {
-      width: 100%;
+      width: 50%;
       margin-bottom: 10px;
   }
 
@@ -260,115 +264,5 @@ h1 {
   }
 }
 
-/* 480px 이하 화면 (모바일) */
-@media (max-width: 500px) {
-
-  .product-management-container {
-      margin-left: 0;
-      width:100%;
-      height: 100vh;
-      justify-self: center;
-      overflow-x: hidden;
-      padding: 0%;
-  }
-  .product-management-container-container {
-    width: 90%;
-    height: 100%;
-  }
-  h1 {
-      font-size: 28px;
-  }
-
-  .product-search-box {
-      margin-top: 5%;
-      flex-direction: column;
-      width: 100%;
-  }
-
-  .product-search-box input {
-      width: 90%;
-      margin-bottom: 10px;
-  }
-
-  .product-search-box .search-category {
-      width: 60%;
-      margin-bottom: 10px;
-  }
-
-  .product-table {
-      width: 100%;
-      font-size: 0.8rem;
-      overflow-x: hidden;
-  }
-
-  .product-table th,
-  .product-table td {
-      padding: 5px;
-      font-size: 10px;
-  }
-
-  #page-number-btn {
-      font-size: 14px;
-      margin: 5px 2px;
-  }
-
-  .pagination {
-    margin-top: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-  }
 
 
-  .prev-page-btn, 
-.next-page-btn {
-  border: none;
-  background-color: white;
-  color: #007bff;
-  cursor: pointer;
-}
-
-#page-number-btn {
-  color: #ccc;
-  border: none;
-  background-color: white;
-  padding-left: 10px;
-  padding-right: 10px;
-  margin: 5px;
-  cursor: pointer;
-}
-
-#page-number-btn.active {
-  color: #000;
-}
-
-.prev-page-btn:hover, 
-.next-page-btn:hover {
-  border: none;
-  background-color: white;
-  color: #013872;
-  cursor: pointer;
-}
-
-.pagination {
-  margin-top: 5%;
-  justify-self: center;
-  display: flex;
-  cursor: pointer;
-}
-
-.write-btn-container {
-  width: 100%;
-  height: 50px;
-}
-
-.write-btn {
-  margin-top: 10%;
-  width: 30%;
-  height: 100%;
-  cursor: pointer;
-  background-color: #000;
-  color: white;
-  border: none;
-}
-
-}

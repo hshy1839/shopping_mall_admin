@@ -171,7 +171,7 @@ const renderSizeOptions = () => {
 
     try {
         const response = await axios.post(
-            'http://localhost:8865/api/products/productCreate',
+            'http://3.36.74.8:8865/api/products/productCreate',
             formData,
             {
                 headers: {
@@ -313,10 +313,10 @@ const renderSizeOptions = () => {
 
 
         {/* Size Selection */}
-        <div className="product-create-field">
+        {/* <div className="product-create-field">
     <label className="product-create-label">사이즈</label>
     <div className="product-create-sizes">{renderSizeOptions()}</div>
-  </div>
+  </div> */}
 
         {/* Price */}
         <div className="product-create-field">

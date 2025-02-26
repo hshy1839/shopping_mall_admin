@@ -170,8 +170,8 @@ const Product = () => {
                                 <th>번호</th>
                                 <th>상품 이름</th>
                                 <th>카테고리</th>
-                                <th>사이즈</th>
-                                <th>총 재고</th>
+                                {/* <th>사이즈</th> */}
+                                {/* <th>총 재고</th> */}
                                 <th>가격</th>
                             </tr>
                         </thead>
@@ -188,7 +188,7 @@ const Product = () => {
                                         </td>
                                         <td>{getCategoryDisplay(product.category)}</td>
                                         
-                                        <td>
+                                        {/* <td>
                                             {product.sizeStock ? (
                                                 <div className="size-stock">
                                                     {Object.keys(product.sizeStock).map((size) => (
@@ -203,7 +203,7 @@ const Product = () => {
                                                 'Unknown Size'
                                             )}
                                         </td>
-                                        <td>{calculateTotalStock(product)}</td>
+                                        <td>{calculateTotalStock(product)}</td> */}
                                         <td>{product.price || 0}</td>
                                     </tr>
                                 ))

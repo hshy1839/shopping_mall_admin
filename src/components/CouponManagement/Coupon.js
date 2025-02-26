@@ -8,6 +8,7 @@ import { faCheck, faBan, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const Coupon = () => {
     const [coupons, setCoupons] = useState([]);
+    const [filteredCoupons, setFilteredCoupons] = useState([]); // 검색된 쿠폰 저장
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
@@ -17,23 +18,18 @@ const Coupon = () => {
     const fetchCoupons = async () => {
         try {
             const token = localStorage.getItem('token');
-            if (!token) {
-                return;
-            }
+            if (!token) return;
 
-            const response = await axios.get('http://localhost:8865/api/coupons', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+            const response = await axios.get('http://3.36.74.8:8865/api/coupons', {
+                headers: { Authorization: `Bearer ${token}` },
             });
 
             if (response.data.success && Array.isArray(response.data.coupons)) {
-                const sortedCoupons = response.data.coupons.sort((a, b) => {
-                    return new Date(b.createdAt) - new Date(a.createdAt);
-                });
-
+                const sortedCoupons = response.data.coupons.sort(
+                    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+                );
                 setCoupons(sortedCoupons);
-            } else {
+                setFilteredCoupons(sortedCoupons); // 처음에는 모든 쿠폰을 표시
             }
         } catch (error) {
             console.error('쿠폰 정보를 가져오는데 실패했습니다.', error);
@@ -44,11 +40,23 @@ const Coupon = () => {
         fetchCoupons();
     }, []);
 
+    const handleSearch = () => {
+        if (!searchTerm) {
+            setFilteredCoupons(coupons); // 검색어가 없으면 전체 쿠폰 표시
+            return;
+        }
 
+        const results = coupons.filter(coupon =>
+            coupon.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            coupon.code.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredCoupons(results);
+    };
 
- const handleCreateCouponClick = () => {
-    navigate('/coupon/create');
-};
+    const handleCreateCouponClick = () => {
+        navigate('/coupon/create');
+    };
+
     const handleToggleActive = async (id, isActive) => {
         const confirmMessage = isActive
             ? '쿠폰을 활성화하시겠습니까?'
@@ -58,18 +66,12 @@ const Coupon = () => {
 
         try {
             const token = localStorage.getItem('token');
-            if (!token) {
-                return;
-            }
+            if (!token) return;
 
             const response = await axios.put(
-                `http://localhost:8865/api/coupon/${id}`,
+                `http://3.36.74.8:8865/api/coupon/${id}`,
                 { isActive },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
+                { headers: { Authorization: `Bearer ${token}` } }
             );
 
             if (response.data.success) {
@@ -86,14 +88,10 @@ const Coupon = () => {
 
         try {
             const token = localStorage.getItem('token');
-            if (!token) {
-                return;
-            }
+            if (!token) return;
 
-            const response = await axios.delete(`http://localhost:8865/api/coupon/${id}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+            const response = await axios.delete(`http://3.36.74.8:8865/api/coupon/${id}`, {
+                headers: { Authorization: `Bearer ${token}` },
             });
 
             if (response.data.success) {
@@ -107,8 +105,8 @@ const Coupon = () => {
 
     const indexOfLastCoupon = currentPage * itemsPerPage;
     const indexOfFirstCoupon = indexOfLastCoupon - itemsPerPage;
-    const currentCoupons = coupons.slice(indexOfFirstCoupon, indexOfLastCoupon);
-    const totalPages = Math.ceil(coupons.length / itemsPerPage);
+    const currentCoupons = filteredCoupons.slice(indexOfFirstCoupon, indexOfLastCoupon);
+    const totalPages = Math.ceil(filteredCoupons.length / itemsPerPage);
 
     return (
         <div className="coupon-management-container">
@@ -119,11 +117,13 @@ const Coupon = () => {
                     <div className="coupon-search-box">
                         <input
                             type="text"
-                            placeholder="검색..."
+                            placeholder="쿠폰 이름 검색..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
-                        <button className="search-button">검색</button>
+                        <button className="search-button" onClick={handleSearch}>
+                            검색
+                        </button>
                     </div>
 
                     <table className="coupon-table">
@@ -193,7 +193,6 @@ const Coupon = () => {
                         쿠폰 등록
                     </button>
                 </div>
-
             </div>
         </div>
     );
