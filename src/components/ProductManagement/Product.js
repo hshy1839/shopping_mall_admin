@@ -20,20 +20,20 @@ const Product = () => {
                 console.log('로그인 정보가 없습니다.');
                 return;
             }
-    
-            const response = await axios.get('http://localhost:8865/api/products/allProduct', {
+
+            const response = await axios.get('http:///3.36.74.8:8865/api/products/allProduct', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
-    
+
             if (response.data.success && Array.isArray(response.data.products)) {
                 // 최근에 만든 상품이 맨 위에 오도록 날짜순으로 정렬
                 const sortedProducts = response.data.products.sort((a, b) => {
                     // createdAt 필드가 있다고 가정하고, 최신 상품이 먼저 오도록 정렬
                     return new Date(b.createdAt) - new Date(a.createdAt);
                 });
-    
+
                 setProducts(sortedProducts);
             } else {
             }
@@ -41,7 +41,7 @@ const Product = () => {
             console.error('상품 정보를 가져오는데 실패했습니다.', error);
         }
     };
-    
+
 
     useEffect(() => {
         fetchProducts();
@@ -57,16 +57,16 @@ const Product = () => {
                     console.log('로그인 정보가 없습니다.');
                     return;
                 }
-    
-                const response = await axios.get('http://localhost:8865/api/products/allProduct', {
+
+                const response = await axios.get('http:///3.36.74.8:8865/api/products/allProduct', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-    
+
                 if (response.data.success && Array.isArray(response.data.products)) {
                     let filteredProducts = response.data.products;
-    
+
                     // 검색 조건에 맞게 필터링
                     filteredProducts = filteredProducts.filter((product) => {
                         if (searchCategory === 'all') {
@@ -83,7 +83,7 @@ const Product = () => {
                         }
                         return true;
                     });
-    
+
                     setProducts(filteredProducts); // 필터된 제품을 상태에 반영
                 } else {
                     console.error('올바르지 않은 데이터 형식:', response.data);
@@ -93,7 +93,7 @@ const Product = () => {
             }
         }
     };
-    
+
 
     const getCategoryDisplay = (category) => {
         if (!category) return 'Unknown Category';
@@ -187,7 +187,7 @@ const Product = () => {
                                             {product.name || 'Unknown Product'}
                                         </td>
                                         <td>{getCategoryDisplay(product.category)}</td>
-                                        
+
                                         {/* <td>
                                             {product.sizeStock ? (
                                                 <div className="size-stock">
@@ -222,7 +222,7 @@ const Product = () => {
                             이전 페이지
                         </button>
                         {[...Array(totalPages)].map((_, i) => (
-                            <button 
+                            <button
                                 key={i}
                                 onClick={() => handlePageChange(i + 1)}
                                 className={currentPage === i + 1 ? 'active' : ''}
