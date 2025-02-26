@@ -4,14 +4,13 @@ a {
   }
   
   .headerphone-container {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100%;
-    overflow-y: hidden;
     overflow-x: hidden;
     z-index: 100;
     color: black;
@@ -180,11 +179,12 @@ a {
     color: rgba(221, 221, 221, 0.633);
   }
   .close-menu {
-    position: fixed;
-    bottom: 5%;
+    position: relative;
+    bottom: 0%;
     left: 10%;
     width: 10%;
     height: 5%;
+    margin-bottom: 10%;
     background-color: transparent;
     border: none;
   }

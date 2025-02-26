@@ -19,7 +19,7 @@ const Users = () => {
                     return;
                 }
 
-                const response = await axios.get('http://3.39.192.73:8865/api/users/userinfo', {
+                const response = await axios.get('http://localhost:8865/api/users/userinfo', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -80,7 +80,7 @@ const Users = () => {
             if (!token) return console.log('로그인 정보가 없습니다.');
     
             const response = await axios.put(
-                `http://3.39.192.73:8865/api/users/userinfo/${id}`,
+                `http://localhost:8865/api/users/userinfo/${id}`,
                 { is_active: true },
                 {
                     headers: {
@@ -120,7 +120,7 @@ const Users = () => {
             }
     
             const response = await axios.put(
-                `http://3.39.192.73:8865/api/users/userinfo/${id}`,
+                `http://localhost:8865/api/users/userinfo/${id}`,
                 { is_active: false },
                 {
                     headers: {
@@ -159,7 +159,7 @@ const Users = () => {
             }
     
             const response = await axios.delete(
-                `http://3.39.192.73:8865/api/users/userinfo/${id}`,  // URL에 ID 포함
+                `http://localhost:8865/api/users/userinfo/${id}`,  // URL에 ID 포함
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -244,21 +244,21 @@ const Users = () => {
                                         <td>{new Date(user.created_at).toLocaleDateString()}</td>
                                         <td>{user.is_active ? '가입 승인' : '대기'}</td>
                                         <td>
-                                            <div className="actions-btns">
+                                            <div className="actions-btns-users">
                                                 <FontAwesomeIcon 
                                                     icon={faCheck} 
                                                     onClick={() => handleApprove(user._id)} 
-                                                    className="approve-btn"
+                                                    className="approve-btn-users"
                                                 />
                                                 <FontAwesomeIcon 
                                                     icon={faBan} 
                                                     onClick={() => handleReject(user._id)} 
-                                                    className="reject-btn"
+                                                    className="reject-btn-users"
                                                 />
                                                 <FontAwesomeIcon 
                                                     icon={faTrash} 
                                                     onClick={() => handleDelete(user._id)} 
-                                                    className="delete-btn"
+                                                    className="delete-btn-users"
                                                 />
                                             </div>
                                         </td>

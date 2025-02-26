@@ -5,8 +5,7 @@
   overflow-x: hidden;
   width: 80%;
   margin-left: 20%;
-  height: 120vh;
-  overflow-y: hidden;
+  height: 100%;
   justify-content: center;
 }
 .notice-management-container-container {
@@ -152,11 +151,22 @@ h1 {
   color: orange;
   
 }
+.write-btn {
+  
+  margin-top: 10%;
+  margin-bottom: 10%;
+  width: 30%;
+  height: 100%;
+  cursor: pointer;
+  background-color: #000;
+  color: white;
+  border: none;
+}
 @media (max-width: 768px) {
   .notice-management-container {
     width: 100%;
     margin-left: 0;
-    height: 100vh; /* 높이 자동 조정으로 스크롤 가능하게 */
+    height: 100%; /* 높이 자동 조정으로 스크롤 가능하게 */
     overflow-y: auto; /* 필요한 경우 스크롤 표시 */
   }
 

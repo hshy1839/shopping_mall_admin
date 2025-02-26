@@ -21,7 +21,7 @@ const Coupon = () => {
                 return;
             }
 
-            const response = await axios.get('http://3.39.192.73:8865/api/coupons', {
+            const response = await axios.get('http://localhost:8865/api/coupons', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -63,7 +63,7 @@ const Coupon = () => {
             }
 
             const response = await axios.put(
-                `http://3.39.192.73:8865/api/coupon/${id}`,
+                `http://localhost:8865/api/coupon/${id}`,
                 { isActive },
                 {
                     headers: {
@@ -90,7 +90,7 @@ const Coupon = () => {
                 return;
             }
 
-            const response = await axios.delete(`http://3.39.192.73:8865/api/coupon/${id}`, {
+            const response = await axios.delete(`http://localhost:8865/api/coupon/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

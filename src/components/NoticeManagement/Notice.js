@@ -26,7 +26,7 @@ const Notice = () => {
                     return;
                 }
 
-                const response = await axios.get('http://3.39.192.73:8865/api/users/noticeList/find', {
+                const response = await axios.get('http://localhost:8865/api/users/noticeList/find', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -188,13 +188,14 @@ const Notice = () => {
                             다음 페이지
                         </button>
                     </div>
-                </div>
-                 {/* 글쓰기 버튼 */}
-            <div className="write-btn-container">
+                    <div className="write-btn-container">
                 <button className="write-btn" onClick={handleWriteClick}>
                     글쓰기
                 </button>
             </div>
+                </div>
+                 {/* 글쓰기 버튼 */}
+        
             </div>
 
            

@@ -201,6 +201,11 @@
     display: flex;
     gap: 10px;
   }
+  .delete-btn-promotion {
+    width: 10%;
+    height: 10%;
+   color: red;
+  }
   /* 반응형 스타일 */
   
   /* 768px 이하 화면 (태블릿 이하) */
@@ -262,12 +267,18 @@
     }
   
     .write-btn {
-        width: 80%;
-        font-size: 14px;
+        width: 100%;
+        font-size: 20px;
     }
   
     .write-btn-container {
         height: 60px;
+    }
+    .delete-btn-promotion {
+      width: 40%;
+      height: 40%;
+      color: #f44336;
+   
     }
   }
   
