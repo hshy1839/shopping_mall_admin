@@ -87,7 +87,7 @@ h2 {
     background-color: #45a049;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .setting-container {
       width: 100%; /* 컨테이너의 너비를 화면 너비에 맞춤 */
       margin-left: 0; /* 좌우 마진 제거 */

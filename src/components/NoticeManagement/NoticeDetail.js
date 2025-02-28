@@ -153,6 +153,8 @@ const handleDelete = async () => {
             <div className='notice-detail-container-container'>
                 {isEditing ? (
                     <>
+                    <h1>공지사항 수정</h1>
+                    <p>제목</p>
                         <input
                             type="text"
                             name="title"
@@ -160,6 +162,8 @@ const handleDelete = async () => {
                             onChange={handleChange}
                             className="edit-input"
                         />
+                    <p>내용</p>
+
                         <textarea
                             name="content"
                             value={updatedNotice.content}

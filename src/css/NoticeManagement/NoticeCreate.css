@@ -63,7 +63,7 @@
     background-color: #388e3c;
   }
   
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     .notice-create-container {
       max-width: 100%; /* 컨테이너의 최대 너비를 화면 너비에 맞춤 */
       padding: 10px; /* 작은 화면에서 패딩 감소 */

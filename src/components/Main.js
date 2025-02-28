@@ -3,95 +3,106 @@ import '../css/Main.css';
 import axios from 'axios';
 
 const Main = () => {
-  const [unansweredCount, setUnansweredCount] = useState(0);
-  const [pendingPaymentCount, setPendingPaymentCount] = useState(0);
-  const [inactiveUsersCount, setInactiveUsersCount] = useState(0);
+  const [activeCouponsCount, setActiveCouponsCount] = useState(0);
+  const [totalProductsCount, setTotalProductsCount] = useState(0); // 상품 개수 상태 변수
+  const [pendingApprovalCount, setPendingApprovalCount] = useState(0);
 
   useEffect(() => {
-    const fetchInactiveUsersCount = async () => {
+    const fetchPendingApprovalCount = async () => {
       try {
         const token = localStorage.getItem('token'); // 로그인 토큰 가져오기
-        const response = await axios.get('http://3.36.74.8:8865/api/inactiveUsersCount', {
+        const response = await axios.get('http://3.36.74.8:8865/api/users/userinfo', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        setInactiveUsersCount(response.data.inactiveUsersCount);
+        if (response.data.success && Array.isArray(response.data.users)) {
+          const inactiveUsers = response.data.users.filter(user => !user.is_active); // is_active가 false인 유저 필터링
+          setPendingApprovalCount(inactiveUsers.length);
+        } else {
+          console.error('가입 승인 대기 유저 수 가져오기 실패');
+        }
       } catch (error) {
-        console.error('비활성 유저 개수 가져오기 실패:', error);
+        console.error('가입 승인 대기 유저 수 가져오기 실패:', error);
       }
     };
 
-    fetchInactiveUsersCount();
+    fetchPendingApprovalCount();
   }, []);
 
   useEffect(() => {
-    const fetchPendingPaymentCount = async () => {
+    const fetchTotalProductsCount = async () => {
       try {
-        const token = localStorage.getItem('token'); // 로그인 토큰 가져오기
-        const response = await axios.get('http://3.36.74.8:8865/api/order/pendingCount', {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('http://3.36.74.8:8865/api/products/allProduct', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        setPendingPaymentCount(response.data.pendingOrdersCount);
+        if (response.data.success && Array.isArray(response.data.products)) {
+          setTotalProductsCount(response.data.products.length); // 상품 개수 저장
+        } else {
+          console.error('상품 데이터 로드 실패');
+        }
       } catch (error) {
-        console.error('결제 대기 주문 개수 가져오기 실패:', error);
+        console.error('상품 개수 가져오기 실패:', error);
       }
     };
 
-    fetchPendingPaymentCount();
+    fetchTotalProductsCount();
   }, []);
 
   useEffect(() => {
-    // API 호출로 답변 없는 질문 개수 가져오기
-    const fetchUnansweredCount = async () => {
+    const fetchActiveCouponsCount = async () => {
       try {
-        const token = localStorage.getItem('token'); // 로그인 토큰 가져오기
-        const response = await axios.get('http://3.36.74.8:8865/api/qnaQuestion/unansweredCount', {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('http://3.36.74.8:8865/api/coupons', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        setUnansweredCount(response.data.unansweredQuestionsCount);
+        if (response.data.success) {
+          const activeCoupons = response.data.coupons.filter(coupon => coupon.isActive);
+          setActiveCouponsCount(activeCoupons.length);
+        } else {
+          console.error('활성화된 쿠폰 수 가져오기 실패');
+        }
       } catch (error) {
-        console.error('답변 없는 질문 개수 가져오기 실패:', error);
+        console.error('활성화된 쿠폰 수 가져오기 실패:', error);
       }
     };
 
-    fetchUnansweredCount();
+    fetchActiveCouponsCount();
   }, []);
-
 
   return (
     <div className="main-container">
-
-<h1>Alice <br />관리자 페이지</h1>
+      <div className='main-container-header'>
+      <h1>Alice <br />관리자 페이지</h1>
+      </div>
       <div className="main-container-container">
         <div className="main-section1">
           <div className="main-section1-item-container">
-            {/* <div className="main-section1-item">
-              <div className="main-section1-item-text">답변 전 문의</div>
+            <div className="main-section1-item">
+              <div className="main-section1-item-text">활성화된 쿠폰</div>
               <div className="main-section1-item-percent">
-                <div className="main-section1-item-detail"> {unansweredCount} 개</div>
+                <div className="main-section1-item-detail">{activeCouponsCount} 개</div>
               </div>
-            </div> */}
-            {/* <div className="main-section1-item">
-              <div className="main-section1-item-text">주문 완료</div>
+            </div>
+            <div className="main-section1-item">
+              <div className="main-section1-item-text">상품 개수</div>
               <div className="main-section1-item-percent">
-                <div className="main-section1-item-detail"> {pendingPaymentCount} 개</div>
+                <div className="main-section1-item-detail">{totalProductsCount} 개</div>
               </div>
-            </div> */}
+            </div>
             <div className="main-section1-item">
               <div className="main-section1-item-text">가입 승인 대기</div>
               <div className="main-section1-item-percent">
-              <div className="main-section1-item-detail"> {inactiveUsersCount} 명</div>
+                <div className="main-section1-item-detail">{pendingApprovalCount} 명</div>
               </div>
             </div>
-            
           </div>
         </div>
-      
       </div>
     </div>
   );

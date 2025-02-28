@@ -79,7 +79,7 @@
     background: #c82333;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .product-detail-container {
         font-family: 'Arial', sans-serif;
         margin: 0px 0px;

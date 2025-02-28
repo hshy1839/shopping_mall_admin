@@ -137,6 +137,14 @@ const Product = () => {
         navigate('/products/productCreate');
     };
 
+    const formatPrice = (price) => {
+        return new Intl.NumberFormat('ko-KR', {
+            style: 'decimal', // 'currency'로 변경하고 currency: 'KRW' 추가 가능
+            maximumFractionDigits: 0, // 소수점 이하 자릿수
+        }).format(price);
+    };
+    
+
     return (
         <div className="product-management-container">
             <Header />
@@ -204,7 +212,7 @@ const Product = () => {
                                             )}
                                         </td>
                                         <td>{calculateTotalStock(product)}</td> */}
-                                        <td>{product.price || 0}</td>
+                                        <td>{formatPrice(product.price || 0)} 원</td>
                                     </tr>
                                 ))
                             ) : (
@@ -219,7 +227,7 @@ const Product = () => {
 
                     <div className="pagination">
                         <button className='prev-page-btn' onClick={handlePreviousPage} disabled={currentPage === 1}>
-                            이전 페이지
+                            이전
                         </button>
                         {[...Array(totalPages)].map((_, i) => (
                             <button
@@ -232,7 +240,7 @@ const Product = () => {
                             </button>
                         ))}
                         <button className="next-page-btn" onClick={handleNextPage} disabled={currentPage === totalPages}>
-                            다음 페이지
+                            다음
                         </button>
                     </div>
                 </div>

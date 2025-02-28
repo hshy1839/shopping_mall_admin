@@ -10,6 +10,8 @@ const Users = () => {
     const [allUsers, setAllUsers] = useState([]);  // 전체 사용자 데이터 (원본 데이터)
     const [searchTerm, setSearchTerm] = useState('');  // 검색어 상태
     const [searchCategory, setSearchCategory] = useState('all');  // 검색 기준 상태
+    const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+        const itemsPerPage = 10; // 페이지당 표시할 항목 수
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -46,9 +48,7 @@ const Users = () => {
         fetchUsers();
     }, []);
 
-    useEffect(() => {
-        handleSearch();
-    }, [searchTerm, searchCategory]);
+  
 
     const handleSearch = () => {
         // 검색 결과 필터링
@@ -70,6 +70,23 @@ const Users = () => {
     };
     
     
+    const indexOfLastNotice = currentPage * itemsPerPage;
+    const indexOfFirstNotice = indexOfLastNotice - itemsPerPage;
+    const currentNotices = users.slice(indexOfFirstNotice, indexOfLastNotice);
+    const totalPages = Math.ceil(users.length / itemsPerPage);
+
+
+    const handlePreviousPage = () => {
+        if (currentPage > 1) setCurrentPage(currentPage - 1);
+    };
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    };
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
     // 각 기능 핸들러
     const handleApprove = async (id) => {
         const isConfirmed = window.confirm("해당 사용자 계정을 승인하시겠습니까?");
@@ -231,7 +248,7 @@ const Users = () => {
                             ) : (
                                 users.map((user, index) => (
                                     <tr key={user._id}>
-                                        <td>{users.length > 0 ? users.length - index : 0}</td>
+                                        <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
                                         <td>{user.username}</td>
                                         <td>{user.name}</td>
                                         <td>{user.phoneNumber}</td>
@@ -269,10 +286,23 @@ const Users = () => {
                     </table>
 
                     {/* 페이지 네비게이션 */}
-                    <div className="pagination-container">
-                        <button className='prev-page-btn'>이전 페이지</button>
-                        <span className='pagination-number' id='page-number-btn'>1</span>
-                        <button className='next-page-btn'>다음 페이지</button>
+                    <div className="pagination">
+                        <button className="prev-page-btn" onClick={handlePreviousPage} disabled={currentPage === 1}>
+                            이전
+                        </button>
+                        {[...Array(totalPages)].map((_, i) => (
+                            <button
+                                key={i}
+                                onClick={() => handlePageChange(i + 1)}
+                                className={currentPage === i + 1 ? 'active' : ''}
+                                id='page-number-btn'
+                            >
+                                {i + 1}
+                            </button>
+                        ))}
+                        <button className='next-page-btn' onClick={handleNextPage} disabled={currentPage === totalPages}>
+                            다음
+                        </button>
                     </div>
                 </div>
             </div>

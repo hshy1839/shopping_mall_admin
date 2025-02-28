@@ -126,16 +126,8 @@
     color: red;
   }
   
-  .pagination-container {
-    margin-top: 5%;
-    justify-self: center;
-    display: flex;
-    cursor: pointer;
-  }
-  .pagination span {
-  }
-
-  @media (max-width: 768px) {
+  
+  @media (max-width: 900px) {
     .users-management-container {
       width: 100%;
       margin-left: 0;
@@ -157,11 +149,13 @@
     }
   
     .users-search-box {
+      margin-top: 10%;
+
       flex-direction: column; /* 검색 필드를 수직으로 정렬 */
-      margin-top: 5%;
     }
   
     .users-search-box input {
+      
       width: 95%; /* 전체 너비 사용 */
       margin-bottom: 2%; /* 입력 필드 아래 간격 추가 */
     }
@@ -197,5 +191,23 @@
     .approve-btn-users, .reject-btn-users, .delete-btn-users {
       font-size: 12px; /* 아이콘 크기 감소 */
     }
+    
+    .users-table th:nth-child(1),
+    .users-table td:nth-child(1) {
+     width: 5%;
+    }
+    .users-table th:nth-child(2),
+    .users-table td:nth-child(2) {
+     width: 10%;
+    }
+    .users-table th:nth-child(6),
+    .users-table td:nth-child(6) {
+     width: 25%;
+    }
+    .users-table th:nth-child(8),
+    .users-table td:nth-child(8) {
+      width: 1%;
+    }
+   
   }
   

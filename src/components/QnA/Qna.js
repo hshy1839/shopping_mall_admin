@@ -177,7 +177,7 @@
 //                             onClick={handlePreviousPage}
 //                             disabled={currentPage === 1}
 //                         >
-//                             이전 페이지
+//                             이전
 //                         </button>
 //                         {[...Array(totalPages)].map((_, i) => (
 //                             <button
@@ -194,7 +194,7 @@
 //                             onClick={handleNextPage}
 //                             disabled={currentPage === totalPages}
 //                         >
-//                             다음 페이지
+//                             다음
 //                         </button>
 //                     </div>
 //                 </div>

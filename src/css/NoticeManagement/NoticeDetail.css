@@ -101,7 +101,7 @@
 .save-button:hover {
     background-color: #218838;
 }
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .notice-detail-container {
         flex-direction: column;
         align-items: center;
@@ -117,11 +117,14 @@
     }
 
     .notice-detail-container-container h1 {
-        font-size: 1.5rem; /* 작은 화면에 맞게 폰트 크기 조정 */
+        font-size: 2rem; /* 작은 화면에 맞게 폰트 크기 조정 */
+        margin-bottom: 20%;
     }
 
     .notice-detail-container-container p {
-        font-size: 0.9rem; /* 작은 화면에 맞게 폰트 크기 조정 */
+        font-size: 1rem; /* 작은 화면에 맞게 폰트 크기 조정 */
+        text-align: left;
+        color: black;
     }
 
     .edit-input,

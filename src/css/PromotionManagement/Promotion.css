@@ -129,42 +129,12 @@
   }
   
   /* 페이지 버튼 */
-  .prev-page-btn, 
-  .next-page-btn {
-    border: none;
-    background-color: white;
-    color: #007bff;
-    cursor: pointer;
-  }
+ 
   
-  #page-number-btn {
-    color: #ccc;
-    border: none;
-    background-color: white;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin: 5px;
-    cursor: pointer;
-  }
   
-  #page-number-btn.active {
-    color: #000;
-  }
+ 
   
-  .prev-page-btn:hover, 
-  .next-page-btn:hover {
-    border: none;
-    background-color: white;
-    color: #013872;
-    cursor: pointer;
-  }
-  
-  .pagination {
-    margin-top: 5%;
-    justify-self: center;
-    display: flex;
-    cursor: pointer;
-  }
+ 
   
   .write-btn-container {
     width: 100%;
@@ -208,8 +178,8 @@
   }
   /* 반응형 스타일 */
   
-  /* 768px 이하 화면 (태블릿 이하) */
-  @media (max-width: 768px) {
+  /* 900px 이하 화면 (태블릿 이하) */
+  @media (max-width: 900px) {
   
     .promotion-management-container {
         width: 100%;
@@ -235,8 +205,9 @@
     }
   
     .promotion-search-box input {
-        width: 90%;
+        width: 100%;
         margin-bottom: 10px;
+        margin-top: 10%;
     }
   
     .search-category, .search-button {
@@ -256,15 +227,6 @@
         padding: 8px;
     }
   
-    #page-number-btn {
-        font-size: 14px;
-        margin: 5px 2px;
-    }
-  
-    .pagination {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
   
     .write-btn {
         width: 100%;

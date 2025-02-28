@@ -48,12 +48,12 @@ const Promotion = () => {
         fetchPromotions();
     }, []);
 
-    useEffect(() => {
+    const handleSearch = () => {
         const results = promotions.filter(promotion =>
             promotion.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setFilteredPromotions(results);
-    }, [searchTerm, promotions]);
+    };
 
     const handleCreatePromotionClick = () => {
         navigate('/promotion/create');
@@ -89,6 +89,18 @@ const Promotion = () => {
     const currentPromotions = filteredPromotions.slice(indexOfFirstPromotion, indexOfLastPromotion);
     const totalPages = Math.ceil(filteredPromotions.length / itemsPerPage);
 
+    const handlePreviousPage = () => {
+        if (currentPage > 1) setCurrentPage(currentPage - 1);
+    };
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    };
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
     return (
         <div className="promotion-management-container">
             <Header />
@@ -102,7 +114,9 @@ const Promotion = () => {
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
-                        <button className="search-button">검색</button>
+                        <button className="search-button" onClick={handleSearch}>
+                            검색
+                        </button>
                     </div>
 
                     <table className="promotion-table">
@@ -138,11 +152,29 @@ const Promotion = () => {
                             ))}
                         </tbody>
                     </table>
-                </div>
-                <div className="write-btn-container">
-                    <button className="write-btn" onClick={handleCreatePromotionClick}>
-                        프로모션 등록
-                    </button>
+                    <div className="pagination">
+                        <button className="prev-page-btn" onClick={handlePreviousPage} disabled={currentPage === 1}>
+                            이전
+                        </button>
+                        {[...Array(totalPages)].map((_, i) => (
+                            <button
+                                key={i}
+                                onClick={() => handlePageChange(i + 1)}
+                                className={currentPage === i + 1 ? 'active' : ''}
+                                id='page-number-btn'
+                            >
+                                {i + 1}
+                            </button>
+                        ))}
+                        <button className='next-page-btn' onClick={handleNextPage} disabled={currentPage === totalPages}>
+                            다음
+                        </button>
+                    </div>
+                    <div className="write-btn-container">
+                        <button className="write-btn" onClick={handleCreatePromotionClick}>
+                            프로모션 등록
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
