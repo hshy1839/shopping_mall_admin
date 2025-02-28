@@ -94,9 +94,9 @@
         margin-top: 30%;
     }
     .product-name {
-        font-size: 24px;
+        font-size: 16px;
         font-weight: bold;
-        margin-bottom: 30%;
+        margin-bottom: 0%;
         color: #333;
     }
     
@@ -105,29 +105,8 @@
     .product-description {
         font-size: 16px;
         margin-bottom: 10px;
-        color: #555;
-    }
-    
-    .product-stock {
-        margin: 20px 0;
-        font-size: 16px;
         color: #333;
-    }
-    
-    .stock-item {
-        display: flex;
-        justify-content: space-between;
-        padding: 5px 0;
-        font-size: 14px;
-    }
-    
-    .stock-size {
-        font-weight: bold;
-        color: #007BFF;
-    }
-    
-    .stock-quantity {
-        color: #28A745;
+        text-align: left;
     }
     
     .button-container {

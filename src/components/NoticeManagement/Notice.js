@@ -153,7 +153,7 @@ const Notice = () => {
                             ) : (
                                 currentNotices.map((notice, index) => (
                                     <tr key={notice.authorId}>
-                                        <td>{allNotices.length - (indexOfFirstNotice + index)}</td>
+                                       <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
                                         <td>
                                             <a className='notice-title'
                                                 onClick={() => handleNoticeClick(notice._id)}

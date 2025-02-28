@@ -218,13 +218,14 @@
   
     .promotion-table {
         width: 100%;
-        font-size: 0.8rem;
         overflow-x: auto;
     }
   
     .promotion-table th,
     .promotion-table td {
         padding: 8px;
+        font-size: 0.7rem;
+
     }
   
   

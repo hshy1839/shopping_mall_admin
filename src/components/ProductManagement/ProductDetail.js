@@ -86,9 +86,10 @@ const ProductDetail = () => {
     return (
         <div className="product-detail-container">
             <Header />
+            <h1>상품 정보</h1>
             <div className="product-detail-content">
                 <div className="product-info">
-                    <h1 className="product-name">{product.name}</h1>
+                    <h1 className="product-name">상품명: {product.name}</h1>
 
                     {/* 카테고리 상위 및 하위 표시 */}
                     <p className="product-category">
@@ -100,7 +101,7 @@ const ProductDetail = () => {
                     </p>
 
                     {/* 사이즈별 재고 */}
-                    <div className="product-stock">
+                    {/* <div className="product-stock">
                         <strong>사이즈별 재고</strong>
                         <ul>
                             {product.sizeStock
@@ -114,7 +115,7 @@ const ProductDetail = () => {
                                       ))
                                 : <span>재고 정보 없음</span>}
                         </ul>
-                    </div>
+                    </div> */}
 
                     <p className="product-description">
                         <strong>상세 설명:</strong> {product.description}

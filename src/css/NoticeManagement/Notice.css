@@ -212,7 +212,7 @@ h1 {
 
   .notice-table th, .notice-table td {
     padding: 8px; /* 패딩 감소 */
-    font-size: 0.8rem; /* 폰트 크기 감소 */
+    font-size: 0.6rem; /* 폰트 크기 감소 */
     text-align: center; /* 가운데 정렬 유지 */
   }
 

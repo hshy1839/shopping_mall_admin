@@ -245,17 +245,19 @@ background-color: whitesmoke;
   justify-items: center;
   padding-left: 10%;
   padding-right: 10%;
+
+  overflow-y: hidden;
 }
 .main-container-header {
   background-color: #6B4EFF;
   width: 128%;
   padding: 10%;
   margin-top: -10%;
-  justify-content: center;
   justify-items: center;
 }
 .main-container-header h1 {
   color: white;
+  font-size: 1.5rem;
 }
 .main-container-container {
   display: flex;
@@ -271,6 +273,7 @@ background-color: whitesmoke;
   margin-top: 20%;
   width: 100%;
   height: 100%;
+  margin-bottom: 50%;
 }
 
 .main-section1-item-container {
@@ -295,7 +298,7 @@ background-color: whitesmoke;
 }
 
 .main-section1-item-text {
-  font-size: 1.2rem;
+  font-size: 0.8rem;
   font-weight: bold;
   text-align: left;
   width: 50%;
@@ -318,7 +321,7 @@ background-color: whitesmoke;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1.0rem;
   font-weight: bold;
   color:black;
   position: relative;

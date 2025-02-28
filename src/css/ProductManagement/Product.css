@@ -239,13 +239,14 @@ h1 {
 
   .product-table {
       width: 100%;
-      font-size: 0.8rem;
       overflow-x: auto;
   }
 
   .product-table th,
   .product-table td {
       padding: 8px;
+      font-size: 0.6rem;
+
   }
 
   #page-number-btn {
