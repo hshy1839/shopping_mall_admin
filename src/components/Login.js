@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import '../css/Login.css';
+
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -41,10 +43,11 @@ const Login = () => {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: 'auto', padding: '20px' }}>
+    <div className='login-container' style={{ maxWidth: '400px', margin: 'auto', padding: '20px' }}>
+      <h1>Alice 관리자 페이지</h1>
       <h2>로그인</h2>
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '10px' }}>
+        <div className='login-username-container' style={{ marginBottom: '10px' }}>
           <label htmlFor="username">아이디</label>
           <input
             type="text"
@@ -55,7 +58,7 @@ const Login = () => {
             style={{ width: '100%', padding: '8px' }}
           />
         </div>
-        <div style={{ marginBottom: '10px' }}>
+        <div  className='login-password-container' style={{ marginBottom: '10px' }}>
           <label htmlFor="password">비밀번호</label>
           <input
             type="password"
