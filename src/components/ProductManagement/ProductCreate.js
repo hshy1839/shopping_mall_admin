@@ -101,24 +101,18 @@ const renderSizeOptions = () => {
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      // HEIC 파일인지 확인
-      if (file.type === "image/heic") {
-        try {
-          const convertedBlob = await heic2any({
-            blob: file,
-            toType: "image/jpeg",
-          });
-          const previewUrl = URL.createObjectURL(convertedBlob);
+      const image = new Image();
+      image.onload = () => {
+        const aspectRatio = image.width / image.height;
+        if (image.width < 400 || image.height < 200 || aspectRatio < 1.7) {
+          alert('이미지가 규격에 맞지 않습니다. 최소 400x200 픽셀, 비율은 1.7 이상이어야 합니다.');
+        } else {
+          setImage(file);
+          const previewUrl = URL.createObjectURL(file);
           setImagePreview(previewUrl);
-        } catch (error) {
-          console.error("Error converting HEIC to JPEG:", error);
-          alert("HEIC 이미지 변환 실패");
         }
-      } else {
-        const previewUrl = URL.createObjectURL(file);
-        setImagePreview(previewUrl);
-      }
-      setImage(file);
+      };
+      image.src = URL.createObjectURL(file);
     }
   };
 
@@ -129,33 +123,32 @@ const renderSizeOptions = () => {
 
   const handleFileUpload = async (e) => {
     const files = e.target.files;
-    const convertedImages = [];
+    const imageFiles = Array.from(files);
+    const validImages = [];
+    const validPreviews = [];
   
-    for (const file of files) {
-      if (file.type === "image/heic") {
-        // HEIC 파일을 JPEG로 변환
-        try {
-          const convertedBlob = await heic2any({
-            blob: file,
-            toType: "image/jpeg",
-          });
-          convertedImages.push(convertedBlob);
-          const previewUrl = URL.createObjectURL(convertedBlob);
-          setImagePreviews(prev => [...prev, previewUrl]);
-        } catch (error) {
-          console.error("HEIC 파일 변환 에러:", error);
-        }
-      } else {
-        convertedImages.push(file);
-        const previewUrl = URL.createObjectURL(file);
-        setImagePreviews(prev => [...prev, previewUrl]);
-      }
+    for (const file of imageFiles) {
+      const image = new Image();
+      await new Promise((resolve, reject) => {
+        image.onload = () => {
+          const aspectRatio = image.width / image.height;
+          if (image.width < 400 || image.height < 200 || aspectRatio < 0.75) {
+            alert(`이미지가 규격에 맞지 않습니다: ${file.name}. 최소 400x200 픽셀, 비율은 0.75 이상이어야 합니다.`);
+            resolve();
+          } else {
+            validImages.push(file);
+            const previewUrl = URL.createObjectURL(file);
+            validPreviews.push(previewUrl);
+            resolve();
+          }
+        };
+        image.src = URL.createObjectURL(file);
+      });
     }
   
-    // 상태에 변환된 이미지들 저장
-    setImages(prev => [...prev, ...convertedImages]);
+    setImagePreviews(validPreviews);
+    setImages(validImages);
   };
-
   // 이미지 삭제 함수
   const handleImageDelete = (index) => {
     const updatedImages = images.filter((_, idx) => idx !== index);
@@ -166,62 +159,61 @@ const renderSizeOptions = () => {
 
   
   
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    // 필수 필드 확인
-    if (!name || !categoryMain || !categorySub || !price) {
-        alert('모든 필드를 입력해주세요.');
-        return;
-    }
+  // 필수 필드 확인, 메인 이미지와 상세 이미지 포함
+  if (!name || !categoryMain || !categorySub || !price || !image || images.length === 0) {
+      alert('모든 입력란을 입력해주세요.');
+      return;
+  }
 
-    const filteredSizeStock = {};
-    size.forEach((s) => {
-        filteredSizeStock[s] = sizeStock[s] || 0;
-    });
+  const filteredSizeStock = {};
+  size.forEach((s) => {
+      filteredSizeStock[s] = sizeStock[s] || 0;
+  });
 
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('categoryMain', categoryMain);
-    formData.append('categorySub', categorySub);
-    formData.append('price', price);
-    formData.append('description', description);
-    formData.append('sizeStock', JSON.stringify(filteredSizeStock));
+  const formData = new FormData();
+  formData.append('name', name);
+  formData.append('categoryMain', categoryMain);
+  formData.append('categorySub', categorySub);
+  formData.append('price', price);
+  formData.append('description', description);
+  formData.append('sizeStock', JSON.stringify(filteredSizeStock));
 
-    if (image) {
-        formData.append('mainImage', image); // mainImage에 파일 객체
-    }
+  // 메인 이미지 추가
+  formData.append('mainImage', image);
 
-    images.forEach((img) => {
-        formData.append('additionalImages', img); // 추가 이미지도 파일 객체
-    });
+  // 추가 이미지들 추가
+  images.forEach((img) => {
+      formData.append('additionalImages', img);
+  });
 
+  const token = localStorage.getItem('token');
 
-    const token = localStorage.getItem('token');
+  try {
+      const response = await axios.post(
+          'http://3.36.74.8:8865/api/products/productCreate',
+          formData,
+          {
+              headers: {
+                  'Authorization': `Bearer ${token}`,
+              },
+          }
+      );
 
-    try {
-        const response = await axios.post(
-            'http://3.36.74.8:8865/api/products/productCreate',
-            formData,
-            {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    // 'Content-Type': 'multipart/form-data'는 생략
-                },
-            }
-        );
-
-        if (response.status === 200) {
-            alert('상품이 성공적으로 등록되었습니다.');
-            navigate('/products');
-        } else {
-            alert('상품 등록 실패: ' + response.data.message);
-        }
-    } catch (error) {
-        console.error('상품 등록 실패:', error.message);
-        alert('상품 등록 중 오류가 발생했습니다.');
-    }
+      if (response.status === 200) {
+          alert('상품이 성공적으로 등록되었습니다.');
+          navigate('/products');
+      } else {
+          alert('상품 등록 실패: ' + response.data.message);
+      }
+  } catch (error) {
+      console.error('상품 등록 실패:', error.message);
+      alert('상품 등록 중 오류가 발생했습니다.');
+  }
 };
+
 
 
   
