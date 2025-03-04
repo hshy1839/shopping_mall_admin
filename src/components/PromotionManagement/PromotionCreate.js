@@ -12,11 +12,22 @@ const PromotionCreate = () => {
   const handlePromotionImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setPromotionImage(file);
-      const previewUrl = URL.createObjectURL(file); // 미리보기 URL 생성
-      setPromotionImagePreview(previewUrl);
+      const image = new Image();
+      image.onload = () => {
+        const aspectRatio = image.width / image.height;
+        if (image.width < 500 || image.height < 250 || aspectRatio < 1.7) {
+          alert('이미지가 규격에 맞지 않습니다. 최소 500x250 픽셀, 비율은 1.7:1 이상이어야 합니다.');
+          // 규격에 맞지 않을 경우 이미지 상태를 업데이트하지 않고 종료
+        } else {
+          setPromotionImage(file);
+          const previewUrl = URL.createObjectURL(file);
+          setPromotionImagePreview(previewUrl);
+        }
+      };
+      image.src = URL.createObjectURL(file);
     }
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,6 +68,7 @@ const PromotionCreate = () => {
       alert('프로모션 등록 중 오류가 발생했습니다.');
     }
   };
+  
 
   return (
     <div className="promotion-create-container">
