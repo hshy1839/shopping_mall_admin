@@ -106,7 +106,7 @@ const Promotion = () => {
             <Header />
             <div className="promotion-management-container-container">
                 <div className="promotion-top-container-container">
-                    <h1>프로모션 관리</h1>
+                    <h1>광고 설정</h1>
                     <div className="promotion-search-box">
                         <input
                             type="text"
@@ -172,7 +172,7 @@ const Promotion = () => {
                     </div>
                     <div className="write-btn-container">
                         <button className="write-btn" onClick={handleCreatePromotionClick}>
-                            프로모션 등록
+                            광고 등록
                         </button>
                     </div>
                 </div>

@@ -1,7 +1,8 @@
 .product-detail-container {
     font-family: 'Arial', sans-serif;
-    margin: 20px auto;
-    max-width: 800px;
+   margin-left: 20%;
+    height: 100vh;
+    max-width: 1200px;
     background: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
@@ -11,18 +12,22 @@
 .product-name {
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 10px;
     color: #333;
 }
-
+.product-info {
+    margin-top: 10%;
+}
 .product-category,
 .product-price,
 .product-description {
     font-size: 16px;
-    margin-bottom: 10px;
-    color: #555;
+    font-weight: bold;
+    color: black;
+    text-align: left;
 }
-
+.product-description {
+    margin-bottom: 20%;
+}
 .product-stock {
     margin: 20px 0;
     font-size: 16px;

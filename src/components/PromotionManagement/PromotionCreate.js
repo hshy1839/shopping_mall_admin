@@ -60,25 +60,25 @@ const PromotionCreate = () => {
 
   return (
     <div className="promotion-create-container">
-      <h2 className="promotion-create-title">프로모션 등록</h2>
+      <h2 className="promotion-create-title">광고 등록</h2>
       <form className="promotion-create-form" onSubmit={handleSubmit}>
         {/* Promotion Name */}
         <div className="promotion-create-field">
-          <label className="promotion-create-label" htmlFor="name">프로모션 이름</label>
+          <label className="promotion-create-label" htmlFor="name">광고 이름</label>
           <input
             className="promotion-create-input"
             type="text"
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="프로모션 이름을 입력하세요"
+            placeholder="광고 이름을 입력하세요"
             required
           />
         </div>
 
         {/* Promotion Image */}
         <div className="promotion-create-field">
-          <label className="promotion-create-label" htmlFor="promotionImage">프로모션 이미지</label>
+          <label className="promotion-create-label" htmlFor="promotionImage">광고 이미지</label>
           <input
             className="promotion-create-input"
             type="file"
@@ -89,7 +89,7 @@ const PromotionCreate = () => {
           {promotionImage && (
             <img
               src={promotionImagePreview}
-              alt="프로모션 이미지 미리보기"
+              alt="광고 이미지 미리보기"
               className="image-preview"
             />
           )}

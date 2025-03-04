@@ -36,26 +36,28 @@ h1 {
 }
 
 .product-search-box input {
-  width: 30%;
+  width: 40%;
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  height: 10%;
 }
 
 .product-search-box input:focus {
-  border-color: #007bff;
+  border-color: #ccc;
 }
 
 .search-category {
   width: 10%;
-  padding: 10px;
-  font-size: 15px;
-  margin-right: 2%;
+  height: 10%;
+  padding:10px;
+  font-size: 22px;
 }
 
 .search-button {
   width: 10%;
+  height: 10%;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -128,11 +130,12 @@ h1 {
 }
 
 /* 페이지 버튼 */
-.product-prev-page-btn, 
-.product-next-page-btn {
+.prev-page-btn, 
+.next-page-btn {
   border: none;
   background-color: white;
   color: #007bff;
+  font-size: 14px;
   cursor: pointer;
 }
 
@@ -140,8 +143,6 @@ h1 {
   color: #ccc;
   border: none;
   background-color: transparent;
-  padding-left: 5px;
-  padding-right: 5px;
   margin: 0px;
   cursor: pointer;
 }
@@ -150,19 +151,25 @@ h1 {
   color: #000;
 }
 
-.product-prev-page-btn:hover, 
-.product-next-page-btn:hover {
+.prev-page-btn:hover, 
+.next-page-btn:hover {
   border: none;
   background-color: white;
   color: #013872;
   cursor: pointer;
 }
+.prev-page-btn {
+  margin-right: 5%;
+}
+.next-page-btn {
+  margin-left: 5%;
+}
 
-.product-pagination {
-  margin-top: 15%;
-  justify-self: center;
+.pagination {
+  margin-top: 10%;
   display: flex;
   cursor: pointer;
+  justify-content: center;
 }
 
 .write-btn-container {

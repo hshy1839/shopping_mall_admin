@@ -83,12 +83,12 @@ const Main = () => {
       <div className="main-container-container">
         <div className="main-section1">
           <div className="main-section1-item-container">
-            <div className="main-section1-item">
+            {/* <div className="main-section1-item">
               <div className="main-section1-item-text">활성화된 쿠폰</div>
               <div className="main-section1-item-percent">
                 <div className="main-section1-item-detail">{activeCouponsCount} 개</div>
               </div>
-            </div>
+            </div> */}
             <div className="main-section1-item">
               <div className="main-section1-item-text">상품 개수</div>
               <div className="main-section1-item-percent">

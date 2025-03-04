@@ -37,8 +37,9 @@
     display: flex;
   }
   
-  .promotion-search-box input {
-    width: 30%;
+  .promotion-search-box input[type="text"] {
+    width: 40%;
+    height: 42px;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;

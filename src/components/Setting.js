@@ -63,11 +63,11 @@ const Setting = () => {
             <Header />
             <div className="setting-container-container">
                 <div className="setting-top-container-container">
-                    <h1>설정</h1>
+                    <div className='setting-top-title'>설정</div>
                 </div>
 
-                <div className="setting-section">
-                    <h2>계좌 정보 등록</h2>
+                <div className="setting-section-1">
+                    <div className='setting-account-title'>계좌 정보 등록</div>
                     <div className="setting-account-container">
                         <input
                             type="text"
@@ -93,7 +93,6 @@ const Setting = () => {
                         <button onClick={handleBankAccountRegister} className="submit-account-button">등록</button>
                     </div>
                 </div>
-
                 
             </div>
         </div>

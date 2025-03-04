@@ -71,7 +71,7 @@ const Login = () => {
         </div>
         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
         <div>
-          <button type="submit" style={{ width: '100%', padding: '10px' }}>
+          <button className="login-button" type="submit" style={{ width: '100%', padding: '10px' }}>
             로그인
           </button>
         </div>

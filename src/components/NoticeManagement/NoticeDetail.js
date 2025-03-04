@@ -153,8 +153,8 @@ const handleDelete = async () => {
             <div className='notice-detail-container-container'>
                 {isEditing ? (
                     <>
-                    <h1>공지사항 수정</h1>
-                    <p>제목</p>
+                    <div className='notice-edit-container'>공지사항 수정</div>
+                    <div className='notice-edit-title'>제목</div>
                         <input
                             type="text"
                             name="title"
@@ -162,7 +162,7 @@ const handleDelete = async () => {
                             onChange={handleChange}
                             className="edit-input"
                         />
-                    <p>내용</p>
+                    <div className='notice-edit-content'>내용</div>
 
                         <textarea
                             name="content"
@@ -174,11 +174,13 @@ const handleDelete = async () => {
                     </>
                 ) : (
                     <>
-                        <h1>{notice.title}</h1>
-                        <p><strong>작성자:</strong> {notice.authorName}</p>
-                        <p><strong>작성 날짜:</strong> {new Date(notice.created_at).toLocaleDateString()}</p>
+                        <div className='notice-content-title'>{notice.title}</div>
+                        <div className='notice-content-container'>
+                        <div className='notice-content-authorname'>작성자: {notice.authorName}</div>
+                        <div className='notice-content-date'>작성 날짜: {new Date(notice.created_at).toLocaleDateString()}</div>
+                        </div>
                         <div className="notice-content">
-                            <p>{notice.content}</p>
+                            {notice.content}
                         </div>
 
                         {/* 수정 및 삭제 버튼 */}

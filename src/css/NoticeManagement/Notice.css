@@ -34,8 +34,9 @@ h1 {
   display: flex;
 }
 
-.notice-search-box input {
-  width: 30%;
+.notice-search-box input[type="text"] {
+  width: 50%;
+  height: 42px;
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
@@ -56,6 +57,9 @@ h1 {
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
+  background-color: #6B4EFF;
+  color: white;
+  font-weight: 900;
   border-left: none;
   border-radius: 4px;
   cursor: pointer;
@@ -139,6 +143,7 @@ h1 {
   justify-self: center;
   display: flex;
   cursor: pointer;
+  background-color: transparent;
 }
 .pagination span {
 }
@@ -153,7 +158,6 @@ h1 {
   
 }
 .write-btn {
-  
   margin-top: 10%;
   margin-bottom: 10%;
   width: 30%;

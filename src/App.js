@@ -71,8 +71,8 @@ function App() {
           {/* <Route path="/QnA/qna" element={<PrivateRoute><Header /><Qna /></PrivateRoute>} /> */}
           <Route path="/setting" element={<PrivateRoute><Header /><Setting /></PrivateRoute>} />
           {/* <Route path="/QnA/qna/qnaDetail/:id" element={<PrivateRoute><Header /><QnaDetail/></PrivateRoute>} /> */}
-          <Route path="/coupon" element={<PrivateRoute><Header /><Coupon/></PrivateRoute>} />
-          <Route path="/coupon/create" element={<PrivateRoute><Header /><CouponCreate/></PrivateRoute>} />
+          {/* <Route path="/coupon" element={<PrivateRoute><Header /><Coupon/></PrivateRoute>} />
+          <Route path="/coupon/create" element={<PrivateRoute><Header /><CouponCreate/></PrivateRoute>} /> */}
           <Route path="/promotion" element={<PrivateRoute><Header /><Promotion/></PrivateRoute>} />
           <Route path="/promotion/create" element={<PrivateRoute><Header /><PromotionCreate/></PrivateRoute>} />
           

@@ -1,4 +1,4 @@
-/* 기본 스타일 */
+/*
 .coupon-management-container {
     display: flex;
     overflow-x: hidden;
@@ -30,7 +30,6 @@
     margin-bottom: 20px;
   }
   
-  /* 검색 박스 스타일 */
   .coupon-search-box {
     margin-top: 10%;
     text-align: left;
@@ -69,7 +68,6 @@
     background-color: rgb(191, 189, 189);
   }
   
-  /* 테이블 스타일 */
   .coupon-table {
     width: 1000px;
     border-collapse: collapse;
@@ -128,7 +126,6 @@
     font-size: 1rem;
   }
   
-  /* 페이지 버튼 */
   .prev-page-btn, 
   .next-page-btn {
     border: none;
@@ -136,6 +133,7 @@
     color: #007bff;
     cursor: pointer;
   }
+    
   
 
   
@@ -186,9 +184,7 @@
     display: flex;
     gap: 10px;
   }
-  /* 반응형 스타일 */
   
-  /* 900px 이하 화면 (태블릿 이하) */
   @media (max-width: 900px) {
   
     .coupon-management-container {
@@ -260,5 +256,6 @@
       height: 20%;
     }
   }
+    */
   
   

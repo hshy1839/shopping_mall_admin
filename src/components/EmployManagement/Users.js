@@ -88,110 +88,63 @@ const Users = () => {
         setCurrentPage(pageNumber);
     };
     // 각 기능 핸들러
-    const handleApprove = async (id) => {
-        const isConfirmed = window.confirm("해당 사용자 계정을 승인하시겠습니까?");
+   
+    const handleAction = async (id, action) => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.log('로그인 정보가 없습니다.');
+            return;
+        }
+
+        let url = `http://3.36.74.8:8865/api/users/userinfo/${id}`;
+        let method = 'put';
+        let data = {};
+        let message = '';
+
+        switch (action) {
+            case 'approve':
+            case 'reject':
+                message = action === 'approve' ? "해당 사용자 계정을 승인하시겠습니까?" : "해당 사용자 계정을 사용중지 하시겠습니까?";
+                data = { is_active: action === 'approve' };
+                break;
+            case 'delete':
+                message = "해당 사용자를 삭제하시겠습니까?";
+                method = 'delete';
+                break;
+            case '1':
+            case '2':
+            case '3':
+                message = `해당 사용자를 ${action === '1' ? '관리자' : action === '2' ? '부관리자' : '일반유저'}로 설정하시겠습니까?`;
+                data = { user_type: action };
+                break;
+        }
+
+        const isConfirmed = window.confirm(message);
         if (!isConfirmed) return;
-    
-        try {
-            const token = localStorage.getItem('token');
-            if (!token) return console.log('로그인 정보가 없습니다.');
-    
-            const response = await axios.put(
-                `http://3.36.74.8:8865/api/users/userinfo/${id}`,
-                { is_active: true },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-    
-            if (response.data.success) {
-                // 상태 업데이트
-                setUsers((prevUsers) =>
-                    prevUsers.map((user) =>
-                        user._id === id ? { ...user, is_active: true } : user
-                    )
-                );
-            } else {
-                alert('승인 실패');
-            }
-        } catch (error) {
-            console.error('승인 처리 중 오류 발생:', error);
-        }
-    };
-    
-
-    const handleReject = async (id) => {
-        const isConfirmed = window.confirm("해당 사용자 계정을 사용중지 하시겠습니까?");
-
-        if (!isConfirmed) {
-            return;  // "아니오"를 선택하면 삭제 취소
-        }
 
         try {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                console.log('로그인 정보가 없습니다.');
-                return;
-            }
-    
-            const response = await axios.put(
-                `http://3.36.74.8:8865/api/users/userinfo/${id}`,
-                { is_active: false },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-    
+            const response = await axios({
+                method,
+                url,
+                data,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
             if (response.data.success) {
-                const updatedUsers = users.map((user) =>
-                    user._id === id ? { ...user, is_active: false } : user
-                );
+                const updatedUsers = users.map((user) => {
+                    if (user._id === id) {
+                        return { ...user, ...data };
+                    }
+                    return user;
+                }).filter((user) => !(action === 'delete' && user._id === id));
                 setUsers(updatedUsers);
             } else {
-                console.log('거부 실패');
+                console.log(`${action} 실패`);
             }
         } catch (error) {
-            console.error('거부 처리 중 오류 발생:', error);
-        }
-    };
-    
-
-    const handleDelete = async (id) => {
-        const isConfirmed = window.confirm("해당 사용자를 삭제하시겠습니까?");
-
-        if (!isConfirmed) {
-            console.log("삭제가 취소되었습니다.");
-            return;  // "아니오"를 선택하면 삭제 취소
-        }
-
-        try {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                console.log('로그인 정보가 없습니다.');
-                return;
-            }
-    
-            const response = await axios.delete(
-                `http://3.36.74.8:8865/api/users/userinfo/${id}`,  // URL에 ID 포함
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-    
-            if (response.data.success) {
-                const updatedUsers = users.filter((user) => user._id !== id);
-                setUsers(updatedUsers);
-            } else {
-                console.log('삭제 실패');
-            }
-        } catch (error) {
-            console.error('삭제 처리 중 오류 발생:', error);
+            console.error(`${action} 처리 중 오류 발생:`, error);
         }
     };
     
@@ -200,7 +153,7 @@ const Users = () => {
             <Header />
             <div className='users-management-container-container'>
                 <div className='users-top-container-container'>
-                    <h1>사용자 관리</h1>
+                    <h1>회원 관리</h1>
 
                     {/* 검색 박스 */}
                     <div className="users-search-box">
@@ -215,6 +168,7 @@ const Users = () => {
                         </select>
                         <input
                             type="text"
+                            className='users-search-box-input'
                             placeholder="검색..."
                             value={searchTerm} // 입력된 검색어
                             onChange={(e) => setSearchTerm(e.target.value)} // 검색어 변경
@@ -233,9 +187,9 @@ const Users = () => {
                                 <th>이름</th>
                                 <th>연락처</th>
                                 <th>타입</th>
-                                <th>가입일</th>
+                                <th>가입일시</th>
                                 <th>상태</th>
-                                <th>액션</th>
+                                <th>권한설정</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -261,23 +215,15 @@ const Users = () => {
                                         <td>{new Date(user.created_at).toLocaleDateString()}</td>
                                         <td>{user.is_active ? '가입 승인' : '대기'}</td>
                                         <td>
-                                            <div className="actions-btns-users">
-                                                <FontAwesomeIcon 
-                                                    icon={faCheck} 
-                                                    onClick={() => handleApprove(user._id)} 
-                                                    className="approve-btn-users"
-                                                />
-                                                <FontAwesomeIcon 
-                                                    icon={faBan} 
-                                                    onClick={() => handleReject(user._id)} 
-                                                    className="reject-btn-users"
-                                                />
-                                                <FontAwesomeIcon 
-                                                    icon={faTrash} 
-                                                    onClick={() => handleDelete(user._id)} 
-                                                    className="delete-btn-users"
-                                                />
-                                            </div>
+                                            <select onChange={(e) => handleAction(user._id, e.target.value)} defaultValue="">
+                                                <option value="" disabled>선택하세요</option>
+                                                <option value="approve">가입승인</option>
+                                                <option value="reject">활동중지</option>
+                                                <option value="delete">계정삭제</option>
+                                                <option value="1">관리자 변경</option>
+                                                <option value="2">부관리자 변경</option>
+                                                <option value="3">일반유저 변경</option>
+                                            </select>
                                         </td>
                                     </tr>
                                 ))

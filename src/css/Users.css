@@ -33,37 +33,20 @@
     text-align: left;
     display: flex;
   }
-  
-  .users-search-box input {
-    width: 30%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  .users-search-box input[type="text"] {
+    height: 42px;
+    width: 40%;
   }
-  
   .users-search-box input:focus {
-    border-color: #007bff;
+    border-color: #ccc;
   }
   .search-category {
     width: 10%;
-    padding: 10px;
-    font-size: 15px;
-    margin-right: 2%;
+    height: 10%;
+    padding:10px;
+    font-size: 22px;
   }
-  .search-button {
-    width: 10%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-left: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: 0.5s ease background-color;
-  }
-  .search-button:hover {
-    background-color: rgb(191, 189, 189);
-  }
+  
   
   /* 테이블 스타일 */
   .users-table {
@@ -154,9 +137,9 @@
       flex-direction: column; /* 검색 필드를 수직으로 정렬 */
     }
   
-    .users-search-box input {
+    .users-search-box input[type="text"] {
       
-      width: 95%; /* 전체 너비 사용 */
+      width: 100%; /* 전체 너비 사용 */
       margin-bottom: 2%; /* 입력 필드 아래 간격 추가 */
     }
   
