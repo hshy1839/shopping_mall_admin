@@ -215,7 +215,7 @@ const Users = () => {
                                         <td>{new Date(user.created_at).toLocaleDateString()}</td>
                                         <td>{user.is_active ? '가입 승인' : '대기'}</td>
                                         <td>
-                                            <select onChange={(e) => handleAction(user._id, e.target.value)} defaultValue="">
+                                            <select  className='users-role-select' onChange={(e) => handleAction(user._id, e.target.value)} defaultValue="">
                                                 <option value="" disabled>선택하세요</option>
                                                 <option value="approve">가입승인</option>
                                                 <option value="reject">활동중지</option>

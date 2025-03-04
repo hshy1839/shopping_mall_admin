@@ -137,6 +137,10 @@
       flex-direction: column; /* 검색 필드를 수직으로 정렬 */
     }
   
+    .users-role-select {
+      width: auto;
+      font-size: 0.4rem;
+    }
     .users-search-box input[type="text"] {
       
       width: 100%; /* 전체 너비 사용 */
