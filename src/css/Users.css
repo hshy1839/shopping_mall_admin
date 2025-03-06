@@ -108,6 +108,17 @@
   .delete-btn-users {
     color: red;
   }
+  .users-table-shippinginfo {
+    justify-self: center;
+    align-self: center;
+    padding: 10px 20px;  /* 패딩 조정으로 버튼 크기 감소 */
+    font-size: 12px;    /* 폰트 크기를 작게 설정 */
+    border: 1px solid #ccc;  /* 테두리 설정 */
+    background-color: #f8f8f8;  /* 배경색 설정 */
+    color: #333;  /* 글자색 설정 */
+    border-radius: 5px;  /* 테두리 둥글게 처리 */
+    cursor: pointer;  /* 커서를 포인터로 설정 */
+}
   
   
   @media (max-width: 900px) {
@@ -182,24 +193,30 @@
     
     .users-table th:nth-child(1),
     .users-table td:nth-child(1) {
-     width: 5%;
+     width: 3%;
     }
     .users-table th:nth-child(2),
     .users-table td:nth-child(2) {
-     width: 10%;
+     width: 8%;
     }
-    .users-table th:nth-child(6),
-    .users-table td:nth-child(6) {
-     width: 25%;
+    .users-table th:nth-child(3),
+    .users-table td:nth-child(3) {
+     width: 6%;
     }
-    .users-table th:nth-child(7),
-    .users-table td:nth-child(7) {
-     width: 25%;
+    .users-table th:nth-child(4),
+    .users-table td:nth-child(4) {
+     width: 12%;
     }
-    .users-table th:nth-child(8),
-    .users-table td:nth-child(8) {
-      width: 1%;
-    }
+    .users-table-shippinginfo {
+      padding: 2px 5px;  /* 패딩 조정으로 버튼 크기 감소 */
+      font-size: 8px;    /* 폰트 크기를 작게 설정 */
+      border: 1px solid #ccc;  /* 테두리 설정 */
+      background-color: #f8f8f8;  /* 배경색 설정 */
+      color: #333;  /* 글자색 설정 */
+      border-radius: 5px;  /* 테두리 둥글게 처리 */
+      cursor: pointer;  /* 커서를 포인터로 설정 */
+  }
+  
    
   }
   

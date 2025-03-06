@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../../css/Users.css';
 import Header from '../Header.js';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTrash, faBan } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
@@ -11,7 +11,7 @@ const Users = () => {
     const [searchTerm, setSearchTerm] = useState('');  // 검색어 상태
     const [searchCategory, setSearchCategory] = useState('all');  // 검색 기준 상태
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
-        const itemsPerPage = 10; // 페이지당 표시할 항목 수
+    const itemsPerPage = 10; // 페이지당 표시할 항목 수
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -48,7 +48,39 @@ const Users = () => {
         fetchUsers();
     }, []);
 
-  
+    const fetchShippingInfo = async (userId) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('로그인 정보가 없습니다.');
+                return null;
+            }
+    
+            if (!userId) {
+                console.error('UserId가 제공되지 않았습니다.');
+                return null;
+            }
+    
+            const response = await axios.get(`http://3.36.74.8:8865/api/shippinginfo/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+    
+    
+            // 응답 데이터 구조에 맞게 shippingDetails 반환
+            if (response.status === 200 && response.data.shippingDetails) {
+                return response.data.shippingDetails; // 문자열 배열 반환
+            } else {
+                return null;
+            }
+        } catch (error) {
+            console.error('Error fetching shipping info:', error);
+            if (error.response) {
+            }
+            return null;
+        }
+    };
 
     const handleSearch = () => {
         // 검색 결과 필터링
@@ -65,11 +97,11 @@ const Users = () => {
             }
             return true;
         });
-    
+
         setUsers(filteredUsers);  // 필터된 결과로 상태 업데이트
     };
-    
-    
+
+
     const indexOfLastNotice = currentPage * itemsPerPage;
     const indexOfFirstNotice = indexOfLastNotice - itemsPerPage;
     const currentNotices = users.slice(indexOfFirstNotice, indexOfLastNotice);
@@ -88,7 +120,7 @@ const Users = () => {
         setCurrentPage(pageNumber);
     };
     // 각 기능 핸들러
-   
+
     const handleAction = async (id, action) => {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -147,7 +179,7 @@ const Users = () => {
             console.error(`${action} 처리 중 오류 발생:`, error);
         }
     };
-    
+
     return (
         <div className="users-management-container">
             <Header />
@@ -188,6 +220,7 @@ const Users = () => {
                                 <th>연락처</th>
                                 <th>타입</th>
                                 <th>가입일시</th>
+                                <th>주소지</th>
                                 <th>상태</th>
                                 <th>권한설정</th>
                             </tr>
@@ -207,15 +240,47 @@ const Users = () => {
                                         <td>{user.name}</td>
                                         <td>{user.phoneNumber}</td>
                                         <td>
-                                            {user.user_type ==3 ? '일반유저' :
-                                             user.user_type == 2 ? '부관리자' : 
-                                             user.user_type ==1 ? '관리자' : 
-                                             '알 수 없음'}
+                                            {user.user_type == 3 ? '일반유저' :
+                                                user.user_type == 2 ? '부관리자' :
+                                                    user.user_type == 1 ? '관리자' :
+                                                        '알 수 없음'}
                                         </td>
                                         <td>{new Date(user.created_at).toLocaleDateString()}</td>
+                                        <td>
+                                            <button
+                                                onClick={async () => {
+                                                    if (!user._id || user._id.length !== 24) {
+                                                        alert('유효하지 않은 유저 ID입니다.');
+                                                        return;
+                                                    }
+
+                                                    try {
+                                                        const shippingDetails = await fetchShippingInfo(user._id);
+
+                                                        if (shippingDetails && shippingDetails.length > 0) {
+                                                            // 배열의 각 항목을 줄바꿈하여 연결
+                                                            const formattedDetails = shippingDetails.join('\n');
+
+                                                            // 하나의 alert에 줄바꿈된 내용 출력
+                                                            alert(formattedDetails);
+                                                        } else if (!shippingDetails) {
+                                                            alert('배송지 정보가 없습니다.');
+                                                        } else {
+                                                            alert('배송지 데이터가 올바르지 않습니다.');
+                                                        }
+                                                    } catch (error) {
+                                                        alert('배송지 정보를 가져오는 중 오류가 발생했습니다.');
+                                                        console.error(error);
+                                                    }
+                                                }}
+                                                className="users-table-shippinginfo"
+                                            >
+                                                확인
+                                            </button>
+                                        </td>
                                         <td>{user.is_active ? '가입 승인' : '대기'}</td>
                                         <td>
-                                            <select  className='users-role-select' onChange={(e) => handleAction(user._id, e.target.value)} defaultValue="">
+                                            <select className='users-role-select' onChange={(e) => handleAction(user._id, e.target.value)} defaultValue="">
                                                 <option value="" disabled>선택하세요</option>
                                                 <option value="approve">가입승인</option>
                                                 <option value="reject">활동중지</option>
