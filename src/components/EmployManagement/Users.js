@@ -305,20 +305,47 @@ const Users = () => {
                                         </td>
                                         <td>{user.is_active ? '가입 승인' : '대기'}</td>
                                         <td>
-                                            <select
-                                                className='users-role-select'
-                                                onChange={(e) => handleAction(user._id, e.target.value)}
-                                                defaultValue=""
-                                            >
-                                                <option value="" disabled>선택하세요</option>
-                                                <option value="approve">가입승인</option>
-                                                <option value="reject">활동중지</option>
-                                                <option value="delete">계정삭제</option>
-                                                {currentUserType == 1 && <option value="1">관리자 변경</option>}
-                                                {currentUserType == 1 &&  <option value="2">부관리자 변경</option>}
-                                                {currentUserType == 1 &&  <option value="3">일반유저 변경</option>}
-                                            </select>
-                                        </td>
+    {currentUserType == 1 ? (  
+        // 로그인한 유저가 관리자(user_type === 1)라면 모든 옵션 표시
+        <select
+            className='users-role-select'
+            onChange={(e) => handleAction(user._id, e.target.value)}
+            defaultValue=""
+        >
+            <option value="" disabled>선택하세요</option>
+            <option value="approve">가입승인</option>
+            <option value="reject">활동중지</option>
+            <option value="delete">계정삭제</option>
+            <option value="1">관리자 변경</option>
+            <option value="2">부관리자 변경</option>
+            <option value="3">일반유저 변경</option>
+        </select>
+    ) : user.user_type == 1 ? (  
+        // 현재 로그인한 유저가 1이 아니고, 대상 유저가 관리자(user_type === 1)인 경우
+        <select
+            className='users-role-select'
+            defaultValue=""
+            disabled
+        >
+            <option value="" disabled>권한이 없습니다</option>
+        </select>
+    ) : (  
+        // 일반 유저가 보거나 부관리자가 일반 유저를 변경하는 경우
+        <select
+            className='users-role-select'
+            onChange={(e) => handleAction(user._id, e.target.value)}
+            defaultValue=""
+        >
+            <option value="" disabled>선택하세요</option>
+            <option value="approve">가입승인</option>
+            <option value="reject">활동중지</option>
+            <option value="delete">계정삭제</option>
+            <option value="2">부관리자 변경</option>
+            <option value="3">일반유저 변경</option>
+        </select>
+    )}
+</td>
+
 
                                     </tr>
                                 ))
