@@ -11,6 +11,7 @@ const Users = () => {
     const [searchTerm, setSearchTerm] = useState('');  // 검색어 상태
     const [searchCategory, setSearchCategory] = useState('all');  // 검색 기준 상태
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+    const [currentUserType, setCurrentUserType] = useState(1); // 현재 페이지
     const itemsPerPage = 10; // 페이지당 표시할 항목 수
 
     useEffect(() => {
@@ -21,7 +22,7 @@ const Users = () => {
                     return;
                 }
 
-                const response = await axios.get('http://3.36.74.8:8865/api/users/userinfo', {
+                const response = await axios.get('http://localhost:8865/api/users/userinfo', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -48,6 +49,30 @@ const Users = () => {
         fetchUsers();
     }, []);
 
+    useEffect(() => {
+        const fetchCurrentUser = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) return;
+
+                const response = await axios.get('http://localhost:8865/api/users/userinfoget', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (response.data && response.data.success) {
+                    setCurrentUserType(response.data.user.user_type);
+                    console.log(response.data.user.user_type);
+                }
+            } catch (error) {
+                console.error('현재 사용자 정보를 가져오는데 실패했습니다.', error);
+            }
+        };
+
+        fetchCurrentUser();
+    }, []);
+
     const fetchShippingInfo = async (userId) => {
         try {
             const token = localStorage.getItem('token');
@@ -55,19 +80,19 @@ const Users = () => {
                 alert('로그인 정보가 없습니다.');
                 return null;
             }
-    
+
             if (!userId) {
                 console.error('UserId가 제공되지 않았습니다.');
                 return null;
             }
-    
-            const response = await axios.get(`http://3.36.74.8:8865/api/shippinginfo/${userId}`, {
+
+            const response = await axios.get(`http://localhost:8865/api/shippinginfo/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
-    
-    
+
+
             // 응답 데이터 구조에 맞게 shippingDetails 반환
             if (response.status === 200 && response.data.shippingDetails) {
                 return response.data.shippingDetails; // 문자열 배열 반환
@@ -128,7 +153,7 @@ const Users = () => {
             return;
         }
 
-        let url = `http://3.36.74.8:8865/api/users/userinfo/${id}`;
+        let url = `http://localhost:8865/api/users/userinfo/${id}`;
         let method = 'put';
         let data = {};
         let message = '';
@@ -280,16 +305,21 @@ const Users = () => {
                                         </td>
                                         <td>{user.is_active ? '가입 승인' : '대기'}</td>
                                         <td>
-                                            <select className='users-role-select' onChange={(e) => handleAction(user._id, e.target.value)} defaultValue="">
+                                            <select
+                                                className='users-role-select'
+                                                onChange={(e) => handleAction(user._id, e.target.value)}
+                                                defaultValue=""
+                                            >
                                                 <option value="" disabled>선택하세요</option>
                                                 <option value="approve">가입승인</option>
                                                 <option value="reject">활동중지</option>
                                                 <option value="delete">계정삭제</option>
-                                                <option value="1">관리자 변경</option>
-                                                <option value="2">부관리자 변경</option>
-                                                <option value="3">일반유저 변경</option>
+                                                {currentUserType == 1 && <option value="1">관리자 변경</option>}
+                                                {currentUserType == 1 &&  <option value="2">부관리자 변경</option>}
+                                                {currentUserType == 1 &&  <option value="3">일반유저 변경</option>}
                                             </select>
                                         </td>
+
                                     </tr>
                                 ))
                             )}

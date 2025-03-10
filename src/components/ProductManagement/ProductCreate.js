@@ -103,14 +103,10 @@ const renderSizeOptions = () => {
     if (file) {
       const image = new Image();
       image.onload = () => {
-        const aspectRatio = image.width / image.height;
-        if (image.width < 400 || image.height < 200 || aspectRatio < 1.7) {
-          alert('이미지가 규격에 맞지 않습니다. 최소 400x200 픽셀, 비율은 1.7 이상이어야 합니다.');
-        } else {
+       
           setImage(file);
           const previewUrl = URL.createObjectURL(file);
           setImagePreview(previewUrl);
-        }
       };
       image.src = URL.createObjectURL(file);
     }
@@ -132,15 +128,11 @@ const renderSizeOptions = () => {
       await new Promise((resolve, reject) => {
         image.onload = () => {
           const aspectRatio = image.width / image.height;
-          if (image.width < 400 || image.height < 200 || aspectRatio < 0.75) {
-            alert(`이미지가 규격에 맞지 않습니다: ${file.name}. 최소 400x200 픽셀, 비율은 0.75 이상이어야 합니다.`);
-            resolve();
-          } else {
+         
             validImages.push(file);
             const previewUrl = URL.createObjectURL(file);
             validPreviews.push(previewUrl);
             resolve();
-          }
         };
         image.src = URL.createObjectURL(file);
       });
@@ -193,7 +185,7 @@ const handleSubmit = async (e) => {
 
   try {
       const response = await axios.post(
-          'http://3.36.74.8:8865/api/products/productCreate',
+          'http://localhost:8865/api/products/productCreate',
           formData,
           {
               headers: {
