@@ -8,10 +8,7 @@ const ProductUpdate = () => {
     const [product, setProduct] = useState(null);
     const [updatedProduct, setUpdatedProduct] = useState({
         name: '',
-        category: {
-            main: '', // 상위 카테고리
-            sub: ''   // 하위 카테고리
-        },
+        category: '',
         price: 0,
         description: '',
         sizeStock: {} // 사이즈별 재고를 위한 객체
@@ -19,10 +16,7 @@ const ProductUpdate = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const categories = {
-        "일반의류": ["남성의류", "여성의류", "지갑", "가방", "신발", "기타"],
-        "골프의류": ["남성골프", "여성골프", "골프가방", "골프신발", "골프기타"]
-    };
+    const categories = [ "골프의류", "일반의류", "지갑", "가방", "신발", "악세사리", "모자", "기타"]
 
     useEffect(() => {
         const fetchProductDetail = async () => {
@@ -47,7 +41,7 @@ const ProductUpdate = () => {
                     const { main, sub } = response.data.product.category;
                     setUpdatedProduct({
                         name: response.data.product.name,
-                        category: { main, sub },
+                        category: response.data.category,
                         price: response.data.product.price,
                         description: response.data.product.description,
                         sizeStock: response.data.product.sizeStock || {},
@@ -62,27 +56,6 @@ const ProductUpdate = () => {
 
         fetchProductDetail();
     }, [id]);
-
-    const handleCategoryChange = (e) => {
-        const { name, value } = e.target;
-        if (name === 'category-main') {
-            setUpdatedProduct(prev => ({
-                ...prev,
-                category: {
-                    main: value,
-                    sub: '' // 상위 카테고리가 변경되면 하위 카테고리 초기화
-                }
-            }));
-        } else {
-            setUpdatedProduct(prev => ({
-                ...prev,
-                category: {
-                    ...prev.category,
-                    sub: value
-                }
-            }));
-        }
-    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -135,7 +108,6 @@ const ProductUpdate = () => {
             alert('서버와의 연결에 문제가 발생했습니다. 다시 시도해주세요.');
         }
     };
-
     if (!product) {
         return <div>로딩 중...</div>;
     }
@@ -161,43 +133,21 @@ const ProductUpdate = () => {
 
                 {/* Category */}
                 <div className="product-update-field">
-                    <label className="product-update-label" htmlFor="category">상위 카테고리</label>
+                    <label className="product-update-label" htmlFor="category">카테고리</label>
                     <select
                         className="product-update-input"
-                        id="category-main"
-                        name="category-main"
-                        value={updatedProduct.category.main}
-                        onChange={handleCategoryChange}
+                        id="category"
+                        name="category"
+                        value={updatedProduct.category}
+                        onChange={handleChange}
                         required
                     >
-                        <option value="">상위 카테고리를 선택하세요</option>
-                        {Object.keys(categories).map(category => (
+                        <option value="">카테고리를 선택하세요</option>
+                        {categories.map(category => (
                             <option key={category} value={category}>
                                 {category}
                             </option>
                         ))}
-                    </select>
-                </div>
-
-                {/* Subcategory */}
-                <div className="product-update-field">
-                    <label className="product-update-label" htmlFor="subCategory">하위 카테고리</label>
-                    <select
-                        className="product-update-input"
-                        id="category-sub"
-                        name="category-sub"
-                        value={updatedProduct.category.sub}
-                        onChange={handleCategoryChange}
-                        required
-                        disabled={!updatedProduct.category.main}
-                    >
-                        <option value="">하위 카테고리를 선택하세요</option>
-                        {updatedProduct.category.main &&
-                            categories[updatedProduct.category.main].map(subCategory => (
-                                <option key={subCategory} value={subCategory}>
-                                    {subCategory}
-                                </option>
-                            ))}
                     </select>
                 </div>
 

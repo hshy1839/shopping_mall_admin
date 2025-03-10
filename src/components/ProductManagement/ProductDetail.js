@@ -93,7 +93,7 @@ const ProductDetail = () => {
 
                     {/* 카테고리 상위 및 하위 표시 */}
                     <p className="product-category">
-                        <strong>카테고리:</strong> {product.category.main} &gt; {product.category.sub}
+                        <strong>카테고리:</strong> {product.category}
                     </p>
 
                     <p className="product-price">

@@ -6,8 +6,7 @@ import '../../css/ProductManagement/ProductCreate.css';
 
 const ProductCreate = () => {
   const [name, setName] = useState('');
-  const [categoryMain, setCategoryMain] = useState('');
-  const [categorySub, setCategorySub] = useState('');
+  const [category, setCategory] = useState('');
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null); // 대표 이미지 미리보기
 const [imagePreviews, setImagePreviews] = useState([]); // 추가 이미지 미리보기
@@ -18,10 +17,9 @@ const [imagePreviews, setImagePreviews] = useState([]); // 추가 이미지 미�
   const [images, setImages] = useState([]);  // 추가 이미지 배열
   const navigate = useNavigate();
 
-  const handleCategoryMainChange = (e) => {
-    setCategoryMain(e.target.value);
-    setCategorySub('');
-  };
+const handleCategoryChange = (e) => {
+    setCategory(e.target.value);
+};
 
   const handleSizeChange = (e) => {
     const { value, checked } = e.target;
@@ -40,63 +38,63 @@ const [imagePreviews, setImagePreviews] = useState([]); // 추가 이미지 미�
   };
 
 
-const renderSizeOptions = () => {
-  if (categorySub === "신발") {
-    // 신발 카테고리일 경우 200~300, 5단위 생성
-    const shoeSizes = Array.from({ length: 21 }, (_, i) => 200 + i * 5);
-    return shoeSizes.map((sizeOption) => (
-      <label key={sizeOption}>
-        <input
-          type="checkbox"
-          value={sizeOption}
-          checked={size.includes(sizeOption.toString())}
-          onChange={handleSizeChange}
-        />
-        {sizeOption}
-        {size.includes(sizeOption.toString()) && (
-          <input
-            type="number"
-            value={sizeStock[sizeOption] || 0}
-            onChange={(e) => handleStockChange(e, sizeOption)}
-            placeholder="재고 수량"
-            min="0"
-          />
-        )}
-      </label>
-    ));
-  } else {
-    // 기본 카테고리 옵션
-    return ["S", "M", "L", "XL", "free"].map((sizeOption) => (
-      <label key={sizeOption}>
-        <input
-          type="checkbox"
-          value={sizeOption}
-          checked={size.includes(sizeOption)}
-          onChange={handleSizeChange}
-        />
-        {sizeOption}
-        {size.includes(sizeOption) && (
-          <input
-            type="number"
-            value={sizeStock[sizeOption] || 0}
-            onChange={(e) => handleStockChange(e, sizeOption)}
-            placeholder="재고 수량"
-            min="0"
-          />
-        )}
-      </label>
-    ));
-  }
-};
+// const renderSizeOptions = () => {
+//   if (categorySub === "신발") {
+//     // 신발 카테고리일 경우 200~300, 5단위 생성
+//     const shoeSizes = Array.from({ length: 21 }, (_, i) => 200 + i * 5);
+//     return shoeSizes.map((sizeOption) => (
+//       <label key={sizeOption}>
+//         <input
+//           type="checkbox"
+//           value={sizeOption}
+//           checked={size.includes(sizeOption.toString())}
+//           onChange={handleSizeChange}
+//         />
+//         {sizeOption}
+//         {size.includes(sizeOption.toString()) && (
+//           <input
+//             type="number"
+//             value={sizeStock[sizeOption] || 0}
+//             onChange={(e) => handleStockChange(e, sizeOption)}
+//             placeholder="재고 수량"
+//             min="0"
+//           />
+//         )}
+//       </label>
+//     ));
+//   } else {
+//     // 기본 카테고리 옵션
+//     return ["S", "M", "L", "XL", "free"].map((sizeOption) => (
+//       <label key={sizeOption}>
+//         <input
+//           type="checkbox"
+//           value={sizeOption}
+//           checked={size.includes(sizeOption)}
+//           onChange={handleSizeChange}
+//         />
+//         {sizeOption}
+//         {size.includes(sizeOption) && (
+//           <input
+//             type="number"
+//             value={sizeStock[sizeOption] || 0}
+//             onChange={(e) => handleStockChange(e, sizeOption)}
+//             placeholder="재고 수량"
+//             min="0"
+//           />
+//         )}
+//       </label>
+//     ));
+//   }
+// };
 
-  const handleStockChange = (e, size) => {
-    const { value } = e.target;
-    const numericStock = Number(value);
-    setSizeStock({
-      ...sizeStock,
-      [size]: numericStock,
-    });
-  };
+  // const handleStockChange = (e, size) => {
+  //   const { value } = e.target;
+  //   const numericStock = Number(value);
+  //   setSizeStock({
+  //     ...sizeStock,
+  //     [size]: numericStock,
+  //   });
+  // };
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
@@ -155,7 +153,7 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   // 필수 필드 확인, 메인 이미지와 상세 이미지 포함
-  if (!name || !categoryMain || !categorySub || !price || !image || images.length === 0) {
+  if (!name || !category || !price || !image || images.length === 0) {
       alert('모든 입력란을 입력해주세요.');
       return;
   }
@@ -167,8 +165,7 @@ const handleSubmit = async (e) => {
 
   const formData = new FormData();
   formData.append('name', name);
-  formData.append('categoryMain', categoryMain);
-  formData.append('categorySub', categorySub);
+  formData.append('category', category);
   formData.append('price', price);
   formData.append('description', description);
   formData.append('sizeStock', JSON.stringify(filteredSizeStock));
@@ -230,55 +227,25 @@ const handleSubmit = async (e) => {
 
         {/* Category */}
         <div className="product-create-field">
-          <label className="product-create-label" htmlFor="categoryMain">상위 카테고리</label>
-          <select
-            className="product-create-input"
-            id="categoryMain"
-            value={categoryMain}
-            onChange={handleCategoryMainChange}
-            required
-          >
-            <option value="">상위 카테고리를 선택하세요</option>
-            <optgroup label="일반의류">
-              <option value="일반의류">일반의류</option>
-              <option value="골프의류">골프의류</option>
-            </optgroup>
-          </select>
-        </div>
-
-        <div className="product-create-field">
-          <label className="product-create-label" htmlFor="categorySub">하위 카테고리</label>
-          <select
-            className="product-create-input"
-            id="categorySub"
-            value={categorySub}
-            onChange={(e) => setCategorySub(e.target.value)}
-            required
-            disabled={!categoryMain}
-          >
-            <option value="">하위 카테고리를 선택하세요</option>
-            {categoryMain === '일반의류' && (
-              <>
-                <option value="남성의류">남성의류</option>
-                <option value="여성의류">여성의류</option>
-                <option value="지갑">지갑</option>
-                <option value="가방">가방</option>
-                <option value="신발">신발</option>
-                <option value="기타">기타</option>
-              </>
-            )}
-            {categoryMain === '골프의류' && (
-              <>
-                <option value="남성의류">남성의류</option>
-                <option value="여성의류">여성의류</option>
-                <option value="지갑">지갑</option>
-                <option value="가방">가방</option>
-                <option value="신발">신발</option>
-                <option value="기타">기타</option>
-              </>
-            )}
-          </select>
-        </div>
+    <label className="product-create-label" htmlFor="category">카테고리</label>
+    <select
+        className="product-create-input"
+        id="category"
+        value={category}
+        onChange={handleCategoryChange}
+        required
+    >
+        <option value="">카테고리를 선택하세요</option>
+        <option value="지갑">지갑</option>
+        <option value="가방">가방</option>
+        <option value="신발">신발</option>
+        <option value="기타">기타</option>
+        <option value="신발">모자</option>
+        <option value="기타">악세사리</option>
+        <option value="골프의류">골프의류</option>  
+        <option value="일반의류">일반의류</option>
+    </select>
+</div>
 
         {/* Main Image */}
         <div className="product-create-field">

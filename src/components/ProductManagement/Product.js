@@ -97,7 +97,7 @@ const Product = () => {
 
     const getCategoryDisplay = (category) => {
         if (!category) return 'Unknown Category';
-        return `${category.main} > ${category.sub}`;
+        return `${category}`;
     };
 
     const handleProductClick = (id) => {
