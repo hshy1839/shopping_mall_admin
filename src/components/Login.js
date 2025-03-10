@@ -18,7 +18,7 @@ const Login = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:8865/api/users/loginAdmin', {
+      const response = await fetch('http://3.36.74.8:8865/api/users/loginAdmin', {
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -38,7 +38,7 @@ const Login = () => {
       navigate('/'); // 메인 페이지로 리디렉션
     } catch (error) {
       console.error('로그인 오류:', error);
-      setErrorMessage('로그인 중 오류가 발생했습니다. 서버에 연결할 수 없습니다.');
+      setErrorMessage('로그인 중 오류가 발생했습니다. 서버에 연결할 수 없습니다.', error);
     }
   };
 
