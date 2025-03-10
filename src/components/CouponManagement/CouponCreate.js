@@ -24,7 +24,7 @@
 
 //     try {
 //       const response = await axios.post(
-//         'http://localhost:8865/api/coupon',
+//         'http://3.36.74.8:8865/api/coupon',
 //         {
 //           name,
 //           code,

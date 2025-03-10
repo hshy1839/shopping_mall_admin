@@ -182,7 +182,7 @@ const handleSubmit = async (e) => {
 
   try {
       const response = await axios.post(
-          'http://localhost:8865/api/products/productCreate',
+          'http://3.36.74.8:8865/api/products/productCreate',
           formData,
           {
               headers: {

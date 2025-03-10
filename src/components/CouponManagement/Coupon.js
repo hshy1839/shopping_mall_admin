@@ -20,7 +20,7 @@
 //             const token = localStorage.getItem('token');
 //             if (!token) return;
 
-//             const response = await axios.get('http://localhost:8865/api/coupons', {
+//             const response = await axios.get('http://3.36.74.8:8865/api/coupons', {
 //                 headers: { Authorization: `Bearer ${token}` },
 //             });
 
@@ -70,7 +70,7 @@
 //             if (!token) return;
 
 //             const response = await axios.put(
-//                 `http://localhost:8865/api/coupon/${id}`,
+//                 `http://3.36.74.8:8865/api/coupon/${id}`,
 //                 { isActive },
 //                 { headers: { Authorization: `Bearer ${token}` } }
 //             );
@@ -91,7 +91,7 @@
 //             const token = localStorage.getItem('token');
 //             if (!token) return;
 
-//             const response = await axios.delete(`http://localhost:8865/api/coupon/${id}`, {
+//             const response = await axios.delete(`http://3.36.74.8:8865/api/coupon/${id}`, {
 //                 headers: { Authorization: `Bearer ${token}` },
 //             });
 
