@@ -21,7 +21,7 @@ const Product = () => {
                 return;
             }
 
-            const response = await axios.get('http:///3.36.74.8:8865/api/products/allProduct', {
+            const response = await axios.get('http:///15.164.155.205:8865/api/products/allProduct', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -58,7 +58,7 @@ const Product = () => {
                     return;
                 }
 
-                const response = await axios.get('http:///3.36.74.8:8865/api/products/allProduct', {
+                const response = await axios.get('http:///15.164.155.205:8865/api/products/allProduct', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
