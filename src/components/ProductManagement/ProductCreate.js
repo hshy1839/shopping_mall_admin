@@ -115,30 +115,13 @@ const handleCategoryChange = (e) => {
     setDescription(e.target.value);
   };
 
-  const handleFileUpload = async (e) => {
-    const files = e.target.files;
-    const imageFiles = Array.from(files);
-    const validImages = [];
-    const validPreviews = [];
-  
-    for (const file of imageFiles) {
-      const image = new Image();
-      await new Promise((resolve, reject) => {
-        image.onload = () => {
-          const aspectRatio = image.width / image.height;
-         
-            validImages.push(file);
-            const previewUrl = URL.createObjectURL(file);
-            validPreviews.push(previewUrl);
-            resolve();
-        };
-        image.src = URL.createObjectURL(file);
-      });
-    }
-  
-    setImagePreviews(validPreviews);
-    setImages(validImages);
+  const handleFileUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const previews = files.map((file) => URL.createObjectURL(file));
+    setImages(files);
+    setImagePreviews(previews);
   };
+  
   // 이미지 삭제 함수
   const handleImageDelete = (index) => {
     const updatedImages = images.filter((_, idx) => idx !== index);
