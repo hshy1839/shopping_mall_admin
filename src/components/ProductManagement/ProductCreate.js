@@ -240,8 +240,8 @@ const handleSubmit = async (e) => {
         <option value="가방">가방</option>
         <option value="신발">신발</option>
         <option value="기타">기타</option>
-        <option value="신발">모자</option>
-        <option value="기타">악세사리</option>
+        <option value="모자">모자</option>
+        <option value="악세사리">악세사리</option>
         <option value="골프의류">골프의류</option>  
         <option value="일반의류">일반의류</option>
     </select>
