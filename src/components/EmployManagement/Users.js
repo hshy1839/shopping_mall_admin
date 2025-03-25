@@ -355,23 +355,49 @@ const Users = () => {
 
                     {/* 페이지 네비게이션 */}
                     <div className="pagination">
-                        <button className="prev-page-btn" onClick={handlePreviousPage} disabled={currentPage === 1}>
-                            이전
-                        </button>
-                        {[...Array(totalPages)].map((_, i) => (
-                            <button
-                                key={i}
-                                onClick={() => handlePageChange(i + 1)}
-                                className={currentPage === i + 1 ? 'active' : ''}
-                                id='page-number-btn'
-                            >
-                                {i + 1}
-                            </button>
-                        ))}
-                        <button className='next-page-btn' onClick={handleNextPage} disabled={currentPage === totalPages}>
-                            다음
-                        </button>
-                    </div>
+  <button
+    className="prev-page-btn"
+    onClick={handlePreviousPage}
+    disabled={currentPage === 1}
+  >
+    이전
+  </button>
+
+  {/* 페이지 그룹 계산 */}
+  {(() => {
+    const pageGroupSize = 10;
+    const currentGroup = Math.ceil(currentPage / pageGroupSize);
+    const startPage = (currentGroup - 1) * pageGroupSize + 1;
+    const endPage = Math.min(startPage + pageGroupSize - 1, totalPages);
+
+    return (
+      <>
+        {[...Array(endPage - startPage + 1)].map((_, i) => {
+          const pageNum = startPage + i;
+          return (
+            <button
+              key={pageNum}
+              onClick={() => handlePageChange(pageNum)}
+              className={currentPage === pageNum ? 'active' : ''}
+              id="page-number-btn"
+            >
+              {pageNum}
+            </button>
+          );
+        })}
+      </>
+    );
+  })()}
+
+  <button
+    className="next-page-btn"
+    onClick={handleNextPage}
+    disabled={currentPage === totalPages}
+  >
+    다음
+  </button>
+</div>
+
                 </div>
             </div>
         </div>

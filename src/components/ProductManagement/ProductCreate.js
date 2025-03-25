@@ -117,10 +117,31 @@ const handleCategoryChange = (e) => {
 
   const handleFileUpload = (e) => {
     const files = Array.from(e.target.files);
-    const previews = files.map((file) => URL.createObjectURL(file));
-    setImages(files);
+  
+    const previews = [...imagePreviews];
+    const updatedImages = [...images];
+  
+    files.forEach((file) => {
+      const exists = updatedImages.some(
+        (f) => f.name === file.name &&
+               f.lastModified === file.lastModified &&
+               f.size === file.size
+      );
+      if (!exists) {
+        updatedImages.push(file);
+        previews.push(URL.createObjectURL(file));
+      }
+    });
+  
+    setImages(updatedImages);
     setImagePreviews(previews);
+    e.target.value = '';
   };
+  
+  
+  
+  
+  
   
   // 이미지 삭제 함수
   const handleImageDelete = (index) => {
@@ -157,10 +178,22 @@ const handleSubmit = async (e) => {
   formData.append('mainImage', image);
 
   // 추가 이미지들 추가
-  images.forEach((img) => {
-      formData.append('additionalImages', img);
-  });
+ const uniqueImages = [];
+const seenKeys = new Set();
 
+images.forEach((file) => {
+  const key = `${file.name}-${file.lastModified}-${file.size}`;
+  if (!seenKeys.has(key)) {
+    seenKeys.add(key);
+    uniqueImages.push(file);
+  }
+});
+
+uniqueImages.forEach((img) => {
+  formData.append('additionalImages', img);
+});
+
+  
   const token = localStorage.getItem('token');
 
   try {
