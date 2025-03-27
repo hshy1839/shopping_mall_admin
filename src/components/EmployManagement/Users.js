@@ -258,9 +258,10 @@ const Users = () => {
                                     </td>
                                 </tr>
                             ) : (
-                                users.map((user, index) => (
+                                currentNotices.map((user, index) => (
                                     <tr key={user._id}>
-                                        <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
+                                        <td>{users.length - (indexOfFirstNotice + index)}</td>
+
                                         <td>{user.username}</td>
                                         <td>{user.name}</td>
                                         <td>{user.phoneNumber}</td>
